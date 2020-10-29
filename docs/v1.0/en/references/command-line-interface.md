@@ -42,11 +42,11 @@ When set to `true`, assertions will execute at runtime throughout the codebase. 
 
 `--bootstrap-ids` (string):
 
-Bootstrap IDs is an array of validator IDs. These IDs will be used to authenticate bootstrapping peers. This only needs to be set when `--p2p-tls-enabled=true`. An example setting of this field would be `--bootstrap-ids="NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg,NodeID-MFrZFVCXPv5iCn6M9K6XduxGTYp891xXZ"`. The default value is the empty set.
+Bootstrap IDs is an array of validator IDs. These IDs will be used to authenticate bootstrapping peers. This only needs to be set when `--p2p-tls-enabled=true`. An example setting of this field would be `--bootstrap-ids="NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg,NodeID-MFrZFVCXPv5iCn6M9K6XduxGTYp891xXZ"`. Defaults to empty (does not attempt to bootstrap from other nodes.)
 
 `--bootstrap-ips` (string):
 
-Bootstrap IPs is an array of IPv4:port pairs. These IP Addresses will be used to bootstrap the current Avalanche state. An example setting of this field would be `--bootstrap-ips="127.0.0.1:12345,1.2.3.4:5678"`. The default value is the empty set.
+Bootstrap IPs is an array of IPv4:port pairs. These IP Addresses will be used to bootstrap the current Avalanche state. An example setting of this field would be `--bootstrap-ips="127.0.0.1:12345,1.2.3.4:5678"`. Defaults to empty (does not attempt to bootstrap from other nodes.)
 
 `--conn-meter-max-conns` (int):
 
@@ -68,7 +68,8 @@ If set to `false`, state updates are performed solely to an in-memory database, 
 
 `--http-host` (string):
 
-The address that HTTP APIs listen on. The default value is `127.0.0.1`. This means that by default, your node can only handle API calls made from the same machine. To allow API calls from other machines, do `--http-host=`. For example if your public IP address is `1.2.3.4` and you'd like to access AvalancheGo's RPC over that IP address then you need to pass in `--http-host=1.2.3.4`.
+The address that HTTP APIs listen on. Defaults to `127.0.0.1`. This means that by default, your node can only handle API calls made from the same machine. To allow API calls from other machines, use `--http-host=`. For example if your public IP address is `1.2.3.4` and you'd like to access AvalancheGo's RPC over that IP address then you need to pass in `--http-host=1.2.3.4`.
+To allow API calls from all IPs, use `http-host=`.
 
 `--http-port` (int):
 
@@ -128,26 +129,26 @@ Specifies the directory in which system logs are kept. Defaults to `"$HOME/.aval
 
 The identity of the network the node should connect to. Can be one of:
 
-* `--network-id=fuji` -> Connect to the Fuji test-network. This aliases `network-5`.
+* `--network-id=mainnet` -> Connect to Main net (default).
+* `--network-id=fuji` -> Connect to the Fuji test-network.
 * `--network-id=testnet` -> Connect to the current test-network. (Right now, this is Fuji.)
-* `--network-id=local` -> Connect to a local test-network. This aliases `network-12345`.
-* `--network-id=network-{id}` -> Connect to the `id` network. `id` must be in the range `[0, 2^32)`.
-
-`--network-id` defaults to `fuji`.
+* `--network-id=local` -> Connect to a local test-network.
+* `--network-id=network-{id}` -> Connect to the network with the given ID. `id` must be in the range `[0, 2^32)`.
 
 `--public-ip` (string):
 
-Validators must know their public facing IP addresses so they can let other nodes know how to connect to them. If this argument is not provided, the node will attempt to perform NAT traversal to get the node's public IP. Should be set to `127.0.0.1` to create a local network. The default value is `""`.
+Validators must know their public facing IP addresses so they can let other nodes know how to connect to them. If this argument is not provided, the node will attempt to perform NAT traversal to get the node's public IP. Should be set to `127.0.0.1` to create a local network. If not set, attempts to learn IP using NAT traversal.
 
 `--dynamic-public-ip` (string):
 
 Valid values if param is present: `ifconfig` or `opendns`.
-This overrides `--public-ip`, will poll the remote service every `--dynamic-update-duration` and update the nodes public IP address.
+This overrides `--public-ip`.
+If set, will poll the remote service every `--dynamic-update-duration` and update the node's public IP address.
 
 `--dynamic-update-duration` (duration):
 
 The time between poll events for `--dynamic-public-ip` or NAT traversal.
-The recommended minimum is 1 minute, the default is 5 minutes.
+The recommended minimum is 1 minute. Defaults to `5m`.
 
 `--plugin-dir` (string, file path):
 
@@ -171,19 +172,19 @@ Avalanche uses Proof of Stake (PoS) as Sybil resistance to make it prohibitively
 
 `--staking-tls-cert-file` (string, file path):
 
-Avalanche uses two-way authenticated TLS connections to securely identify the `stakingID` of connected peers when `--p2p-tls-enabled=true`. This argument specifies the location of the TLS certificate used by the node. This must be specified when `--p2p-tls-enabled=true`. The default value is `""`.
+Avalanche uses two-way authenticated TLS connections to securely identify the `stakingID` of connected peers when `--p2p-tls-enabled=true`. This argument specifies the location of the TLS certificate used by the node. This must be specified when `--p2p-tls-enabled=true`. Defaults to `""`.
 
 `--staking-tls-key-file` (string, file path):
 
-Avalanche uses two-way authenticated TLS connections to securely identify the `stakingID` of connected peers when `--p2p-tls-enabled=true`. This argument specifies the location of the TLS private key used by the node. This must be specified when `--p2p-tls-enabled=true`. The default value is `""`.
+Avalanche uses two-way authenticated TLS connections to securely identify the `stakingID` of connected peers when `--p2p-tls-enabled=true`. This argument specifies the location of the TLS private key used by the node. This must be specified when `--p2p-tls-enabled=true`. Defaults to `""`.
 
 `--staking-disabled-weight` (int):
 
-Weight to provide to each peer when staking is disabled. The default is `1`.
+Weight to provide to each peer when staking is disabled. Defaults to `1`.
 
 `--version` (boolean)
 
-If this is `true`, print the version and quit. The default is `false`.
+If this is `true`, print the version and quit. Defaults to `false`.
 
 ***
 
@@ -191,13 +192,29 @@ If this is `true`, print the version and quit. The default is `false`.
 
 The following options affect the correctness of the platform. They may need to be changed network-wide, and as a result, an ordinary user should not change from the defaults.
 
-`--consensus-gossip-frequency` (int):
+`--benchlist-duration` (duration):
 
-Number of nanoseconds between gossiping accepted frontiers. The default is `10000000000`.
+Amount of time a peer is benchlisted after surpassing `--benchlist-fail-threshold`. Defaults to `1h`.
 
-`--consensus-shutdown-timeout` (int):
+`--benchlist-fail-threshold` (int):
 
-Timeout before killing an unresponsive chain. The default is `5000000000`.
+Number of consecutive failed queries to a node before benching it (assuming all queries to it will fail). Defaults to `10`.
+
+`--benchlist-peer-summary-enabled` (boolean):
+
+Enables peer specific query latency metrics. Defaults to `false`.
+
+`--benchlist-min-failing-duration` (duration):
+
+Minimum amount of time messages to a peer must be failing before the peer is benched. Defaults to `5m`.
+
+`--consensus-gossip-frequency` (duration):
+
+Time between gossiping accepted frontiers. Defaults to `10s`.
+
+`--consensus-shutdown-timeout` (duration):
+
+Timeout before killing an unresponsive chain. Defaults to `5s`.
 
 `--creation-tx-fee` (int):
 
@@ -207,95 +224,97 @@ Transaction fee, in nAVAX, for transactions that create new state. Defaults to `
 
 The minimum stake that can be delegated to a validator of the Primary Network.
 
-Default on Main Net: `25000000000` (25 AVAX)
-Default on Everest Test Net: `5000000`  (5 x 10^-3 AVAX)
+Defaults to `25000000000` (25 AVAX) on Main Net.
+Defaults to `5000000`  (5 x 10^-3 AVAX) on Test Net.
 
 `--min-delegation-fee` (int):
 
-The minimum delegation fee, in the range [0, 1000000], that can be charged for delegation on the Primary Network. Default on Main Net: `20000` (2%)
+The minimum delegation fee, in the range [0, 1000000], that can be charged for delegation on the Primary Network. 
+Defaults to `20000` (2%) on Main Net.
 
-`--min-stake-duration` (int):
+`--min-stake-duration` (duration):
 
-Minimum staking duration, in seconds. The Default on Main Net: `86400` (60*60*24)
+Minimum staking duration. The Default on Main Net is `24h`.
 
 `--min-validator-stake` (int):
 
 The minimum stake, in nAVAX, required to validate the Primary Network.
 
-Default on Main Net: `2000000000000` (2,000 AVAX)
-Default on Everest Test Net: `5000000` (5 x 10^-3 AVAX)
+Defaults to `2000000000000` (2,000 AVAX) on Main Net.
+Defaults to `5000000` (5 x 10^-3 AVAX) on Test Net.
 
 `--max-non-staker-pending-msgs` (int):
 
-Maximum number of messages a non-staker is allowed to have pending. The default is `20`.
+Maximum number of messages a non-staker is allowed to have pending. Defaults to `20`.
 
-`--max-stake-duration` (int):
+`--max-stake-duration` (duration):
 
-The maximum staking duration, in seconds. The Default on Main Net: `31536000` (365*60*60*24)
+The maximum staking duration, in seconds. Defaults to `8760h` (365 days * 24 hours) on Main Net.
 
 `--max-validator-stake` (int):
 
-The maximum stake, in nAVAX, that can be placed on a validator on the primary network. The default on Main Net: `3000000000000000` (3,000,000 AVAX)
+The maximum stake, in nAVAX, that can be placed on a validator on the primary network.
+Defaults to `3000000000000000` (3,000,000 AVAX) on Main Net.
 
-`--network-initial-timeout` (int):
+`--network-initial-timeout` (duration):
 
-Initial timeout value of the adaptive timeout manager, in nanoseconds. The default value is: `5000000000`.
+Initial timeout value of the adaptive timeout manager, in nanoseconds. Defaults to `5s`.
 
-`--network-minimum-timeout` (int):
+`--network-minimum-timeout` (duration):
 
-Minimum timeout value of the adaptive timeout manager, in nanoseconds. The default value is: `500000000`.
+Minimum timeout value of the adaptive timeout manager, in nanoseconds. Defaults to `5s`.
 
-`--network-maximum-timeout` (int):
+`--network-maximum-timeout` (duration):
 
-Maximum timeout value of the adaptive timeout manager, in nanoseconds. The default value is: `10000000000`.
+Maximum timeout value of the adaptive timeout manager, in nanoseconds. Defaults to `10s`.
 
 `--network-timeout-multiplier` (float):
 
-Multiplier of the timeout after a failed request.. The default value is: `1.1`.
+Multiplier of the timeout after a failed request. Defaults to `1.1`.
 
-`--network-timeout-reduction` (int):
+`--network-timeout-reduction` (duration):
 
-Reduction of the timeout after a successful request, in nanoseconds. The default value is: `1`.
+Reduction of the timeout after a successful request, in nanoseconds. Defaults to `1`.
 
 `--snow-avalanche-batch-size` (int):
 
-DAG implementations of Snow consensus define `b` as the number of transactions a vertex should include. Increasing `b` will, theoretically, increase throughput while increasing latency. The node will wait for at most 1 second to collect a batch, and will then issue the entire batch at once. The value must be at least `1`. The default value is `30`.
+DAG implementations of Snow consensus define `b` as the number of transactions a vertex should include. Increasing `b` will, theoretically, increase throughput while increasing latency. The node will wait for at most 1 second to collect a batch, and will then issue the entire batch at once. The value must be at least `1`. Defaults to `30`.
 
 `--snow-avalanche-num-parents` (int):
 
-DAG implementations of Snow consensus define `p` as the number of parents a vertex should include. Increasing `p` will improve the amortization of network queries. However, by increasing the connectivity of the graph, the complexity of the graph traversals is increased. The value must be at least `2`. The default value is `5`.
+DAG implementations of Snow consensus define `p` as the number of parents a vertex should include. Increasing `p` will improve the amortization of network queries. However, by increasing the connectivity of the graph, the complexity of the graph traversals is increased. The value must be at least `2`. Defaults to `5`.
 
 `--snow-concurrent-repolls` (int):
 
-Snow consensus requires repolling transactions that are issued during low time of network usage. This parameter lets one define how aggressive the client will be in finalizing these pending transactions. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `1` and at most `--snow-rogue-commit-threshold`. The default value is `1`.
+Snow consensus requires repolling transactions that are issued during low time of network usage. This parameter lets one define how aggressive the client will be in finalizing these pending transactions. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `1` and at most `--snow-rogue-commit-threshold`. Defaults to `4`.
 
 `--snow-sample-size` (int):
 
-Snow consensus defines `k` as the number of validators that are sampled during each network poll. This parameter lets one define the `k` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `1`. The default value is `20`.
+Snow consensus defines `k` as the number of validators that are sampled during each network poll. This parameter lets one define the `k` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `1`. Defaults to `20`.
 
 `--snow-quorum-size` (int):
 
-Snow consensus defines `alpha` as the number of validators that must prefer a transaction during each network poll to increase the confidence in the transaction. This parameter lets us define the `alpha` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at greater than `k/2`. The default value is `18`.
+Snow consensus defines `alpha` as the number of validators that must prefer a transaction during each network poll to increase the confidence in the transaction. This parameter lets us define the `alpha` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at greater than `k/2`. Defaults to `14`.
 
 `--snow-virtuous-commit-threshold` (int):
 
-Snow consensus defines `beta1` as the number of consecutive polls that a virtuous transaction must increase its confidence for it to be accepted. This parameter lets us define the `beta1` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `1`. The default value is `20`.
+Snow consensus defines `beta1` as the number of consecutive polls that a virtuous transaction must increase its confidence for it to be accepted. This parameter lets us define the `beta1` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `1`. Defaults to `15`.
 
 `--snow-rogue-commit-threshold` (int):
 
-Snow consensus defines `beta2` as the number of consecutive polls that a rogue transaction must increase its confidence for it to be accepted. This parameter lets us define the `beta2` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `beta1`. The default value is `30`.
+Snow consensus defines `beta2` as the number of consecutive polls that a rogue transaction must increase its confidence for it to be accepted. This parameter lets us define the `beta2` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `beta1`. Defaults to `30`.
 
-`--stake-minting-period` (int):
+`--stake-minting-period` (duration):
 
-Consumption period of the staking function, in seconds. The Default on Main Net: `31536000` (365*60*60*24).
+Consumption period of the staking function, in seconds. The Default on Main Net is `8760h` (365 days * 24 hours).
 
 `--staker-msg-reserved` (float):
 
-Portion of pending message buffer reserved for messages from validators. The default value is `0.375`.
+Portion of pending message buffer reserved for messages from validators. Defaults to `0.375`.
 
 `--staker-cpu-reserved` (float):
 
-Portion of chain's CPU time reserved for messages from validators.  The default value is `0.375`.
+Portion of chain's CPU time reserved for messages from validators. Defaults to `0.375`.
 
 `--tx-fee` (int):
 
@@ -303,18 +322,18 @@ The required amount of nAVAX to be burned for a transaction to be valid. This pa
 
 `--uptime-requirement` (float):
 
-Fraction of time a validator must be online to receive rewards. The default value is `0.6`.
+Fraction of time a validator must be online to receive rewards. Defaults to `0.6`.
 
 `--xput-server-enabled` [Deprecated] (boolean):
 
 An optional server helps run throughput tests by injecting load into the network on command.
 If enabled, this server is started up and listens for commands from a test coordinator.
-The default value is `false`.
+Defaults to `false`.
 
 `--xput-server-port` [Deprecated] (string):
 
-This option lets one specify on which port the throughput server, if enabled, will listen. The default value is `9652`.
+This option lets one specify on which port the throughput server, if enabled, will listen. Defaults to `9652`.
 
 `--whitelisted-subnets` (string):
 
-Comma separated list of subnets that this node would validate if added to.
+Comma separated list of subnets that this node would validate if added to. Defaults to empty (will only validate the Primary Network).
