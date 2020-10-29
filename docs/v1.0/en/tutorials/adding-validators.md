@@ -244,7 +244,9 @@ When the time reaches `1584021450`, this node will start validating the Primary 
 When it reaches `1584121156`, this node will stop validating the Primary Network.
 The staked AVAX will be returned to an address controlled by `username`, and the rewards, if any, will be given to `rewardAddress`.
 
-## Add a validator to a Subnet
+## Adding a Subnet Validator
+
+### Issuing a Subnet Validator Transaction
 
 Now let's add the same node to a subnet.
 The following will make more sense if you've already done this [tutorial on creating a Subnet.](../tutorials/create-a-subnet.md)
@@ -376,3 +378,14 @@ The response should include the node we just added:
 
 When the time reaches `1584042912`, this node will start validating this Subnet.
 When it reaches `1584121156`, this node will stop validating this Subnet.
+
+
+### Whitelisting the Subnet
+
+Now that the node has been added as a validator of the subnet, let's add it to the whitelist of subnets. The whitelist prevents the node from validating a subnet unintentionally.
+
+To whitelist the subnet, restart the node and add the parameter `--whitelisted-subnets` with a comma separated list of subnets to whitelist.
+
+The full command is:
+
+`./build/avalanchego --whitelisted-subnets=nTd2Q2nTLp8M9qv2VKHMdvYhtNWX7aTPa4SMEK7x7yJHbcWvr`
