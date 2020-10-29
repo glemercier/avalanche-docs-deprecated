@@ -11,87 +11,26 @@ Right now, the only valid codec ID is 0 (`0x00 0x00`).
 
 ***
 
-## EVM Output
+## Inputs
 
-Output type specifying a state change to be applied to an EVM account as part of an `ImportTx`.
+Inputs to Coreth Atomic Transactions are either an `EVMInput` from this chain or a `TransferableInput` (which contains a `SECP256K1TransferInput`) from another chain. The `EVMInput` will be used in `ExportTx` to spend funds from this chain, while the `TransferableInput` will be used to import atomic UTXOs from another chain.
 
-### What EVM Output Contains
+***
 
-An EVM Output contains an `address`, `amount`, and `assetID`.
+### EVM Input
 
-- **`Address`** is the EVM address that will receive the funds.
-- **`Amount`** is the amount of the asset to be transferred (specified in nAVAX for AVAX and the smallest denomination for all other assets).
-- **`AssetID`** is the assetID to transfer.
+Input type that specifies an EVM account to deduct the funds from as part of an `ExportTx`.
 
-### Gantt EVM Output Specification
-
-```boo
-+----------+----------+-------------------------+
-| address  : [20]byte |                20 bytes |
-+----------+----------+-------------------------+
-| amount   : uin64    |                08 bytes |
-+----------+----------+-------------------------+
-| asset_id : [32]byte |                32 bytes |
-+----------+----------+-------------------------+
-                      |                60 bytes |
-                      +-------------------------+
-```
-
-### Proto EVM Output Specification
-
-```protobuf
-message  {
-    bytes address = 1; // 20 bytes
-    uint64 amount = 2; // 08 bytes
-    bytes assetID = 3; // 32 bytes
-}
-```
-
-### EVM Output Example
-
-Let's make an EVM Output:
-
-- `Address: 0x0eb5ccb85c29009b6060decb353a38ea3b52cd20`
-- `Amount: 500000000000`
-- `AssetID: 0xdbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db`
-
-```splus
-[
-    Address   <- 0x0eb5ccb85c29009b6060decb353a38ea3b52cd20,
-    Amount    <- 0x000000746a528800
-    AssetID   <- 0xdbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db
-]
-=
-[
-    // address:
-    0xc3, 0x34, 0x41, 0x28, 0xe0, 0x60, 0x12, 0x8e,
-    0xde, 0x35, 0x23, 0xa2, 0x4a, 0x46, 0x1c, 0x89,
-    0x43, 0xab, 0x08, 0x59,
-    // amount:
-    0x00, 0x00, 0x00, 0x74, 0x6a, 0x52, 0x88, 0x00,
-    // assetID:
-    0xdb, 0xcf, 0x89, 0x0f, 0x77, 0xf4, 0x9b, 0x96,
-    0x85, 0x76, 0x48, 0xb7, 0x2b, 0x77, 0xf9, 0xf8,
-    0x29, 0x37, 0xf2, 0x8a, 0x68, 0x70, 0x4a, 0xf0,
-    0x5d, 0xa0, 0xdc, 0x12, 0xba, 0x53, 0xf2, 0xdb,
-]
-```
-
-
-## EVM Input
-
-Input type specifying a state change to be applied to an EVM account as part of an `ExportTx`.
-
-### What EVM Input Contains
+#### What EVM Input Contains
 
 An EVM Input contains an `address`, `amount`, `assetID`, and `nonce`.
 
 - **`Address`** is the EVM address from which to transfer funds.
 - **`Amount`** is the amount of the asset to be transferred (specified in nAVAX for AVAX and the smallest denomination for all other assets).
-- **`AssetID`** is the assetID to transfer.
+- **`AssetID`** is the ID of the asset to transfer.
 - **`Nonce`** is the nonce of the EVM account exporting funds.
 
-### Gantt EVM Input Specification
+#### Gantt EVM Input Specification
 
 ```boo
 +----------+----------+-------------------------+
@@ -107,7 +46,7 @@ An EVM Input contains an `address`, `amount`, `assetID`, and `nonce`.
                       +-------------------------+
 ```
 
-### Proto EVM Input Specification
+#### Proto EVM Input Specification
 
 ```protobuf
 message  {
@@ -118,7 +57,7 @@ message  {
 }
 ```
 
-### EVM Input Example
+#### EVM Input Example
 
 Let's make an EVM Input:
 
@@ -152,21 +91,20 @@ Let's make an EVM Input:
 ]
 ```
 
+### Transferable Input
 
-## Transferable Input
+Transferable Input wraps a `SECP256K1TransferInput`. Transferable inputs describe a specific UTXO with a provided transfer input.
 
-Transferable inputs describe a specific UTXO with a provided transfer input.
-
-### What Transferable Input Contains
+#### What Transferable Input Contains
 
 A transferable input contains a `TxID`, `UTXOIndex` `AssetID` and an `Input`.
 
 - **`TxID`** is a 32-byte array that defines which transaction this input is consuming an output from.
 - **`UTXOIndex`** is an int that defines which utxo this input is consuming in the specified transaction.
 - **`AssetID`** is a 32-byte array that defines which asset this input references.
-- **`Input`** is an input, as defined below. This will be a SECP256K1 transfer input
+- **`Input`** is a `SECP256K1TransferInput`, as defined below.
 
-### Gantt Transferable Input Specification
+#### Gantt Transferable Input Specification
 
 ```boo
 +------------+----------+------------------------+
@@ -182,7 +120,7 @@ A transferable input contains a `TxID`, `UTXOIndex` `AssetID` and an `Input`.
                         +------------------------+
 ```
 
-### Proto Transferable Input Specification
+#### Proto Transferable Input Specification
 
 ```protobuf
 message TransferableInput {
@@ -193,7 +131,7 @@ message TransferableInput {
 }
 ```
 
-### Transferable Input Example
+#### Transferable Input Example
 
 Let's make a transferable input:
 
@@ -229,15 +167,6 @@ Let's make a transferable input:
     0x00, 0x00, 0x00, 0x00,
 ]
 ```
-
-***
-
-
-## Inputs
-
-Inputs have one possible type: `SECP256K1TransferInput`.
-
-***
 
 ### SECP256K1 Transfer Input
 
@@ -304,19 +233,92 @@ Let's make a payment input with:
 
 ***
 
+## Outputs
 
-## Transferable Output
+Outputs to Coreth Atomic Transactions are either an `EVMOutput` to be added to the balance of an address on this chain or a `TransferableOutput` (whcih contains a `SECP256K1TransferOutput`) to be moved to another chain.
 
-Transferable outputs wrap an output with an asset ID.
+The EVM Output will be used in `ImportTx` to add funds to this chain, while the `TransferableOutput` will be used to export atomic UTXOs to another chain.
 
-### What Transferable Output Contains
+### EVM Output
 
-A transferable output contains an `AssetID` and an `Output`.
+Output type specifying a state change to be applied to an EVM account as part of an `ImportTx`.
+
+#### What EVM Output Contains
+
+An EVM Output contains an `address`, `amount`, and `assetID`.
+
+- **`Address`** is the EVM address that will receive the funds.
+- **`Amount`** is the amount of the asset to be transferred (specified in nAVAX for AVAX and the smallest denomination for all other assets).
+- **`AssetID`** is the ID of the asset to transfer.
+
+#### Gantt EVM Output Specification
+
+```boo
++----------+----------+-------------------------+
+| address  : [20]byte |                20 bytes |
++----------+----------+-------------------------+
+| amount   : uin64    |                08 bytes |
++----------+----------+-------------------------+
+| asset_id : [32]byte |                32 bytes |
++----------+----------+-------------------------+
+                      |                60 bytes |
+                      +-------------------------+
+```
+
+#### Proto EVM Output Specification
+
+```protobuf
+message  {
+    bytes address = 1; // 20 bytes
+    uint64 amount = 2; // 08 bytes
+    bytes assetID = 3; // 32 bytes
+}
+```
+
+#### EVM Output Example
+
+Let's make an EVM Output:
+
+- `Address: 0x0eb5ccb85c29009b6060decb353a38ea3b52cd20`
+- `Amount: 500000000000`
+- `AssetID: 0xdbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db`
+
+```splus
+[
+    Address   <- 0x0eb5ccb85c29009b6060decb353a38ea3b52cd20,
+    Amount    <- 0x000000746a528800
+    AssetID   <- 0xdbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db
+]
+=
+[
+    // address:
+    0xc3, 0x34, 0x41, 0x28, 0xe0, 0x60, 0x12, 0x8e,
+    0xde, 0x35, 0x23, 0xa2, 0x4a, 0x46, 0x1c, 0x89,
+    0x43, 0xab, 0x08, 0x59,
+    // amount:
+    0x00, 0x00, 0x00, 0x74, 0x6a, 0x52, 0x88, 0x00,
+    // assetID:
+    0xdb, 0xcf, 0x89, 0x0f, 0x77, 0xf4, 0x9b, 0x96,
+    0x85, 0x76, 0x48, 0xb7, 0x2b, 0x77, 0xf9, 0xf8,
+    0x29, 0x37, 0xf2, 0x8a, 0x68, 0x70, 0x4a, 0xf0,
+    0x5d, 0xa0, 0xdc, 0x12, 0xba, 0x53, 0xf2, 0xdb,
+]
+```
+
+***
+
+### Transferable Output
+
+Transferable outputs wrap a `SECP256K1TransferOutput` with an asset ID.
+
+#### What Transferable Output Contains
+
+A transferable output contains an `AssetID` and an `Output` which is a `SECP256K1TransferOutput`.
 
 - **`AssetID`** is a 32-byte array that defines which asset this output references.
-- **`Output`** is an output, as defined below. For example, this can be a SECP256K1 transfer output.
+- **`Output`** is a `SECP256K1TransferOutput` as defined below.
 
-### Gantt Transferable Output Specification
+#### Gantt Transferable Output Specification
 
 ```boo
 +----------+----------+-------------------------+
@@ -328,7 +330,7 @@ A transferable output contains an `AssetID` and an `Output`.
                       +-------------------------+
 ```
 
-### Proto Transferable Output Specification
+#### Proto Transferable Output Specification
 
 ```protobuf
 message TransferableOutput {
@@ -337,7 +339,7 @@ message TransferableOutput {
 }
 ```
 
-### Transferable Output Example
+#### Transferable Output Example
 
 Let's make a transferable output:
 
@@ -369,10 +371,6 @@ Let's make a transferable output:
     0xf2, 0xbc, 0x50, 0x79, 0x56, 0xda, 0xe5, 0x63,
 ]
 ```
-
-***
-
-## Outputs
 
 ### SECP256K1 Transfer Output
 
@@ -460,7 +458,6 @@ Let's make a secp256k1 transfer output with:
 
 ***
 
-
 ## Atomic Transactions
 
 Atomic Transactions are used to move funds between chains. There are two types `ImportTx` and `ExportTx`.
@@ -474,7 +471,7 @@ ExportTx is a transaction to export funds from Coreth to a different chain.
 An ExportTx contains an `typeID`, `networkID`, `blockchainID`, `destinationChain`, `inputs`, and `exportedOutputs`.
 
 - **`typeID`** is an int that the type for an ExportTx. The typeID for an exportTx is 1.
-- **`networkID`** is an int that defines which network this transaction is meant to be issued to.
+- **`networkID`** is an int that defines which Avalanche network this transaction is meant to be issued to. This could refer to mainnet, fuji, etc. and is different than the EVM's network ID.
 - **`blockchainID`** is a 32-byte array that defines which blockchain this transaction was issued to.
 - **`destinationChain`** is a 32-byte array that defines which blockchain this transaction exports funds to.
 - **`inputs`** is an array of EVM Inputs to fund the ExportTx.
@@ -513,7 +510,7 @@ Let's make an EVM Output:
 - **`Inputs`**:
   - `"Example EVMInput as defined above"`
 - **`Exportedoutputs`**:
-  - `"Exapmle TransferableOutput as defined above"`
+  - `"Example TransferableOutput as defined above"`
 
 ```splus
 [
@@ -578,10 +575,10 @@ ImportTx is a transaction to import funds to Coreth from another chain.
 
 #### What ImportTx Contains
 
-An ImportTx contains an `typeID`, `networkID`, `blockchainID`, `destinationChain`, `inputs`, and `exportedOutputs`.
+An ImportTx contains an `typeID`, `networkID`, `blockchainID`, `destinationChain`, `importedInputs`, and `Outs`.
 
 - **`typeID`** is an int that the type for an ImportTx. The typeID for an `ImportTx` is 0.
-- **`networkID`** is an int that defines which network this transaction is meant to be issued to.
+- **`networkID`** is an int that defines which Avalanche network this transaction is meant to be issued to. This could refer to mainnet, fuji, etc. and is different than the EVM's network ID.
 - **`blockchainID`** is a 32-byte array that defines which blockchain this transaction was issued to.
 - **`sourceChain`** is a 32-byte array that defines which blockchain from which to import funds.
 - **`importedInputs`** is an array of TransferableInputs to fund the ImportTx.
@@ -761,7 +758,7 @@ A signed transaction contains a `CodecID`, `AtomicTx`, and `Credentials`.
 
 - **`CodecID`** The only current valid codec id is `00 00`.
 - **`AtomicTx`** is an atomic transaction, as described above.
-- **`Credentials`** is an array of credentials. Each credential will be paired with the input in the same index at this credential.
+- **`Credentials`** is an array of credentials. Each credential corresponds to the input at the same index in the AtomicTx
 
 ### Gantt Signed Transaction Specification
 
