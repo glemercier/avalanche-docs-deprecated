@@ -67,14 +67,15 @@ nav:
                   - Send Asset : ./v1.0/en/tools/avalanchejs/send-coins.md
               - Avash  : ./v1.0/en/tools/avash.md
   - Reference Materials:
-              - Command Line Interface      : v1.0/en/references/command-line-interface.md
-              - Cryptographic Primitives    : v1.0/en/references/cryptographic-primitives.md
-              - Serialization Primitives    : v1.0/en/references/serialization-primitives.md
-              - AVM Transaction Format      : v1.0/en/references/avm-transaction-serialization.md
-              - Platform Transaction Format : v1.0/en/references/platform-transaction-serialization.md
-              - Network Protocol            : v1.0/en/references/network-protocol.md
-              - Glossary                    : v1.0/en/references/glossary.md
-  - Papers                                  : v1.0/en/papers/index.md
+              - Command Line Interface           : v1.0/en/references/command-line-interface.md
+              - Cryptographic Primitives         : v1.0/en/references/cryptographic-primitives.md
+              - Serialization Primitives         : v1.0/en/references/serialization-primitives.md
+              - AVM Transaction Format           : v1.0/en/references/avm-transaction-serialization.md
+              - Platform Transaction Format      : v1.0/en/references/platform-transaction-serialization.md
+              - Coreth Atomic Transaction Format : v1.0/en/references/coreth-atomic-transaction-serialization.md
+              - Network Protocol                 : v1.0/en/references/network-protocol.md
+              - Glossary                         : v1.0/en/references/glossary.md
+  - Papers                                       : v1.0/en/papers/index.md
   - Release Notes:
             - Release History: v1.0/en/release-notes/release-history.md
             - Roadmap and Feature Pipeline: v1.0/en/references/feature-pipeline.md
