@@ -8,6 +8,7 @@
 
 * [ASSETIDPayload](src_utils.md#assetidpayload)
 * [AVAXGWEI](src_utils.md#avaxgwei)
+* [AVAXSTAKECAP](src_utils.md#avaxstakecap)
 * [B58STRPayload](src_utils.md#b58strpayload)
 * [B64STRPayload](src_utils.md#b64strpayload)
 * [BIGNUMPayload](src_utils.md#bignumpayload)
@@ -22,9 +23,11 @@
 * [CSVPayload](src_utils.md#csvpayload)
 * [ChainAddressPayload](src_utils.md#chainaddresspayload)
 * [DECIAVAX](src_utils.md#deciavax)
+* [DefaultLocalGenesisPrivateKey](src_utils.md#defaultlocalgenesisprivatekey)
 * [DefaultNetworkID](src_utils.md#defaultnetworkid)
 * [Defaults](src_utils.md#defaults)
 * [EMAILPayload](src_utils.md#emailpayload)
+* [FallbackEVMChainID](src_utils.md#fallbackevmchainid)
 * [FallbackHRP](src_utils.md#fallbackhrp)
 * [FallbackNetworkName](src_utils.md#fallbacknetworkname)
 * [GWEI](src_utils.md#gwei)
@@ -37,6 +40,7 @@
 * [MAGNETPayload](src_utils.md#magnetpayload)
 * [MICROAVAX](src_utils.md#microavax)
 * [MILLIAVAX](src_utils.md#milliavax)
+* [MaxWeightFormula](src_utils.md#maxweightformula)
 * [MergeRule](src_utils.md#mergerule)
 * [NANOAVAX](src_utils.md#nanoavax)
 * [NFTIDPayload](src_utils.md#nftidpayload)
@@ -61,8 +65,13 @@
 * [PrivateKeyPrefix](src_utils.md#privatekeyprefix)
 * [SECPENCPayload](src_utils.md#secpencpayload)
 * [SECPSIGPayload](src_utils.md#secpsigpayload)
+* [SERIALIZATIONVERSION](src_utils.md#serializationversion)
 * [SUBNETIDPayload](src_utils.md#subnetidpayload)
 * [SVGPayload](src_utils.md#svgpayload)
+* [Serializable](src_utils.md#serializable)
+* [Serialization](src_utils.md#serialization)
+* [SerializedEncoding](src_utils.md#serializedencoding)
+* [SerializedType](src_utils.md#serializedtype)
 * [TXIDPayload](src_utils.md#txidpayload)
 * [URLPayload](src_utils.md#urlpayload)
 * [UTF8Payload](src_utils.md#utf8payload)
@@ -90,6 +99,12 @@ ___
 ###  AVAXGWEI
 
 • **AVAXGWEI**:
+
+___
+
+###  AVAXSTAKECAP
+
+• **AVAXSTAKECAP**:
 
 ___
 
@@ -177,6 +192,12 @@ ___
 
 ___
 
+###  DefaultLocalGenesisPrivateKey
+
+• **DefaultLocalGenesisPrivateKey**:
+
+___
+
 ###  DefaultNetworkID
 
 • **DefaultNetworkID**:
@@ -192,6 +213,12 @@ ___
 ###  EMAILPayload
 
 • **EMAILPayload**:
+
+___
+
+###  FallbackEVMChainID
+
+• **FallbackEVMChainID**:
 
 ___
 
@@ -264,6 +291,12 @@ ___
 ###  MILLIAVAX
 
 • **MILLIAVAX**:
+
+___
+
+###  MaxWeightFormula
+
+• **MaxWeightFormula**:
 
 ___
 
@@ -411,6 +444,12 @@ ___
 
 ___
 
+###  SERIALIZATIONVERSION
+
+• **SERIALIZATIONVERSION**:
+
+___
+
 ###  SUBNETIDPayload
 
 • **SUBNETIDPayload**:
@@ -420,6 +459,30 @@ ___
 ###  SVGPayload
 
 • **SVGPayload**:
+
+___
+
+###  Serializable
+
+• **Serializable**:
+
+___
+
+###  Serialization
+
+• **Serialization**:
+
+___
+
+###  SerializedEncoding
+
+• **SerializedEncoding**:
+
+___
+
+###  SerializedType
+
+• **SerializedType**:
 
 ___
 

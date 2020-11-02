@@ -57,7 +57,7 @@
 
 \+ **new StandardAssetAmountDestination**(`destinations`: Array‹Buffer›, `senders`: Array‹Buffer›, `changeAddresses`: Array‹Buffer›): *[StandardAssetAmountDestination](common_assetamount.standardassetamountdestination.md)*
 
-*Defined in [src/common/assetamount.ts:147](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L147)*
+*Defined in [src/common/assetamount.ts:164](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L164)*
 
 **Parameters:**
 
@@ -75,7 +75,7 @@ Name | Type |
 
 • **amountkey**: *object*
 
-*Defined in [src/common/assetamount.ts:76](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L76)*
+*Defined in [src/common/assetamount.ts:93](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L93)*
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
 • **amounts**: *Array‹[AssetAmount](common_assetamount.assetamount.md)›* = []
 
-*Defined in [src/common/assetamount.ts:72](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L72)*
+*Defined in [src/common/assetamount.ts:89](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L89)*
 
 ___
 
@@ -91,7 +91,7 @@ ___
 
 • **change**: *Array‹TO›* = []
 
-*Defined in [src/common/assetamount.ts:79](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L79)*
+*Defined in [src/common/assetamount.ts:96](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L96)*
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 • **changeAddresses**: *Array‹Buffer›* = []
 
-*Defined in [src/common/assetamount.ts:75](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L75)*
+*Defined in [src/common/assetamount.ts:92](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L92)*
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 • **destinations**: *Array‹Buffer›* = []
 
-*Defined in [src/common/assetamount.ts:73](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L73)*
+*Defined in [src/common/assetamount.ts:90](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L90)*
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 • **inputs**: *Array‹TI›* = []
 
-*Defined in [src/common/assetamount.ts:77](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L77)*
+*Defined in [src/common/assetamount.ts:94](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L94)*
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
 • **outputs**: *Array‹TO›* = []
 
-*Defined in [src/common/assetamount.ts:78](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L78)*
+*Defined in [src/common/assetamount.ts:95](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L95)*
 
 ___
 
@@ -131,7 +131,7 @@ ___
 
 • **senders**: *Array‹Buffer›* = []
 
-*Defined in [src/common/assetamount.ts:74](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L74)*
+*Defined in [src/common/assetamount.ts:91](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L91)*
 
 ## Methods
 
@@ -139,7 +139,7 @@ ___
 
 ▸ **addAssetAmount**(`assetID`: Buffer, `amount`: BN, `burn`: BN): *void*
 
-*Defined in [src/common/assetamount.ts:81](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L81)*
+*Defined in [src/common/assetamount.ts:98](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L98)*
 
 **Parameters:**
 
@@ -157,7 +157,7 @@ ___
 
 ▸ **addChange**(`output`: TO): *void*
 
-*Defined in [src/common/assetamount.ts:95](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L95)*
+*Defined in [src/common/assetamount.ts:112](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L112)*
 
 **Parameters:**
 
@@ -173,7 +173,7 @@ ___
 
 ▸ **addInput**(`input`: TI): *void*
 
-*Defined in [src/common/assetamount.ts:87](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L87)*
+*Defined in [src/common/assetamount.ts:104](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L104)*
 
 **Parameters:**
 
@@ -189,7 +189,7 @@ ___
 
 ▸ **addOutput**(`output`: TO): *void*
 
-*Defined in [src/common/assetamount.ts:91](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L91)*
+*Defined in [src/common/assetamount.ts:108](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L108)*
 
 **Parameters:**
 
@@ -205,7 +205,7 @@ ___
 
 ▸ **assetExists**(`assetHexStr`: string): *boolean*
 
-*Defined in [src/common/assetamount.ts:119](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L119)*
+*Defined in [src/common/assetamount.ts:136](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L136)*
 
 **Parameters:**
 
@@ -221,7 +221,7 @@ ___
 
 ▸ **canComplete**(): *boolean*
 
-*Defined in [src/common/assetamount.ts:139](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L139)*
+*Defined in [src/common/assetamount.ts:156](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L156)*
 
 **Returns:** *boolean*
 
@@ -231,7 +231,7 @@ ___
 
 ▸ **getAllOutputs**(): *Array‹TO›*
 
-*Defined in [src/common/assetamount.ts:135](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L135)*
+*Defined in [src/common/assetamount.ts:152](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L152)*
 
 **Returns:** *Array‹TO›*
 
@@ -241,7 +241,7 @@ ___
 
 ▸ **getAmounts**(): *Array‹[AssetAmount](common_assetamount.assetamount.md)›*
 
-*Defined in [src/common/assetamount.ts:99](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L99)*
+*Defined in [src/common/assetamount.ts:116](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L116)*
 
 **Returns:** *Array‹[AssetAmount](common_assetamount.assetamount.md)›*
 
@@ -251,7 +251,7 @@ ___
 
 ▸ **getAssetAmount**(`assetHexStr`: string): *[AssetAmount](common_assetamount.assetamount.md)*
 
-*Defined in [src/common/assetamount.ts:115](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L115)*
+*Defined in [src/common/assetamount.ts:132](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L132)*
 
 **Parameters:**
 
@@ -267,7 +267,7 @@ ___
 
 ▸ **getChangeAddresses**(): *Array‹Buffer›*
 
-*Defined in [src/common/assetamount.ts:111](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L111)*
+*Defined in [src/common/assetamount.ts:128](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L128)*
 
 **Returns:** *Array‹Buffer›*
 
@@ -277,7 +277,7 @@ ___
 
 ▸ **getChangeOutputs**(): *Array‹TO›*
 
-*Defined in [src/common/assetamount.ts:131](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L131)*
+*Defined in [src/common/assetamount.ts:148](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L148)*
 
 **Returns:** *Array‹TO›*
 
@@ -287,7 +287,7 @@ ___
 
 ▸ **getDestinations**(): *Array‹Buffer›*
 
-*Defined in [src/common/assetamount.ts:103](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L103)*
+*Defined in [src/common/assetamount.ts:120](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L120)*
 
 **Returns:** *Array‹Buffer›*
 
@@ -297,7 +297,7 @@ ___
 
 ▸ **getInputs**(): *Array‹TI›*
 
-*Defined in [src/common/assetamount.ts:123](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L123)*
+*Defined in [src/common/assetamount.ts:140](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L140)*
 
 **Returns:** *Array‹TI›*
 
@@ -307,7 +307,7 @@ ___
 
 ▸ **getOutputs**(): *Array‹TO›*
 
-*Defined in [src/common/assetamount.ts:127](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L127)*
+*Defined in [src/common/assetamount.ts:144](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L144)*
 
 **Returns:** *Array‹TO›*
 
@@ -317,6 +317,6 @@ ___
 
 ▸ **getSenders**(): *Array‹Buffer›*
 
-*Defined in [src/common/assetamount.ts:107](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/assetamount.ts#L107)*
+*Defined in [src/common/assetamount.ts:124](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/assetamount.ts#L124)*
 
 **Returns:** *Array‹Buffer›*

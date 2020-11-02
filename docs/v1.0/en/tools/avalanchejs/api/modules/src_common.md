@@ -28,6 +28,7 @@
 * [StandardBaseTx](src_common.md#standardbasetx)
 * [StandardKeyChain](src_common.md#standardkeychain)
 * [StandardKeyPair](src_common.md#standardkeypair)
+* [StandardParseableInput](src_common.md#standardparseableinput)
 * [StandardParseableOutput](src_common.md#standardparseableoutput)
 * [StandardTransferableInput](src_common.md#standardtransferableinput)
 * [StandardTransferableOutput](src_common.md#standardtransferableoutput)
@@ -167,6 +168,12 @@ ___
 ###  StandardKeyPair
 
 • **StandardKeyPair**:
+
+___
+
+###  StandardParseableInput
+
+• **StandardParseableInput**:
 
 ___
 

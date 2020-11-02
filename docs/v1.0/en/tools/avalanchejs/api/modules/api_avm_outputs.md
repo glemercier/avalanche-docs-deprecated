@@ -17,6 +17,7 @@
 ### Variables
 
 * [bintools](api_avm_outputs.md#const-bintools)
+* [serializer](api_avm_outputs.md#const-serializer)
 
 ### Functions
 
@@ -28,7 +29,15 @@
 
 • **bintools**: *[BinTools](../classes/utils_bintools.bintools.md)‹›* = BinTools.getInstance()
 
-*Defined in [src/apis/avm/outputs.ts:11](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/avm/outputs.ts#L11)*
+*Defined in [src/apis/avm/outputs.ts:12](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/avm/outputs.ts#L12)*
+
+___
+
+### `Const` serializer
+
+• **serializer**: *[Serialization](../classes/utils_serialization.serialization.md)‹›* = Serialization.getInstance()
+
+*Defined in [src/apis/avm/outputs.ts:13](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/avm/outputs.ts#L13)*
 
 ## Functions
 
@@ -36,7 +45,7 @@
 
 ▸ **SelectOutputClass**(`outputid`: number, ...`args`: Array‹any›): *[Output](../classes/common_output.output.md)*
 
-*Defined in [src/apis/avm/outputs.ts:20](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/avm/outputs.ts#L20)*
+*Defined in [src/apis/avm/outputs.ts:22](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/avm/outputs.ts#L22)*
 
 Takes a buffer representing the output and returns the proper Output instance.
 

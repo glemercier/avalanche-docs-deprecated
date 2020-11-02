@@ -13,10 +13,6 @@ All APIs that need key pairs should extend on this class.
 
 ## Index
 
-### Constructors
-
-* [constructor](common_keychain.standardkeypair.md#constructor)
-
 ### Properties
 
 * [generateKey](common_keychain.standardkeypair.md#generatekey)
@@ -38,23 +34,13 @@ All APIs that need key pairs should extend on this class.
 * [getPrivateKey](common_keychain.standardkeypair.md#getprivatekey)
 * [getPublicKey](common_keychain.standardkeypair.md#getpublickey)
 
-## Constructors
-
-###  constructor
-
-\+ **new StandardKeyPair**(): *[StandardKeyPair](common_keychain.standardkeypair.md)*
-
-*Defined in [src/common/keychain.ts:109](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L109)*
-
-**Returns:** *[StandardKeyPair](common_keychain.standardkeypair.md)*
-
 ## Properties
 
 ###  generateKey
 
 • **generateKey**: *function*
 
-*Defined in [src/common/keychain.ts:22](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L22)*
+*Defined in [src/common/keychain.ts:21](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L21)*
 
 Generates a new keypair.
 
@@ -76,7 +62,7 @@ ___
 
 • **getAddress**: *function*
 
-*Defined in [src/common/keychain.ts:98](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L98)*
+*Defined in [src/common/keychain.ts:97](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L97)*
 
 Returns the address.
 
@@ -92,7 +78,7 @@ ___
 
 • **getAddressString**: *function*
 
-*Defined in [src/common/keychain.ts:105](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L105)*
+*Defined in [src/common/keychain.ts:104](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L104)*
 
 Returns the address's string representation.
 
@@ -108,7 +94,7 @@ ___
 
 • **getPrivateKeyString**: *function*
 
-*Defined in [src/common/keychain.ts:84](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L84)*
+*Defined in [src/common/keychain.ts:83](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L83)*
 
 Returns a string representation of the private key.
 
@@ -124,7 +110,7 @@ ___
 
 • **getPublicKeyString**: *function*
 
-*Defined in [src/common/keychain.ts:91](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L91)*
+*Defined in [src/common/keychain.ts:90](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L90)*
 
 Returns the public key.
 
@@ -140,7 +126,7 @@ ___
 
 • **importKey**: *function*
 
-*Defined in [src/common/keychain.ts:31](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L31)*
+*Defined in [src/common/keychain.ts:30](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L30)*
 
 Imports a private key and generates the appropriate public key.
 
@@ -164,7 +150,7 @@ ___
 
 • **privk**: *Buffer*
 
-*Defined in [src/common/keychain.ts:15](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L15)*
+*Defined in [src/common/keychain.ts:14](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L14)*
 
 ___
 
@@ -172,7 +158,7 @@ ___
 
 • **pubk**: *Buffer*
 
-*Defined in [src/common/keychain.ts:13](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L13)*
+*Defined in [src/common/keychain.ts:13](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L13)*
 
 ___
 
@@ -180,7 +166,7 @@ ___
 
 • **recover**: *function*
 
-*Defined in [src/common/keychain.ts:51](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L51)*
+*Defined in [src/common/keychain.ts:50](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L50)*
 
 Recovers the public key of a message signer from a message and its associated signature.
 
@@ -208,7 +194,7 @@ ___
 
 • **sign**: *function*
 
-*Defined in [src/common/keychain.ts:40](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L40)*
+*Defined in [src/common/keychain.ts:39](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L39)*
 
 Takes a message, signs it, and returns the signature.
 
@@ -232,7 +218,7 @@ ___
 
 • **verify**: *function*
 
-*Defined in [src/common/keychain.ts:63](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L63)*
+*Defined in [src/common/keychain.ts:62](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L62)*
 
 Verifies that the private key associated with the provided public key produces the
 signature associated with the given message.
@@ -263,7 +249,7 @@ Name | Type |
 
 ▸ **clone**(): *this*
 
-*Defined in [src/common/keychain.ts:109](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L109)*
+*Defined in [src/common/keychain.ts:108](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L108)*
 
 **Returns:** *this*
 
@@ -273,7 +259,7 @@ ___
 
 ▸ **create**(...`args`: any[]): *this*
 
-*Defined in [src/common/keychain.ts:107](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L107)*
+*Defined in [src/common/keychain.ts:106](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L106)*
 
 **Parameters:**
 
@@ -289,7 +275,7 @@ ___
 
 ▸ **getPrivateKey**(): *Buffer*
 
-*Defined in [src/common/keychain.ts:70](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L70)*
+*Defined in [src/common/keychain.ts:69](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L69)*
 
 Returns a reference to the private key.
 
@@ -303,7 +289,7 @@ ___
 
 ▸ **getPublicKey**(): *Buffer*
 
-*Defined in [src/common/keychain.ts:77](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/keychain.ts#L77)*
+*Defined in [src/common/keychain.ts:76](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/keychain.ts#L76)*
 
 Returns a reference to the public key.
 

@@ -4,7 +4,9 @@
 
 ## Hierarchy
 
-* **StandardTransferableInput**
+  ↳ [StandardParseableInput](common_inputs.standardparseableinput.md)
+
+  ↳ **StandardTransferableInput**
 
   ↳ [TransferableInput](api_avm_inputs.transferableinput.md)
 
@@ -18,6 +20,8 @@
 
 ### Properties
 
+* [_typeID](common_inputs.standardtransferableinput.md#protected-_typeid)
+* [_typeName](common_inputs.standardtransferableinput.md#protected-_typename)
 * [assetid](common_inputs.standardtransferableinput.md#protected-assetid)
 * [input](common_inputs.standardtransferableinput.md#protected-input)
 * [outputidx](common_inputs.standardtransferableinput.md#protected-outputidx)
@@ -25,12 +29,16 @@
 
 ### Methods
 
+* [deserialize](common_inputs.standardtransferableinput.md#deserialize)
 * [fromBuffer](common_inputs.standardtransferableinput.md#abstract-frombuffer)
 * [getAssetID](common_inputs.standardtransferableinput.md#getassetid)
 * [getInput](common_inputs.standardtransferableinput.md#getinput)
 * [getOutputIdx](common_inputs.standardtransferableinput.md#getoutputidx)
 * [getTxID](common_inputs.standardtransferableinput.md#gettxid)
+* [getTypeID](common_inputs.standardtransferableinput.md#gettypeid)
+* [getTypeName](common_inputs.standardtransferableinput.md#gettypename)
 * [getUTXOID](common_inputs.standardtransferableinput.md#getutxoid)
+* [serialize](common_inputs.standardtransferableinput.md#serialize)
 * [toBuffer](common_inputs.standardtransferableinput.md#tobuffer)
 * [toString](common_inputs.standardtransferableinput.md#tostring)
 * [comparator](common_inputs.standardtransferableinput.md#static-comparator)
@@ -41,7 +49,9 @@
 
 \+ **new StandardTransferableInput**(`txid`: Buffer, `outputidx`: Buffer, `assetID`: Buffer, `input`: [Input](common_inputs.input.md)): *[StandardTransferableInput](common_inputs.standardtransferableinput.md)*
 
-*Defined in [src/common/input.ts:172](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L172)*
+*Overrides [StandardParseableInput](common_inputs.standardparseableinput.md).[constructor](common_inputs.standardparseableinput.md#constructor)*
+
+*Defined in [src/common/input.ts:244](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L244)*
 
 Class representing an [StandardTransferableInput](common_inputs.standardtransferableinput.md) for a transaction.
 
@@ -58,11 +68,31 @@ Name | Type | Default | Description |
 
 ## Properties
 
+### `Protected` _typeID
+
+• **_typeID**: *any* = undefined
+
+*Overrides [StandardParseableInput](common_inputs.standardparseableinput.md).[_typeID](common_inputs.standardparseableinput.md#protected-_typeid)*
+
+*Defined in [src/common/input.ts:173](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L173)*
+
+___
+
+### `Protected` _typeName
+
+• **_typeName**: *string* = "StandardTransferableInput"
+
+*Overrides [StandardParseableInput](common_inputs.standardparseableinput.md).[_typeName](common_inputs.standardparseableinput.md#protected-_typename)*
+
+*Defined in [src/common/input.ts:172](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L172)*
+
+___
+
 ### `Protected` assetid
 
 • **assetid**: *Buffer* = Buffer.alloc(32)
 
-*Defined in [src/common/input.ts:108](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L108)*
+*Defined in [src/common/input.ts:194](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L194)*
 
 ___
 
@@ -70,7 +100,9 @@ ___
 
 • **input**: *[Input](common_inputs.input.md)*
 
-*Defined in [src/common/input.ts:110](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L110)*
+*Inherited from [StandardParseableInput](common_inputs.standardparseableinput.md).[input](common_inputs.standardparseableinput.md#protected-input)*
+
+*Defined in [src/common/input.ts:134](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L134)*
 
 ___
 
@@ -78,7 +110,7 @@ ___
 
 • **outputidx**: *Buffer* = Buffer.alloc(4)
 
-*Defined in [src/common/input.ts:106](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L106)*
+*Defined in [src/common/input.ts:193](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L193)*
 
 ___
 
@@ -86,15 +118,36 @@ ___
 
 • **txid**: *Buffer* = Buffer.alloc(32)
 
-*Defined in [src/common/input.ts:104](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L104)*
+*Defined in [src/common/input.ts:192](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L192)*
 
 ## Methods
+
+###  deserialize
+
+▸ **deserialize**(`fields`: object, `encoding`: [SerializedEncoding](../modules/utils_serialization.md#serializedencoding)): *void*
+
+*Overrides [Serializable](utils_serialization.serializable.md).[deserialize](utils_serialization.serializable.md#deserialize)*
+
+*Defined in [src/common/input.ts:184](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L184)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`fields` | object | - |
+`encoding` | [SerializedEncoding](../modules/utils_serialization.md#serializedencoding) | "hex" |
+
+**Returns:** *void*
+
+___
 
 ### `Abstract` fromBuffer
 
 ▸ **fromBuffer**(`bytes`: Buffer, `offset?`: number): *number*
 
-*Defined in [src/common/input.ts:151](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L151)*
+*Overrides [StandardParseableInput](common_inputs.standardparseableinput.md).[fromBuffer](common_inputs.standardparseableinput.md#abstract-frombuffer)*
+
+*Defined in [src/common/input.ts:225](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L225)*
 
 **Parameters:**
 
@@ -111,7 +164,7 @@ ___
 
 ▸ **getAssetID**(): *Buffer*
 
-*Defined in [src/common/input.ts:148](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L148)*
+*Defined in [src/common/input.ts:223](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L223)*
 
 Returns the assetID of the input.
 
@@ -123,7 +176,9 @@ ___
 
 ▸ **getInput**(): *[Input](common_inputs.input.md)*
 
-*Defined in [src/common/input.ts:143](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L143)*
+*Overrides [StandardParseableInput](common_inputs.standardparseableinput.md).[getInput](common_inputs.standardparseableinput.md#getinput)*
+
+*Defined in [src/common/input.ts:218](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L218)*
 
 Returns the input.
 
@@ -135,7 +190,7 @@ ___
 
 ▸ **getOutputIdx**(): *Buffer*
 
-*Defined in [src/common/input.ts:131](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L131)*
+*Defined in [src/common/input.ts:206](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L206)*
 
 Returns a [Buffer](https://github.com/feross/buffer)  of the OutputIdx.
 
@@ -147,7 +202,7 @@ ___
 
 ▸ **getTxID**(): *Buffer*
 
-*Defined in [src/common/input.ts:124](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L124)*
+*Defined in [src/common/input.ts:199](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L199)*
 
 Returns a [Buffer](https://github.com/feross/buffer) of the TxID.
 
@@ -155,11 +210,39 @@ Returns a [Buffer](https://github.com/feross/buffer) of the TxID.
 
 ___
 
+###  getTypeID
+
+▸ **getTypeID**(): *number*
+
+*Inherited from [Serializable](utils_serialization.serializable.md).[getTypeID](utils_serialization.serializable.md#gettypeid)*
+
+*Defined in [src/utils/serialization.ts:52](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/serialization.ts#L52)*
+
+Used in serialization. Optional. TypeID is a number for the typeID of object being output.
+
+**Returns:** *number*
+
+___
+
+###  getTypeName
+
+▸ **getTypeName**(): *string*
+
+*Inherited from [Serializable](utils_serialization.serializable.md).[getTypeName](utils_serialization.serializable.md#gettypename)*
+
+*Defined in [src/utils/serialization.ts:45](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/serialization.ts#L45)*
+
+Used in serialization. TypeName is a string name for the type of object being output.
+
+**Returns:** *string*
+
+___
+
 ###  getUTXOID
 
 ▸ **getUTXOID**(): *string*
 
-*Defined in [src/common/input.ts:138](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L138)*
+*Defined in [src/common/input.ts:213](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L213)*
 
 Returns a base-58 string representation of the UTXOID this [StandardTransferableInput](common_inputs.standardtransferableinput.md) references.
 
@@ -167,11 +250,31 @@ Returns a base-58 string representation of the UTXOID this [StandardTransferable
 
 ___
 
+###  serialize
+
+▸ **serialize**(`encoding`: [SerializedEncoding](../modules/utils_serialization.md#serializedencoding)): *object*
+
+*Overrides [StandardParseableInput](common_inputs.standardparseableinput.md).[serialize](common_inputs.standardparseableinput.md#serialize)*
+
+*Defined in [src/common/input.ts:175](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L175)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`encoding` | [SerializedEncoding](../modules/utils_serialization.md#serializedencoding) | "hex" |
+
+**Returns:** *object*
+
+___
+
 ###  toBuffer
 
 ▸ **toBuffer**(): *Buffer*
 
-*Defined in [src/common/input.ts:156](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L156)*
+*Overrides [StandardParseableInput](common_inputs.standardparseableinput.md).[toBuffer](common_inputs.standardparseableinput.md#tobuffer)*
+
+*Defined in [src/common/input.ts:230](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L230)*
 
 Returns a [Buffer](https://github.com/feross/buffer) representation of the [StandardTransferableInput](common_inputs.standardtransferableinput.md).
 
@@ -183,7 +286,7 @@ ___
 
 ▸ **toString**(): *string*
 
-*Defined in [src/common/input.ts:169](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L169)*
+*Defined in [src/common/input.ts:241](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L241)*
 
 Returns a base-58 representation of the [StandardTransferableInput](common_inputs.standardtransferableinput.md).
 
@@ -195,17 +298,19 @@ ___
 
 ▸ **comparator**(): *function*
 
-*Defined in [src/common/input.ts:115](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/input.ts#L115)*
+*Inherited from [StandardParseableInput](common_inputs.standardparseableinput.md).[comparator](common_inputs.standardparseableinput.md#static-comparator)*
 
-Returns a function used to sort an array of [StandardTransferableInput](common_inputs.standardtransferableinput.md)s
+*Defined in [src/common/input.ts:139](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/input.ts#L139)*
+
+Returns a function used to sort an array of [StandardParseableInput](common_inputs.standardparseableinput.md)s
 
 **Returns:** *function*
 
-▸ (`a`: [StandardTransferableInput](common_inputs.standardtransferableinput.md), `b`: [StandardTransferableInput](common_inputs.standardtransferableinput.md)): *0 | 1 | -1*
+▸ (`a`: [StandardParseableInput](common_inputs.standardparseableinput.md), `b`: [StandardParseableInput](common_inputs.standardparseableinput.md)): *0 | 1 | -1*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`a` | [StandardTransferableInput](common_inputs.standardtransferableinput.md) |
-`b` | [StandardTransferableInput](common_inputs.standardtransferableinput.md) |
+`a` | [StandardParseableInput](common_inputs.standardparseableinput.md) |
+`b` | [StandardParseableInput](common_inputs.standardparseableinput.md) |
