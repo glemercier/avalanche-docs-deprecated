@@ -1322,11 +1322,34 @@ Gets a transaction's status by its ID.
 
 #### Signature
 
+Before v1.0.4: 
+
 ```go
-platform.getTxStatus({txID: string} -> {status: string})
+platform.getTxStatus({txID: string} -> status: string)
 ```
 
-#### Example Call
+In v1.0.4 this method takes an additional argument `includeReason`.
+If provided and set to `true`, the return value looks like this:
+
+```json
+{
+    "status": string,
+    "reason": string (optional)
+}
+```
+
+where `reason` is the reason the transaction was dropped.
+If `status` is not `"Dropped"`, `reason` is not present.
+
+If `includeReason` is not provided, or is set to `false`, the return value is the same format as before v1.0.4.
+
+The old response format (from before v1.0.4) is deprecated.
+You should include argument `includeReason` and set it to `true`.
+In a future release, `includeReason` will be ignored and the return value will always have the new format. 
+
+#### Example
+
+Before v1.0.4:
 
 ```json
 curl -X POST --data '{
@@ -1339,12 +1362,82 @@ curl -X POST --data '{
 }' -H 'content-type:application/json;' 127.0.0.1:9650/ext/P
 ```
 
-#### Example Response
+```json
+{
+    "jsonrpc": "2.0",
+    "result": "Committed",
+    "id": 1
+}
+```
+
+In v1.0.4:
+
+We can omit `includeReason`: 
+```json
+curl -X POST --data '{
+    "jsonrpc": "2.0",
+    "method": "platform.getTxStatus",
+    "params": {
+    	"txID":"TAG9Ns1sa723mZy1GSoGqWipK6Mvpaj7CAswVJGM6MkVJDF9Q"
+    },
+    "id": 1
+}' -H 'content-type:application/json;' 127.0.0.1:9650/ext/P
+```
 
 ```json
 {
     "jsonrpc": "2.0",
     "result": "Committed",
+    "id": 1
+}
+```
+
+We can include `includeReason`:
+
+```json
+curl -X POST --data '{
+    "jsonrpc": "2.0",
+    "method": "platform.getTxStatus",
+    "params": {
+    	"txID":"TAG9Ns1sa723mZy1GSoGqWipK6Mvpaj7CAswVJGM6MkVJDF9Q",
+        "includeReason": true
+    },
+    "id": 1
+}' -H 'content-type:application/json;' 127.0.0.1:9650/ext/P
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "result": 
+    {
+        "status":"Committed"
+    },
+    "id": 1
+}
+```
+
+If we set `includeReason` to `true` and `status` is `Dropped` then `reason` tells us why
+```json
+curl -X POST --data '{
+    "jsonrpc": "2.0",
+    "method": "platform.getTxStatus",
+    "params": {
+    	"txID":"TAG9Ns1sa723mZy1GSoGqWipK6Mvpaj7CAswVJGM6MkVJDF9Q",
+        "includeReason": true
+    },
+    "id": 1
+}' -H 'content-type:application/json;' 127.0.0.1:9650/ext/P
+```
+
+```json
+{
+    "jsonrpc": "2.0",
+    "result": 
+    {
+        "status":"Dropped",
+        "reason":"[Reason tx was dropped]"
+    },
     "id": 1
 }
 ```
