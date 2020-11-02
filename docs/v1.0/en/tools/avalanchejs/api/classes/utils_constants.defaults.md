@@ -18,17 +18,35 @@
 
 ### ▪ **network**: *object*
 
-*Defined in [src/utils/constants.ts:199](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/utils/constants.ts#L199)*
+*Defined in [src/utils/constants.ts:305](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/constants.ts#L305)*
+
+▪ **0**: *object*
+
+*Defined in [src/utils/constants.ts:306](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/constants.ts#L306)*
+
+* **11111111111111111111111111111111LpoYY**: *object* = n0P
+
+* **2fFZQibQXcd6LTE4rpBPBAkLVXFE91Kit8pgxaBG1mRnh5xqbb**: *object* = n0C
+
+* **2vrXWHgGxh5n3YsLHMV16YVVJTpT4z45Fmb4y3bL6si8kLCyg9**: *object* = n0X
+
+* **C**: *object* = n0C
+
+* **P**: *object* = n0P
+
+* **X**: *object* = n0X
+
+* **hrp**: *any* = NetworkIDToHRP[0]
 
 ▪ **1**: *object*
 
-*Defined in [src/utils/constants.ts:200](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/utils/constants.ts#L200)*
+*Defined in [src/utils/constants.ts:315](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/constants.ts#L315)*
 
 * **11111111111111111111111111111111LpoYY**: *object* = n1P
 
-* **2VvmkRw4yrz8tPrVnCCbvEK1JxNyujpqhmU6SGonxMpkWBx9UD**: *object* = n1X
+* **2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM**: *object* = n1X
 
-* **2mUYSXfLrDtigwbzj1LxKVsHwELghc5sisoXrzJwLqAAQHF4i**: *object* = n1C
+* **2q9e4r6Mu3U68nU1fYjgbR6JvwrRx36CohpAX5UQxse55x1Q5**: *object* = n1C
 
 * **C**: *object* = n1C
 
@@ -40,11 +58,13 @@
 
 ▪ **12345**: *object*
 
-*Defined in [src/utils/constants.ts:236](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/utils/constants.ts#L236)*
+*Defined in [src/utils/constants.ts:360](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/constants.ts#L360)*
 
 * **11111111111111111111111111111111LpoYY**: *any* = n12345P
 
-* **2m6aMgMBJWsmT4Hv448n6sNAwGMFfugBvdU6PdY5oxZge4qb1W**: *any* = n12345C
+* **26sSDdFXoKeShAqVfvugUiUQKhMZtHYDLeBqmBfNfcdjziTrZA**: *any* = n12345C
+
+* **2eNy1mUFdmaxXNj1eQHUe7Np4gju9sJsEtWQ4MX3ToiNKuADed**: *any* = n12345X
 
 * **C**: *any* = n12345C
 
@@ -54,11 +74,9 @@
 
 * **hrp**: *any* = NetworkIDToHRP[12345]
 
-* **v4hFSZTNNVdyomeMoXa77dAz4CdxU3cziSb45TB7mfXUmy7C7**: *any* = n12345X
-
 ▪ **2**: *object*
 
-*Defined in [src/utils/constants.ts:209](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/utils/constants.ts#L209)*
+*Defined in [src/utils/constants.ts:324](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/constants.ts#L324)*
 
 * **11111111111111111111111111111111LpoYY**: *object* = n2P
 
@@ -76,7 +94,7 @@
 
 ▪ **3**: *object*
 
-*Defined in [src/utils/constants.ts:218](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/utils/constants.ts#L218)*
+*Defined in [src/utils/constants.ts:333](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/constants.ts#L333)*
 
 * **11111111111111111111111111111111LpoYY**: *object* = n3P
 
@@ -94,7 +112,7 @@
 
 ▪ **4**: *object*
 
-*Defined in [src/utils/constants.ts:227](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/utils/constants.ts#L227)*
+*Defined in [src/utils/constants.ts:342](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/constants.ts#L342)*
 
 * **11111111111111111111111111111111LpoYY**: *object* = n4P
 
@@ -109,3 +127,21 @@
 * **jnUjZSRt16TcRnZzmh5aMhavwVHz3zBrSN8GfFMTQkzUnoBxC**: *object* = n4X
 
 * **saMG5YgNsFxzjz4NMkEkt3bAH6hVxWdZkWcEnGB3Z15pcAmsK**: *object* = n4C
+
+▪ **5**: *object*
+
+*Defined in [src/utils/constants.ts:351](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/constants.ts#L351)*
+
+* **11111111111111111111111111111111LpoYY**: *object* = n5P
+
+* **2JVSBoinj9C2J33VntvzYtVJNZdN2NKiwwKjcumHUWEb5DbBrm**: *object* = n5X
+
+* **C**: *object* = n5C
+
+* **P**: *object* = n5P
+
+* **X**: *object* = n5X
+
+* **hrp**: *any* = NetworkIDToHRP[5]
+
+* **yH8D7ThNJkxmtkuv2jgBa4P1Rn3Qpr4pPr7QYNfcdoS6k6HWp**: *object* = n5C

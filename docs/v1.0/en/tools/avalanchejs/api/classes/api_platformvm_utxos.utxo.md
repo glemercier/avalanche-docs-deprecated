@@ -6,7 +6,7 @@ Class for representing a single UTXO.
 
 ## Hierarchy
 
-* [StandardUTXO](common_utxos.standardutxo.md)
+  ↳ [StandardUTXO](common_utxos.standardutxo.md)
 
   ↳ **UTXO**
 
@@ -18,6 +18,8 @@ Class for representing a single UTXO.
 
 ### Properties
 
+* [_typeID](api_platformvm_utxos.utxo.md#protected-_typeid)
+* [_typeName](api_platformvm_utxos.utxo.md#protected-_typename)
 * [assetid](api_platformvm_utxos.utxo.md#protected-assetid)
 * [codecid](api_platformvm_utxos.utxo.md#protected-codecid)
 * [output](api_platformvm_utxos.utxo.md#protected-output)
@@ -28,6 +30,7 @@ Class for representing a single UTXO.
 
 * [clone](api_platformvm_utxos.utxo.md#clone)
 * [create](api_platformvm_utxos.utxo.md#create)
+* [deserialize](api_platformvm_utxos.utxo.md#deserialize)
 * [fromBuffer](api_platformvm_utxos.utxo.md#frombuffer)
 * [fromString](api_platformvm_utxos.utxo.md#fromstring)
 * [getAssetID](api_platformvm_utxos.utxo.md#getassetid)
@@ -36,7 +39,10 @@ Class for representing a single UTXO.
 * [getOutput](api_platformvm_utxos.utxo.md#getoutput)
 * [getOutputIdx](api_platformvm_utxos.utxo.md#getoutputidx)
 * [getTxID](api_platformvm_utxos.utxo.md#gettxid)
+* [getTypeID](api_platformvm_utxos.utxo.md#gettypeid)
+* [getTypeName](api_platformvm_utxos.utxo.md#gettypename)
 * [getUTXOID](api_platformvm_utxos.utxo.md#getutxoid)
+* [serialize](api_platformvm_utxos.utxo.md#serialize)
 * [toBuffer](api_platformvm_utxos.utxo.md#tobuffer)
 * [toString](api_platformvm_utxos.utxo.md#tostring)
 
@@ -48,7 +54,7 @@ Class for representing a single UTXO.
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[constructor](common_utxos.standardutxo.md#constructor)*
 
-*Defined in [src/common/utxos.ts:105](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L105)*
+*Defined in [src/common/utxos.ts:124](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L124)*
 
 Class for representing a single StandardUTXO.
 
@@ -66,13 +72,33 @@ Name | Type | Default | Description |
 
 ## Properties
 
+### `Protected` _typeID
+
+• **_typeID**: *any* = undefined
+
+*Overrides [StandardUTXO](common_utxos.standardutxo.md).[_typeID](common_utxos.standardutxo.md#protected-_typeid)*
+
+*Defined in [src/apis/platformvm/utxos.ts:35](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/utxos.ts#L35)*
+
+___
+
+### `Protected` _typeName
+
+• **_typeName**: *string* = "UTXO"
+
+*Overrides [StandardUTXO](common_utxos.standardutxo.md).[_typeName](common_utxos.standardutxo.md#protected-_typename)*
+
+*Defined in [src/apis/platformvm/utxos.ts:34](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/utxos.ts#L34)*
+
+___
+
 ### `Protected` assetid
 
 • **assetid**: *Buffer* = Buffer.alloc(32)
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[assetid](common_utxos.standardutxo.md#protected-assetid)*
 
-*Defined in [src/common/utxos.ts:28](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L28)*
+*Defined in [src/common/utxos.ts:48](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L48)*
 
 ___
 
@@ -82,7 +108,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[codecid](common_utxos.standardutxo.md#protected-codecid)*
 
-*Defined in [src/common/utxos.ts:22](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L22)*
+*Defined in [src/common/utxos.ts:45](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L45)*
 
 ___
 
@@ -92,7 +118,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[output](common_utxos.standardutxo.md#protected-output)*
 
-*Defined in [src/common/utxos.ts:30](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L30)*
+*Defined in [src/common/utxos.ts:49](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L49)*
 
 ___
 
@@ -102,7 +128,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[outputidx](common_utxos.standardutxo.md#protected-outputidx)*
 
-*Defined in [src/common/utxos.ts:26](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L26)*
+*Defined in [src/common/utxos.ts:47](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L47)*
 
 ___
 
@@ -112,7 +138,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[txid](common_utxos.standardutxo.md#protected-txid)*
 
-*Defined in [src/common/utxos.ts:24](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L24)*
+*Defined in [src/common/utxos.ts:46](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L46)*
 
 ## Methods
 
@@ -122,7 +148,7 @@ ___
 
 *Overrides [StandardUTXO](common_utxos.standardutxo.md).[clone](common_utxos.standardutxo.md#abstract-clone)*
 
-*Defined in [src/apis/platformvm/utxos.ts:74](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/utxos.ts#L74)*
+*Defined in [src/apis/platformvm/utxos.ts:86](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/utxos.ts#L86)*
 
 **Returns:** *this*
 
@@ -134,7 +160,7 @@ ___
 
 *Overrides [StandardUTXO](common_utxos.standardutxo.md).[create](common_utxos.standardutxo.md#abstract-create)*
 
-*Defined in [src/apis/platformvm/utxos.ts:80](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/utxos.ts#L80)*
+*Defined in [src/apis/platformvm/utxos.ts:92](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/utxos.ts#L92)*
 
 **Parameters:**
 
@@ -150,13 +176,32 @@ Name | Type | Default |
 
 ___
 
+###  deserialize
+
+▸ **deserialize**(`fields`: object, `encoding`: [SerializedEncoding](../modules/utils_serialization.md#serializedencoding)): *void*
+
+*Overrides [StandardUTXO](common_utxos.standardutxo.md).[deserialize](common_utxos.standardutxo.md#deserialize)*
+
+*Defined in [src/apis/platformvm/utxos.ts:39](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/utxos.ts#L39)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`fields` | object | - |
+`encoding` | [SerializedEncoding](../modules/utils_serialization.md#serializedencoding) | "hex" |
+
+**Returns:** *void*
+
+___
+
 ###  fromBuffer
 
 ▸ **fromBuffer**(`bytes`: Buffer, `offset`: number): *number*
 
 *Overrides [StandardUTXO](common_utxos.standardutxo.md).[fromBuffer](common_utxos.standardutxo.md#abstract-frombuffer)*
 
-*Defined in [src/apis/platformvm/utxos.ts:33](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/utxos.ts#L33)*
+*Defined in [src/apis/platformvm/utxos.ts:45](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/utxos.ts#L45)*
 
 **Parameters:**
 
@@ -175,7 +220,7 @@ ___
 
 *Overrides [StandardUTXO](common_utxos.standardutxo.md).[fromString](common_utxos.standardutxo.md#abstract-fromstring)*
 
-*Defined in [src/apis/platformvm/utxos.ts:58](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/utxos.ts#L58)*
+*Defined in [src/apis/platformvm/utxos.ts:70](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/utxos.ts#L70)*
 
 Takes a base-58 string containing a [UTXO](api_platformvm_utxos.utxo.md), parses it, populates the class, and returns the length of the StandardUTXO in bytes.
 
@@ -200,7 +245,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[getAssetID](common_utxos.standardutxo.md#getassetid)*
 
-*Defined in [src/common/utxos.ts:61](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L61)*
+*Defined in [src/common/utxos.ts:80](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L80)*
 
 Returns the assetID as a [Buffer](https://github.com/feross/buffer).
 
@@ -214,7 +259,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[getCodecID](common_utxos.standardutxo.md#getcodecid)*
 
-*Defined in [src/common/utxos.ts:35](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L35)*
+*Defined in [src/common/utxos.ts:54](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L54)*
 
 Returns the numeric representation of the CodecID.
 
@@ -228,7 +273,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[getCodecIDBuffer](common_utxos.standardutxo.md#getcodecidbuffer)*
 
-*Defined in [src/common/utxos.ts:42](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L42)*
+*Defined in [src/common/utxos.ts:61](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L61)*
 
 Returns the [Buffer](https://github.com/feross/buffer) representation of the CodecID
 
@@ -242,7 +287,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[getOutput](common_utxos.standardutxo.md#getoutput)*
 
-*Defined in [src/common/utxos.ts:73](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L73)*
+*Defined in [src/common/utxos.ts:92](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L92)*
 
 Returns a reference to the output;
 
@@ -256,7 +301,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[getOutputIdx](common_utxos.standardutxo.md#getoutputidx)*
 
-*Defined in [src/common/utxos.ts:54](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L54)*
+*Defined in [src/common/utxos.ts:73](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L73)*
 
 Returns a [Buffer](https://github.com/feross/buffer)  of the OutputIdx.
 
@@ -270,11 +315,39 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[getTxID](common_utxos.standardutxo.md#gettxid)*
 
-*Defined in [src/common/utxos.ts:47](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L47)*
+*Defined in [src/common/utxos.ts:66](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L66)*
 
 Returns a [Buffer](https://github.com/feross/buffer) of the TxID.
 
 **Returns:** *Buffer*
+
+___
+
+###  getTypeID
+
+▸ **getTypeID**(): *number*
+
+*Inherited from [Serializable](utils_serialization.serializable.md).[getTypeID](utils_serialization.serializable.md#gettypeid)*
+
+*Defined in [src/utils/serialization.ts:52](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/serialization.ts#L52)*
+
+Used in serialization. Optional. TypeID is a number for the typeID of object being output.
+
+**Returns:** *number*
+
+___
+
+###  getTypeName
+
+▸ **getTypeName**(): *string*
+
+*Inherited from [Serializable](utils_serialization.serializable.md).[getTypeName](utils_serialization.serializable.md#gettypename)*
+
+*Defined in [src/utils/serialization.ts:45](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/serialization.ts#L45)*
+
+Used in serialization. TypeName is a string name for the type of object being output.
+
+**Returns:** *string*
 
 ___
 
@@ -284,11 +357,31 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[getUTXOID](common_utxos.standardutxo.md#getutxoid)*
 
-*Defined in [src/common/utxos.ts:66](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L66)*
+*Defined in [src/common/utxos.ts:85](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L85)*
 
 Returns the UTXOID as a base-58 string (UTXOID is a string )
 
 **Returns:** *string*
+
+___
+
+###  serialize
+
+▸ **serialize**(`encoding`: [SerializedEncoding](../modules/utils_serialization.md#serializedencoding)): *object*
+
+*Inherited from [StandardUTXO](common_utxos.standardutxo.md).[serialize](common_utxos.standardutxo.md#serialize)*
+
+*Overrides [Serializable](utils_serialization.serializable.md).[serialize](utils_serialization.serializable.md#serialize)*
+
+*Defined in [src/common/utxos.ts:26](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L26)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`encoding` | [SerializedEncoding](../modules/utils_serialization.md#serializedencoding) | "hex" |
+
+**Returns:** *object*
 
 ___
 
@@ -298,7 +391,7 @@ ___
 
 *Inherited from [StandardUTXO](common_utxos.standardutxo.md).[toBuffer](common_utxos.standardutxo.md#tobuffer)*
 
-*Defined in [src/common/utxos.ts:85](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/utxos.ts#L85)*
+*Defined in [src/common/utxos.ts:104](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/utxos.ts#L104)*
 
 Returns a [Buffer](https://github.com/feross/buffer) representation of the [StandardUTXO](common_utxos.standardutxo.md).
 
@@ -312,7 +405,7 @@ ___
 
 *Overrides [StandardUTXO](common_utxos.standardutxo.md).[toString](common_utxos.standardutxo.md#abstract-tostring)*
 
-*Defined in [src/apis/platformvm/utxos.ts:69](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/utxos.ts#L69)*
+*Defined in [src/apis/platformvm/utxos.ts:81](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/utxos.ts#L81)*
 
 Returns a base-58 representation of the [UTXO](api_platformvm_utxos.utxo.md).
 

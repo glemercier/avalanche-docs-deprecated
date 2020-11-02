@@ -1,6 +1,6 @@
-[avalanche - v2.5.3](README.md)
+[avalanche - v3.0.3](README.md)
 
-# AvalancheJS - v2.5.3
+# AvalancheJS - v3.0.3
 
 ## Index
 

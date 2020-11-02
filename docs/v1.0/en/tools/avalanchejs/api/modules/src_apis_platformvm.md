@@ -17,6 +17,7 @@
 * [ImportTx](src_apis_platformvm.md#importtx)
 * [KeyChain](src_apis_platformvm.md#keychain)
 * [KeyPair](src_apis_platformvm.md#keypair)
+* [ParseableInput](src_apis_platformvm.md#parseableinput)
 * [ParseableOutput](src_apis_platformvm.md#parseableoutput)
 * [PlatformVMAPI](src_apis_platformvm.md#platformvmapi)
 * [PlatformVMConstants](src_apis_platformvm.md#platformvmconstants)
@@ -28,6 +29,8 @@
 * [SelectInputClass](src_apis_platformvm.md#selectinputclass)
 * [SelectOutputClass](src_apis_platformvm.md#selectoutputclass)
 * [SelectTxClass](src_apis_platformvm.md#selecttxclass)
+* [StakeableLockIn](src_apis_platformvm.md#stakeablelockin)
+* [StakeableLockOut](src_apis_platformvm.md#stakeablelockout)
 * [TransferableInput](src_apis_platformvm.md#transferableinput)
 * [TransferableOutput](src_apis_platformvm.md#transferableoutput)
 * [Tx](src_apis_platformvm.md#tx)
@@ -105,6 +108,12 @@ ___
 
 ___
 
+###  ParseableInput
+
+• **ParseableInput**:
+
+___
+
 ###  ParseableOutput
 
 • **ParseableOutput**:
@@ -168,6 +177,18 @@ ___
 ###  SelectTxClass
 
 • **SelectTxClass**:
+
+___
+
+###  StakeableLockIn
+
+• **StakeableLockIn**:
+
+___
+
+###  StakeableLockOut
+
+• **StakeableLockOut**:
 
 ___
 

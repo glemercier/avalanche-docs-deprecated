@@ -18,6 +18,8 @@
 
 ### Properties
 
+* [_typeID](api_platformvm_validationtx.weightedvalidatortx.md#protected-_typeid)
+* [_typeName](api_platformvm_validationtx.weightedvalidatortx.md#protected-_typename)
 * [blockchainid](api_platformvm_validationtx.weightedvalidatortx.md#protected-blockchainid)
 * [endTime](api_platformvm_validationtx.weightedvalidatortx.md#protected-endtime)
 * [ins](api_platformvm_validationtx.weightedvalidatortx.md#protected-ins)
@@ -34,6 +36,7 @@
 
 * [clone](api_platformvm_validationtx.weightedvalidatortx.md#clone)
 * [create](api_platformvm_validationtx.weightedvalidatortx.md#create)
+* [deserialize](api_platformvm_validationtx.weightedvalidatortx.md#deserialize)
 * [fromBuffer](api_platformvm_validationtx.weightedvalidatortx.md#frombuffer)
 * [getBlockchainID](api_platformvm_validationtx.weightedvalidatortx.md#getblockchainid)
 * [getEndTime](api_platformvm_validationtx.weightedvalidatortx.md#getendtime)
@@ -46,9 +49,12 @@
 * [getStartTime](api_platformvm_validationtx.weightedvalidatortx.md#getstarttime)
 * [getTotalOuts](api_platformvm_validationtx.weightedvalidatortx.md#gettotalouts)
 * [getTxType](api_platformvm_validationtx.weightedvalidatortx.md#gettxtype)
+* [getTypeID](api_platformvm_validationtx.weightedvalidatortx.md#gettypeid)
+* [getTypeName](api_platformvm_validationtx.weightedvalidatortx.md#gettypename)
 * [getWeight](api_platformvm_validationtx.weightedvalidatortx.md#getweight)
 * [getWeightBuffer](api_platformvm_validationtx.weightedvalidatortx.md#getweightbuffer)
 * [select](api_platformvm_validationtx.weightedvalidatortx.md#select)
+* [serialize](api_platformvm_validationtx.weightedvalidatortx.md#serialize)
 * [sign](api_platformvm_validationtx.weightedvalidatortx.md#sign)
 * [toBuffer](api_platformvm_validationtx.weightedvalidatortx.md#tobuffer)
 * [toString](api_platformvm_validationtx.weightedvalidatortx.md#tostring)
@@ -61,7 +67,7 @@
 
 *Overrides [ValidatorTx](api_platformvm_validationtx.validatortx.md).[constructor](api_platformvm_validationtx.validatortx.md#constructor)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:131](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L131)*
+*Defined in [src/apis/platformvm/validationtx.ts:166](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L166)*
 
 Class representing an unsigned AddSubnetValidatorTx transaction.
 
@@ -83,13 +89,33 @@ Name | Type | Default | Description |
 
 ## Properties
 
+### `Protected` _typeID
+
+• **_typeID**: *any* = undefined
+
+*Overrides [ValidatorTx](api_platformvm_validationtx.validatortx.md).[_typeID](api_platformvm_validationtx.validatortx.md#protected-_typeid)*
+
+*Defined in [src/apis/platformvm/validationtx.ts:123](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L123)*
+
+___
+
+### `Protected` _typeName
+
+• **_typeName**: *string* = "WeightedValidatorTx"
+
+*Overrides [ValidatorTx](api_platformvm_validationtx.validatortx.md).[_typeName](api_platformvm_validationtx.validatortx.md#protected-_typename)*
+
+*Defined in [src/apis/platformvm/validationtx.ts:122](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L122)*
+
+___
+
 ### `Protected` blockchainid
 
 • **blockchainid**: *Buffer* = Buffer.alloc(32)
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[blockchainid](common_transactions.standardbasetx.md#protected-blockchainid)*
 
-*Defined in [src/common/tx.ts:24](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L24)*
+*Defined in [src/common/tx.ts:49](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L49)*
 
 ___
 
@@ -99,7 +125,7 @@ ___
 
 *Inherited from [ValidatorTx](api_platformvm_validationtx.validatortx.md).[endTime](api_platformvm_validationtx.validatortx.md#protected-endtime)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:28](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L28)*
+*Defined in [src/apis/platformvm/validationtx.ts:49](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L49)*
 
 ___
 
@@ -109,7 +135,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[ins](common_transactions.standardbasetx.md#protected-ins)*
 
-*Defined in [src/common/tx.ts:28](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L28)*
+*Defined in [src/common/tx.ts:53](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L53)*
 
 ___
 
@@ -119,7 +145,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[memo](common_transactions.standardbasetx.md#protected-memo)*
 
-*Defined in [src/common/tx.ts:29](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L29)*
+*Defined in [src/common/tx.ts:54](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L54)*
 
 ___
 
@@ -129,7 +155,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[networkid](common_transactions.standardbasetx.md#protected-networkid)*
 
-*Defined in [src/common/tx.ts:23](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L23)*
+*Defined in [src/common/tx.ts:48](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L48)*
 
 ___
 
@@ -139,7 +165,7 @@ ___
 
 *Inherited from [ValidatorTx](api_platformvm_validationtx.validatortx.md).[nodeID](api_platformvm_validationtx.validatortx.md#protected-nodeid)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:26](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L26)*
+*Defined in [src/apis/platformvm/validationtx.ts:47](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L47)*
 
 ___
 
@@ -149,7 +175,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[numins](common_transactions.standardbasetx.md#protected-numins)*
 
-*Defined in [src/common/tx.ts:27](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L27)*
+*Defined in [src/common/tx.ts:52](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L52)*
 
 ___
 
@@ -159,7 +185,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[numouts](common_transactions.standardbasetx.md#protected-numouts)*
 
-*Defined in [src/common/tx.ts:25](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L25)*
+*Defined in [src/common/tx.ts:50](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L50)*
 
 ___
 
@@ -169,7 +195,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[outs](common_transactions.standardbasetx.md#protected-outs)*
 
-*Defined in [src/common/tx.ts:26](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L26)*
+*Defined in [src/common/tx.ts:51](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L51)*
 
 ___
 
@@ -179,7 +205,7 @@ ___
 
 *Inherited from [ValidatorTx](api_platformvm_validationtx.validatortx.md).[startTime](api_platformvm_validationtx.validatortx.md#protected-starttime)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:27](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L27)*
+*Defined in [src/apis/platformvm/validationtx.ts:48](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L48)*
 
 ___
 
@@ -187,7 +213,7 @@ ___
 
 • **weight**: *Buffer* = Buffer.alloc(8)
 
-*Defined in [src/apis/platformvm/validationtx.ts:102](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L102)*
+*Defined in [src/apis/platformvm/validationtx.ts:137](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L137)*
 
 ## Methods
 
@@ -199,7 +225,7 @@ ___
 
 *Overrides [StandardBaseTx](common_transactions.standardbasetx.md).[clone](common_transactions.standardbasetx.md#abstract-clone)*
 
-*Defined in [src/apis/platformvm/basetx.ts:102](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/basetx.ts#L102)*
+*Defined in [src/apis/platformvm/basetx.ts:134](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/basetx.ts#L134)*
 
 **Returns:** *this*
 
@@ -213,7 +239,7 @@ ___
 
 *Overrides [StandardBaseTx](common_transactions.standardbasetx.md).[create](common_transactions.standardbasetx.md#abstract-create)*
 
-*Defined in [src/apis/platformvm/basetx.ts:108](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/basetx.ts#L108)*
+*Defined in [src/apis/platformvm/basetx.ts:140](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/basetx.ts#L140)*
 
 **Parameters:**
 
@@ -225,13 +251,32 @@ Name | Type |
 
 ___
 
+###  deserialize
+
+▸ **deserialize**(`fields`: object, `encoding`: [SerializedEncoding](../modules/utils_serialization.md#serializedencoding)): *void*
+
+*Overrides [ValidatorTx](api_platformvm_validationtx.validatortx.md).[deserialize](api_platformvm_validationtx.validatortx.md#deserialize)*
+
+*Defined in [src/apis/platformvm/validationtx.ts:132](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L132)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`fields` | object | - |
+`encoding` | [SerializedEncoding](../modules/utils_serialization.md#serializedencoding) | "hex" |
+
+**Returns:** *void*
+
+___
+
 ###  fromBuffer
 
 ▸ **fromBuffer**(`bytes`: Buffer, `offset`: number): *number*
 
 *Overrides [ValidatorTx](api_platformvm_validationtx.validatortx.md).[fromBuffer](api_platformvm_validationtx.validatortx.md#frombuffer)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:118](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L118)*
+*Defined in [src/apis/platformvm/validationtx.ts:153](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L153)*
 
 **Parameters:**
 
@@ -250,7 +295,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[getBlockchainID](common_transactions.standardbasetx.md#getblockchainid)*
 
-*Defined in [src/common/tx.ts:44](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L44)*
+*Defined in [src/common/tx.ts:69](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L69)*
 
 Returns the Buffer representation of the BlockchainID
 
@@ -264,7 +309,7 @@ ___
 
 *Inherited from [ValidatorTx](api_platformvm_validationtx.validatortx.md).[getEndTime](api_platformvm_validationtx.validatortx.md#getendtime)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:53](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L53)*
+*Defined in [src/apis/platformvm/validationtx.ts:74](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L74)*
 
 Returns a [BN](https://github.com/indutny/bn.js/) for the stake amount.
 
@@ -274,15 +319,15 @@ ___
 
 ###  getIns
 
-▸ **getIns**(): *Array‹[StandardTransferableInput](common_inputs.standardtransferableinput.md)›*
+▸ **getIns**(): *Array‹[TransferableInput](api_platformvm_inputs.transferableinput.md)›*
 
-*Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[getIns](common_transactions.standardbasetx.md#getins)*
+*Inherited from [BaseTx](api_platformvm_basetx.basetx.md).[getIns](api_platformvm_basetx.basetx.md#getins)*
 
-*Defined in [src/common/tx.ts:49](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L49)*
+*Overrides [StandardBaseTx](common_transactions.standardbasetx.md).[getIns](common_transactions.standardbasetx.md#abstract-getins)*
 
-Returns the array of [StandardTransferableInput](common_inputs.standardtransferableinput.md)s
+*Defined in [src/apis/platformvm/basetx.ts:53](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/basetx.ts#L53)*
 
-**Returns:** *Array‹[StandardTransferableInput](common_inputs.standardtransferableinput.md)›*
+**Returns:** *Array‹[TransferableInput](api_platformvm_inputs.transferableinput.md)›*
 
 ___
 
@@ -292,7 +337,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[getMemo](common_transactions.standardbasetx.md#getmemo)*
 
-*Defined in [src/common/tx.ts:64](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L64)*
+*Defined in [src/common/tx.ts:89](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L89)*
 
 Returns the [Buffer](https://github.com/feross/buffer) representation of the memo
 
@@ -306,7 +351,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[getNetworkID](common_transactions.standardbasetx.md#getnetworkid)*
 
-*Defined in [src/common/tx.ts:39](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L39)*
+*Defined in [src/common/tx.ts:64](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L64)*
 
 Returns the NetworkID as a number
 
@@ -320,7 +365,7 @@ ___
 
 *Inherited from [ValidatorTx](api_platformvm_validationtx.validatortx.md).[getNodeID](api_platformvm_validationtx.validatortx.md#getnodeid)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:33](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L33)*
+*Defined in [src/apis/platformvm/validationtx.ts:54](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L54)*
 
 Returns a [Buffer](https://github.com/feross/buffer) for the stake amount.
 
@@ -334,7 +379,7 @@ ___
 
 *Inherited from [ValidatorTx](api_platformvm_validationtx.validatortx.md).[getNodeIDString](api_platformvm_validationtx.validatortx.md#getnodeidstring)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:40](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L40)*
+*Defined in [src/apis/platformvm/validationtx.ts:61](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L61)*
 
 Returns a string for the nodeID amount.
 
@@ -344,15 +389,15 @@ ___
 
 ###  getOuts
 
-▸ **getOuts**(): *Array‹[StandardTransferableOutput](common_output.standardtransferableoutput.md)›*
+▸ **getOuts**(): *Array‹[TransferableOutput](api_platformvm_outputs.transferableoutput.md)›*
 
-*Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[getOuts](common_transactions.standardbasetx.md#getouts)*
+*Inherited from [BaseTx](api_platformvm_basetx.basetx.md).[getOuts](api_platformvm_basetx.basetx.md#getouts)*
 
-*Defined in [src/common/tx.ts:54](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L54)*
+*Overrides [StandardBaseTx](common_transactions.standardbasetx.md).[getOuts](common_transactions.standardbasetx.md#abstract-getouts)*
 
-Returns the array of [StandardTransferableOutput](common_output.standardtransferableoutput.md)s
+*Defined in [src/apis/platformvm/basetx.ts:49](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/basetx.ts#L49)*
 
-**Returns:** *Array‹[StandardTransferableOutput](common_output.standardtransferableoutput.md)›*
+**Returns:** *Array‹[TransferableOutput](api_platformvm_outputs.transferableoutput.md)›*
 
 ___
 
@@ -362,7 +407,7 @@ ___
 
 *Inherited from [ValidatorTx](api_platformvm_validationtx.validatortx.md).[getStartTime](api_platformvm_validationtx.validatortx.md#getstarttime)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:46](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L46)*
+*Defined in [src/apis/platformvm/validationtx.ts:67](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L67)*
 
 Returns a [BN](https://github.com/indutny/bn.js/) for the stake amount.
 
@@ -378,7 +423,7 @@ ___
 
 *Overrides [StandardBaseTx](common_transactions.standardbasetx.md).[getTotalOuts](common_transactions.standardbasetx.md#abstract-gettotalouts)*
 
-*Defined in [src/apis/platformvm/basetx.ts:73](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/basetx.ts#L73)*
+*Defined in [src/apis/platformvm/basetx.ts:58](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/basetx.ts#L58)*
 
 **Returns:** *Array‹[TransferableOutput](api_platformvm_outputs.transferableoutput.md)›*
 
@@ -392,7 +437,7 @@ ___
 
 *Overrides [StandardBaseTx](common_transactions.standardbasetx.md).[getTxType](common_transactions.standardbasetx.md#abstract-gettxtype)*
 
-*Defined in [src/apis/platformvm/basetx.ts:29](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/basetx.ts#L29)*
+*Defined in [src/apis/platformvm/basetx.ts:65](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/basetx.ts#L65)*
 
 Returns the id of the [BaseTx](api_avm_basetx.basetx.md)
 
@@ -400,11 +445,39 @@ Returns the id of the [BaseTx](api_avm_basetx.basetx.md)
 
 ___
 
+###  getTypeID
+
+▸ **getTypeID**(): *number*
+
+*Inherited from [Serializable](utils_serialization.serializable.md).[getTypeID](utils_serialization.serializable.md#gettypeid)*
+
+*Defined in [src/utils/serialization.ts:52](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/serialization.ts#L52)*
+
+Used in serialization. Optional. TypeID is a number for the typeID of object being output.
+
+**Returns:** *number*
+
+___
+
+###  getTypeName
+
+▸ **getTypeName**(): *string*
+
+*Inherited from [Serializable](utils_serialization.serializable.md).[getTypeName](utils_serialization.serializable.md#gettypename)*
+
+*Defined in [src/utils/serialization.ts:45](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/utils/serialization.ts#L45)*
+
+Used in serialization. TypeName is a string name for the type of object being output.
+
+**Returns:** *string*
+
+___
+
 ###  getWeight
 
 ▸ **getWeight**(): *BN*
 
-*Defined in [src/apis/platformvm/validationtx.ts:107](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L107)*
+*Defined in [src/apis/platformvm/validationtx.ts:142](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L142)*
 
 Returns a [BN](https://github.com/indutny/bn.js/) for the stake amount.
 
@@ -416,7 +489,7 @@ ___
 
 ▸ **getWeightBuffer**(): *Buffer*
 
-*Defined in [src/apis/platformvm/validationtx.ts:114](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L114)*
+*Defined in [src/apis/platformvm/validationtx.ts:149](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L149)*
 
 Returns a [Buffer](https://github.com/feross/buffer) for the stake amount.
 
@@ -432,7 +505,7 @@ ___
 
 *Overrides [StandardBaseTx](common_transactions.standardbasetx.md).[select](common_transactions.standardbasetx.md#abstract-select)*
 
-*Defined in [src/apis/platformvm/basetx.ts:112](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/basetx.ts#L112)*
+*Defined in [src/apis/platformvm/basetx.ts:144](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/basetx.ts#L144)*
 
 **Parameters:**
 
@@ -445,6 +518,24 @@ Name | Type |
 
 ___
 
+###  serialize
+
+▸ **serialize**(`encoding`: [SerializedEncoding](../modules/utils_serialization.md#serializedencoding)): *object*
+
+*Overrides [ValidatorTx](api_platformvm_validationtx.validatortx.md).[serialize](api_platformvm_validationtx.validatortx.md#serialize)*
+
+*Defined in [src/apis/platformvm/validationtx.ts:125](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L125)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`encoding` | [SerializedEncoding](../modules/utils_serialization.md#serializedencoding) | "hex" |
+
+**Returns:** *object*
+
+___
+
 ###  sign
 
 ▸ **sign**(`msg`: Buffer, `kc`: [KeyChain](api_platformvm_keychain.keychain.md)): *Array‹[Credential](common_signature.credential.md)›*
@@ -453,7 +544,7 @@ ___
 
 *Overrides [StandardBaseTx](common_transactions.standardbasetx.md).[sign](common_transactions.standardbasetx.md#abstract-sign)*
 
-*Defined in [src/apis/platformvm/basetx.ts:85](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/basetx.ts#L85)*
+*Defined in [src/apis/platformvm/basetx.ts:117](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/basetx.ts#L117)*
 
 Takes the bytes of an [UnsignedTx](api_avm_transactions.unsignedtx.md) and returns an array of [Credential](common_signature.credential.md)s
 
@@ -476,7 +567,7 @@ ___
 
 *Overrides [ValidatorTx](api_platformvm_validationtx.validatortx.md).[toBuffer](api_platformvm_validationtx.validatortx.md#tobuffer)*
 
-*Defined in [src/apis/platformvm/validationtx.ts:128](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/apis/platformvm/validationtx.ts#L128)*
+*Defined in [src/apis/platformvm/validationtx.ts:163](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/apis/platformvm/validationtx.ts#L163)*
 
 Returns a [Buffer](https://github.com/feross/buffer) representation of the [[AddSubnetValidatorTx]].
 
@@ -490,7 +581,7 @@ ___
 
 *Inherited from [StandardBaseTx](common_transactions.standardbasetx.md).[toString](common_transactions.standardbasetx.md#tostring)*
 
-*Defined in [src/common/tx.ts:101](https://github.com/ava-labs/avalanchejs/blob/a2feb77/src/common/tx.ts#L101)*
+*Defined in [src/common/tx.ts:126](https://github.com/ava-labs/avalanchejs/blob/87820e3/src/common/tx.ts#L126)*
 
 Returns a base-58 representation of the [StandardBaseTx](common_transactions.standardbasetx.md).
 
