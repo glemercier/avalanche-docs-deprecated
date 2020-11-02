@@ -219,7 +219,6 @@ curl -X POST --data '{
     "params" :{
         "to":"X-avax1fjn5rffqvny7uk3tjegjs6snwjs3hhgcpcxfax",
         "sourceChain":"P",
-        "changeAddr": "X-avax1turszjwn05lflpewurw96rfrd3h6x8flgs5uf8",
         "username":"myUsername",
         "password":"myPassword"
     }
