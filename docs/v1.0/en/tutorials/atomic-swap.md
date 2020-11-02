@@ -113,7 +113,7 @@ curl -X POST --data '{
         "sourceChain":"X",
         "changeAddr":"P-avax103y30cxeulkjfe3kwfnpt432ylmnxux8r73r8u",
         "username":"myUsername",
-        "password":"myPassword",
+        "password":"myPassword"
     },
     "id": 1
 }' -H 'content-type:application/json;' 127.0.0.1:9650/ext/bc/P
