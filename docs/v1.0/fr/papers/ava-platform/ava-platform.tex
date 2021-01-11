@@ -1,0 +1,670 @@
+\documentclass[runningheads]{llncs}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{bbding}
+
+\usepackage{lipsum}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage[table,xcdraw,pdftex,dvipsnames]{xcolor}
+\usepackage{framed}
+\setlength\FrameSep{1em}
+\setlength\OuterFrameSep{\partopsep}
+% \usepackage{authblk}
+\usepackage[modulo]{lineno}
+\linenumbers
+\usepackage{xargs}                      % Use more than one optional parameter in a new commands
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\XXXunsure}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\XXXchange}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+\newcommandx{\XXXinfo}[2][1=]{\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,bordercolor=OliveGreen,#1]{#2}}
+\newcommandx{\XXXimprovement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
+\newcommandx{\XXX}[2][1=]{\todo[disable,#1]{#2}}
+\usepackage{fancyhdr}
+\newcommandx{\AVATokenName}{\texttt{\$AVAX}}
+\newcommandx{\AVAPlatformName}{\texttt{Avalanche}}
+\newcommandx{\AVAPlatformNameFirstRelease}{\texttt{Avalanche Borealis}}
+\newcommandx{\genericAvalanche}{$\mathtt{A}^{*}$}
+\usepackage[yyyymmdd,hhmmss]{datetime}
+
+\setlength{\parindent}{2.0em}
+\setlength{\parskip}{1.0em}
+\renewcommand{\baselinestretch}{1.25}
+
+\fboxsep=1pt%padding thickness
+\fboxrule=0.2pt%border thickness
+
+\begin{document}
+
+\immediate\write18{git rev-parse HEAD > /tmp/temp.dat}
+
+\title{La plateforme \AVAPlatformName{}\\\today}
+\author{Kevin Sekniqi, Daniel Laine, Stephen Buttolph, and Emin G{\"u}n Sirer}
+\institute{}
+
+\maketitle
+
+\begin{abstract}
+Ce papier présente une vue globale de l'architecture de la première version de la plateforme \AVAPlatformName{}, dont
+le nom de code est \AVAPlatformNameFirstRelease{}. Pour plus de détails sur les caractéristiques économiques de ce
+jeton natif, nommé \AVATokenName{}, nous proposons au lecteur de se référer au papier~\cite{avatokenpaper} associé qui
+détaille la dynamique de ce jeton.
+
+\underline{Avertissement:} Les informations décrites dans ce papier le sont à titre préliminaire et peuvent être
+amenées à changer ultérieurement. En outre, ce papier peut contenir des "déclarations anticipées."
+\footnote{Ces déclarations anticipées se réfèrent généralement à des évènements à venir ou des performances futures.
+Cela inclut, mais n'est pas limité à, la performance attendue d'Avalanche; le développement prévu de son entreprise et
+de ses projets; l'exécution de sa vision et sa stratégie de croissance; et l'achèvement de projets actuellement en
+cours de développement ou d'étude. Ces déclarations anticipées reflètent les croyances de notre équipe dirigeante
+basées sur des hypothèses réalisées à la date de rédaction de ce document. Ces déclarations ne garantissent aucunement
+les performances futures réelles de la plateforme, et ne doivent pas servir de base à des conclusions injustifiées. De
+telles déclarations impliquent nécessairement des risques connus et inconnus, qui peuvent conduire à des résultats et
+performances réelles futures sensiblement différents des projections exprimées explicitement ou implicitement dans ce
+document. Avalanche ne s'engage à aucune obligation de mettre à jour ces déclarations anticipées. Bien que celles-ci
+représentent nos meilleures prédictions au moment où nous les avons faites, il ne peut y avoir aucune assurance qu'elles
+s'avèrent exactes vu que les résultats réels et évènements futurs sont amenés à les contredire sensiblement. Le lecteur
+est mis en garde de ne pas placer d'attentes injustifiées sur ces déclarations anticipées.}
+
+\end{abstract}
+\begin{center}
+    \scriptsize Git Commit: \input{/tmp/temp.dat}
+ \end{center}
+\section{Introduction}
+\label{section:introduction}
+Ce papier présente une vue globale de la plateforme \AVAPlatformName{}. Il se focalise principalement sur les 3 éléments
+différenciateurs de la plateforme: le moteur, le modèle d'architecture, et le mécanisme de gouvernance.
+
+\subsection{\AVAPlatformName{} Objectifs et principes}
+\AVAPlatformName{} est une plateforme basée sur une blockchain hautement performante, évolutive, paramétrable et fiable.
+Elle vise trois cas d'utilisation généraux:
+\begin{itemize}
+\item Construire des blockchains spécifiques à une application donnée, couvrant les déploiements avec (privés) ou sans
+  (publics) contrôle d'accès.
+\item Construire et exécuter des applications hautement évolutives et décentralisées (Dapps).
+\item Construire des actifs numériques complexes de manière arbitraire permettant la personnalisation des règles,
+  des clauses et des avenants (actifs intelligents).
+\end{itemize}
+L'objectif global d'\AVAPlatformName{} est de fournir une plateforme unificatrice pour la création, le transfert, et
+l'échange d'actifs numériques.
+
+\noindent De par sa construction, \AVAPlatformName{} possède les propriétés suivantes:
+
+\paragraph{Evolutive} \AVAPlatformName{} est conçue pour passer massivement à l'échelle, et être robuste et efficace.
+Le consensus principal est capable de supporter un réseau global jusqu'à un nombre potentiel de centaines de millions
+d'appareils connectés à internet plus ou moins puissants, qui opèrent de manière fluide avec des latences faibles et un
+très grand nombre de transactions par seconde.
+
+\paragraph{Fiable} \AVAPlatformName{} est conçue pour être robuste et permettre un haut niveau de sécurité. Les
+protocoles de consensus classiques sont conçus pour contenir jusqu'à $f$ attaquants, et échoucher entièrement devant
+un attaquant de taille $f+1$ ou plus. Le consensus de Nakamoto ne garantit plus aucune sécurité lorsque 51\% des
+mineurs sont byzantins. Par contraste, \AVAPlatformName{} permet une très forte garantie de sécurité lorsque l'attaquant
+est en dessous d'un certain seuil configurable par le concepteur du système, et suit une dégradation élégante lorsque
+l'attaquant dépasse ce seuil. Elle peut maintenir des garanties de sécurité (mais pas la vitalité) même quand
+l'attaquant dépasse 51\% d'influence. C'est le premier système sans contrôle d'accès qui fournit des garanties de
+sécurité si fortes.
+
+\paragraph{Décentralisée} \AVAPlatformName{} est conçue pour assurer un niveau de décentralisation sans précédent. Cela
+implique un engagement envers plusieurs implémentations clientes et aucun contrôle centralisé de quelque sorte.
+L'écosystème est conçu pour éviter les divisions entre classes d'utilisateurs ayant différents intérêts. Mais surtout
+il n'y a pas de distinction entre les mineurs, les développeurs, et les utilisateurs
+
+\paragraph{Gouvernable et démocratique} \AVAPlatformName{} est une plateforme hautement inclusive, qui permet à
+n'importe qui de se connecter à son réseau, participer dans la validation et être directement impliqué dans la
+gouvernance. Tous les détenteurs de jetons ont un droit de vote pour la sélection des paramètres financiers principaux
+et le choix dans la manière dont le système évolue.
+
+\paragraph{Interopérable et flexible} \AVAPlatformName{} est conçue pour être une infrastructure universelle et flexible
+hébergeant une multitude d'actifs et de blockchains, où l'actif de base \AVATokenName{} est utilisé pour sa sécurité
+et comme une unité de compte permettant les échanges. Le système est prévu pour supporter, de manière neutre vis à vis
+de la valeur, de nombreuses blockchains pouvant être construites sur sa base. La plateforme est conçue à partir de zéro
+pour y faciliter le portage de blockchains existantes, l'import de comptes, le support de multiple langages de scripts
+et de machines virtuelles, et supporter de multiples scénarios de déploiement de manière significative.
+
+\subsubsection{Plan}
+Le reste de ce papier est séparé en quatre sections majeures. La section~\ref{section:engine} résume les détails du
+moteur qui alimente la plateforme. La section~\ref{section:platform_overview} discute du modèle d'architecture derrière
+la plateforme, en incluant les sous-réseaux, les machines virtuelles, l'amorçage, la participation, et la mise en jeu.
+La section~\ref{section:governance_and_token} explique le modèle de gouvernance qui permet le changement dynamique des
+paramètres économiques principaux. Finalement, la section~\ref{section:governance_and_token} explore différents points
+d'intérêt annexes, comprenant les optimisations potentielles, la cryptographie post-quantique, et les adversaires
+potentiels.
+
+\subsubsection{Convention de nommage}
+Le nom de la plateforme est \AVAPlatformName{}, et est généralement mentionnée comme
+``la plateforme \AVAPlatformName{}'', et peut être synonyme du ``réseau \AVAPlatformName{}'', ou tout simplement
+\AVAPlatformName{}. Le code source sera versionné selon trois identifiants numériques, labelisé
+``\texttt{v.[0-9].[0-9].[0-100]}'', où le premier numéro identifie les livraisons majeures, le deuxième identifie les
+livraisons mineures, et le troisième numéro les patchs. La première livraison publique, dont le nom de code est
+\AVAPlatformNameFirstRelease{}, est nommée \texttt{v. 1.0.0}. La famille de protocoles de consensus utilisés par la
+plateforme \AVAPlatformName{} est mentionnée comme étant la famille Snow*. Il en existe trois instances concrètes,
+appelées Avalanche, Snowman, et Frosty.
+
+\section{Le moteur}
+\label{section:engine}
+Les détails à propos de la plateforme \AVAPlatformName{} commencent avec le composant principal qui alimente la
+plateforme: le moteur de consensus.
+
+\subsubsection{Contexte}
+Les paiements et -- plus généralement -- les calculs distribués, requièrent un accord entre un ensemble de machines. En
+conséquent les protocoles de consensus, qui permettent à un groupe de noeuds d'arriver à un accord, se trouvent au coeur
+des blockchains ainsi que dans presque tous les systèmes distribués industriels déployés à grande échelle. Le sujet a
+été largement approfondi depuis presque 50 ans, et cet effort à ce jour n'a fait émerger que deux familles de
+protocoles: les protocoles de consensus classiques qui se basent sur une communication entre tous les pairs, et le
+consensus de Nakamoto qui s'appuie sur le minage par preuve de travail couplé à la règle de la plus longue chaîne.
+Tandis que les protocoles de consensus classiques peuvent avoir une latence faible et un débit élevé, ils ne passent
+pas à l'échelle sur un grand nombre de participants et ne sont pas non plus robustes en la présence de changements de
+participants, ce qui les a relégué au rang de systèmes avec contrôle d'accès déployés statiquement. Les protocoles de
+consensus de Nakamoto~\cite{nakamoto2008bitcoin,wood2014ethereum,EyalGSR16} en revanche sont robustes mais souffrent
+de latences de confirmation élevées, d'un faible débit, et demandent une dépense d'énergie constante pour assurer leur
+sécurité.
+
+La famille de protocoles Snow*, introduite par Avalanche, combine les meilleures propriétés des protocoles de consensus
+classiques avec le meilleur de ceux de Nakamoto. Basés sur un mécanisme d'échantillonnage léger, ils obtiennent une
+latence faible et un débit élevé sans avoir besoin de s'accorder précisément sur les particpants du système.
+Ils passent facilement à l'échelle de milliers à des millions de participants agissant directement sur le protocole de
+consensus. De plus, ces protocoles ne font pas usage du minage par preuve de travail et s'affranchissent de surcroît
+de besoins exhorbitants en énergie et de la fuite de valeur inhérente dans l'écosystème, amenant à des protocoles qui
+sont légers, écologiques, et latents.
+
+\subsubsection{Mécanisme et propriétés}
+Les protocoles Snow* opèrent en échantillonnant le réseau de manière répétée. Chaque node sonde un ensemble réduit et de
+taille constante de voisins choisis aléatoirement, et change son état si une supermajorité porte une valeur différente.
+L'échantillonnage est répété jusqu'à converger vers une valeur unique, ce qui arrive rapidement en fonctionnement
+normal. On peut illustrer ce fonctionnement par un exemple concret. Tout d'abord une transaction est créée par un
+utilisateur et envoyée à un noeud de validation, qui est un noeud participant dans la procédure de consensus. Elle est
+ensuite propagée à tous les autres noeuds du réseau via un protocole dit de "bavardage" (gossip). Que se passe-t-il si
+cet utilisateur envoie également une transaction conflictuelle, à savoir une double dépense? Afin de choisi parmi les
+deux transactions en conflit et éviter la double dépense, chaque noeud va choisir de manière aléatoire un petit
+sous-ensemble de noeuds et leur demander laquelle de ces transactions ils pensent être la transaction valide. Si le
+noeud à l'origine de la requête reçoit une réponse super-majoritaire en faveur d'une transaction, alors le noeud change
+sa propre réponse pour cette même transaction. Chaque noeud du réseau répète cette procédure jusqu'à ce que le réseau
+entier parvienne à un consensus sur l'une des transactions conflictuelles.
+
+Etonnamment, bien que le mécanisme principal de fonctionnement demeure assez simple, ces protocoles conduisent à une
+dynamique système très intéressante qui les rendent adaptés à un déploiement à grande échelle.
+\begin{itemize}
+\item \textit{Sans contrôle d'accès, ouverts au roulement, et robustes}. Les derniers nés des projets blockchains
+emploient des protocoles de consensus classiques et doivent par conséquent avoir une connaissance complète des
+participants du réseau. Connaître l'ensemble des participants est suffisamment simple dans le milieu fermé des systèmes
+avec contrôle d'accès, mais devient de plus en plus compliqué dans les réseaux ouverts et décentralisés. Cette
+limitation impose des risques de sécurité élevés aux projets en place qui emploient de tels protocoles. Par
+contraste, les protocoles Snow* maintiennent des garanties de sécurité élevées même lorsqu'il existe des divergences
+bien quantifiées sur le réseau du point de vue de deux noeuds différents. Les validateurs des protocoles Snow* jouissent
+de leur capacité à effectuer la validation sans connaissance assidue et continue des membres du réseau. Il sont donc
+robustes et largement adaptés aux blockchains publiques.
+\item \textit{Evolutifs et décentralisés}. Une des fonctionnalités clé de la famille Snow est sa capacité à passer à
+l'échelle sans entraîner de compromis sur les fondamentaux. Les protocoles Snow peuvent atteindre jusqu'à des dizaines
+de milliers ou des millions de noeuds, sans avoir à déléguer vers des sous-ensemble de validateurs. Ces protocoles
+jouissent d'une décentralisation système de premier ordre, permettant à chaque noeud d'opérer une validation complète.
+Une participation de premier plan et continue a des impacts profonds pour la sécurité du système. Dans quasiment tous
+les protocoles à preuve d'enjeu qui essayent de passer à l'échelle d'un grand nombre de participants, le mode opératoire
+typique consiste à permettre le passage à l'échelle en délégant la validation à un sous-comité. Naturellement cela
+implique que la sécurité du système est précisément aussi élevée que le coût nécessaire à la corruption du sous-comité.
+Les sous-comités sont de plus sujets à la formation de cartels.
+
+Dans les protocoles de type Snow une telle délégation n'est pas nécessaire, ce qui permet à chaque opérateur d'un noeud
+d'avoir une influence de premier ordre dans le système à tout moment. Une autre conception, typiquement appelée
+"sharding d'état", s'efforce de fournir une meilleur évolutivité en parallélisant le traitement en série des transactions
+sur plusieurs réseaux indépendants de validateurs. Malheureusement la sécurité du système dans une telle architecture
+devient au maximum équivalente au sous-réseau indépendant le plus facilement corruptible. En définitive, ni l'élection
+de sous-comités ni le sharding ne sont adaptés à une stratégie de mise à l'échelle de plateformes crypto.
+\item \textit{Adaptatifs}. Contrairement à d'autres systèmes basés sur le vote, les protocoles Snow* atteignent de bien
+meilleures performances quand les adversaires sont peu nombreux, et pourtant demeurent hautement résistants lorsqu'ils
+subissent des attaques plus larges.
+\item \textit{Sûrs de manière asynchrone}. Les protocoles Snow*, contrairement aux protocoles dits "de plus longue
+chaîne", ne requièrent pas de synchronicité stricte pour opérer de manière sûre et par conséquent empêchent les doubles
+dépenses même face à un partitionnement du réseau. Avec Bitcoin par exemple, si l'hypothèse de synchronicité est violée
+il devient possible d'opérer deux branches du réseau Bitcoin pour de longues périodes de temps, ce qui aurait pour
+conséquence d'invalider des transactions au moment de consolider les branches.
+\item \textit{Faible latence}. La plupart des blockchains aujourd'hui sont incapables de supporter des applications
+métier, comme le trading ou les paiements de biens quotidiens. Il n'est simplement pas envisageable d'attendre plusieurs
+minutes, ou même des heures, pour la confirmation de transactions. En conséquence l'une des plus importantes, et pourtant
+largement négligée, propriétés des protocoles de consensus est le temps de finalisation. Les protocoles Snow* atteignent
+typiquement la finalité d'une transaction en $\leq 1$ seconde, ce qui est significativement plus faible que pour les
+protocoles de plus longue chaîne et les blockchains utilisant le sharding, pour qui cette finalité est typiquement une
+affaire de minutes.
+\item \textit{Haut débit}. Les protocoles Snow*, qui peuvent construire une chaîne linéaire ou un DAG (Graphe Acyclique
+Dirigé), atteignent des milliers de transactions par seconde (5000+ tps) tout en conservant un niveau de décentralisation
+totale. Les nouvelles solutions en matière de blockchain qui revendiquent un grand nombre de transactions par seconde
+le font au dépens de la décentralisation et la sécurité et optent pour des mécanismes de consensus plus centralisés et
+risqués. Certains projets affichent des chiffres provenant d'environnements extrêmement contrôlés, qui maquillent donc
+les véritables résultats de performance. Les chiffres affichés pour \AVATokenName{} sont tirés directement d'un réseau
+\AVAPlatformName{} réel entièrement opérationnel de 2000 noeuds sur AWS, distribués équitablement à travers le globe et
+tournant sur des machines peu coûteuses. Des résultats de performance encore plus élevés peuvent être obtenus en prenant
+l'hypothèse d'une meilleure bande passante allouée à chaque noeud et du matériel dédié à la vérification des signatures.
+Finalement, nous notons que les métriques sus-mentionnées se situent au niveau de la couche de base. Des solutions de
+mise à l'échelle de niveau 2 pourraient améliorer ces résultats de manière considérable.
+\end{itemize}
+
+\newpage
+
+\subsubsection{Tableau comparatif des consensus}
+Le Tableau \ref{table:comparativechartconsensus} décrit les différences entre les trois familles de protocoles de
+consensus connues à travers 8 axes critiques:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{l|ccc}
+& \ \ \ \ \ Nakamoto\ \ \ \ &\  \ \ \ \  Classical\ \ \ \ \  & \ \ \ \ Snow* \ \ \ \ \\ \hline
+\rowcolor[HTML]{EFEFEF}
+Robuste (Adapté aux configurations ouvertes)                             & +        & -         & +     \\
+Hautement décentralisé (permet un grand nombre de validateurs)           & +        & -         & +     \\
+\rowcolor[HTML]{EFEFEF}
+Faible latence et finalité rapide (Confirmation rapide des transactions) & -        & +         & +     \\
+Haut débit (supporte un grand nombre de clients)                         & -        & +         & +     \\
+\rowcolor[HTML]{EFEFEF}
+Léger (Spécifications matérielles modestes)                              & -        & +         & +     \\
+Latent (Inactif lorsqu'aucune décision n'est nécessaire)                 & -        & +         & +     \\
+\rowcolor[HTML]{EFEFEF}
+Sécurité paramétrable (A partir de 51\% d'adversaires présents)          & -        & -         & +     \\
+Hautement évolutif                                                       & -        & -         & +
+\end{tabular}
+\caption{Tableau comparatif entre les trois familles de protocoles de consensus connues. Avalanche, Snowman, et Frosty
+appartiennent tous à la famille Snow*.}
+\label{table:comparativechartconsensus}
+\end{table}
+
+\section{Vue d'ensemble de la plateforme}
+\label{section:platform_overview}
+Dans cette section nous exposons une vue d'ensemble de la plateforme et discutons certains détails d'implémentation. La
+plateforme \AVAPlatformName{} sépare clairement trois préoccupations: les chaînes (et les actifs qui reposent dessus),
+les environnements d'exécution, et le déploiement.
+
+\subsection{Architecture}
+
+\subsubsection{Sous-réseaux}
+L'architecture de l'internet moderne est décrite comme une architecture dite ``à taille étroite'', où il y a une couche
+protocolaire de communication unique située au milieu, composée des protocoles HTTP/TLS/IP/TCP, avec une matrice de
+réseaux très étendue en dessous et les applications au dessus. Une telle conception n'était pas prévue, mais émergea
+néanmoins au fur et à mesure de l'évolution d'internet vers des fonctions bien définies. Un tel modèle d'architecture
+est en contraste total avec la manière dont les plateformes à base de blockchain ont été développées jusqu'à
+maintenant. Presque toutes les plateformes à base de blockchain suivent une architecture monolithique, typiquement
+inspirée du modèle Bitcoin. Naturellement cela présente un ensemble de limitations importantes qui empêchent les
+plateformes à base de blockchain de couvrir un grand nombre de cas d'usage.
+
+\AVAPlatformName{} est conçue selon le même modèle d'architecture qu'internet, et donc de manière à être extensible,
+modulaire, et composable. La plateforme \AVAPlatformName{} a de multiples sous-réseaux logiquement séparés, supportant
+chacuns leurs propres environnements d'exécution, ensemble de règles, et validateurs. Lorsque l'on créé un nouveau
+sous-réseau, on peut spécifier une multitude de paramètres, incluant -- mais non limité à -- les suivants:
+\begin{itemize}
+\item{} Qui peut proposer et valider les blocs ?
+\item{} De quoi un bloc valide est-il constitué?
+\item{} L'état de génèse de la chaîne.
+\item{} Quelle transition d'état s'effectue lorsqu'un bloc est accepté?
+\item{} Quels appels RPC sont supportés?
+\item{} Quoi sauver dans la base de données, et quand?
+\end{itemize}
+L'architecture en sous-réseaux permet en somme à n'importe qui de déployer sa propre blockchain correspondant à ses
+besoins particuliers. Sur la plateforme \AVAPlatformName{}, tout est modélisable sous la forme d'un sous-réseau, tout
+comme le jeton natif \AVATokenName{} qui réside sur son propre sous-réseau. Le sous-réseau supportant le jeton
+\AVATokenName{}, comportant le label ID-0 est spécial de par les propriétés suivantes:
+\begin{enumerate}
+\item Chaque validateur dans le réseau \AVAPlatformName{} est également validateur du sous-réseau émettant le jeton
+\AVATokenName{}.
+\item Chaque transaction émise entre deux sous-réseaux, comme les transferts d'actifs, sont gérés par le sous-réseau du
+jeton \AVATokenName{}.
+\item La création d'un nouveau sous-réseau nécessite de payer des frais en jetons \AVATokenName{}, ce qui est nécessaire
+pour pouvoir modifier le sous-réseau de "staking".
+\end{enumerate}
+Notons que les sous-réseaux ne sont pas des réseaux isolés. Ils sont entièrement intéropérables avec le reste du réseau,
+ce qui veut dire qu'ils peuvent échanger avec d'autres sous-réseaux de manière atomique.
+
+\subsubsection{Machines Virtuelles}
+Dans le but de lancer un nouveau sous-réseau, un développeur doit d'abord écrire le code de la machine virtuelle (ou VM)
+correspondante. Les machines virtuelles dessinent les plans d'un sous-réseau à déployer sur \AVAPlatformName{}.
+Lorsqu'il est prêt à créer un sous-réseau, le développeur spécifie la VM à utiliser ainsi que l'état de génèse de
+celle-ci. Le comportement de la chaîne ou le DAG d'un sous-réseau donné est entièrement défini par la machine virtuelle
+que ce sous-réseau utilise. Naturellement vu qu'un sous-réseau n'est qu'une instance d'une VM, il peut y avoir autant de
+réseaux que possible qui utilisent la même VM. Cependant, même si plusieurs sous-réseaux peuvent utiliser la même VM,
+ils maintiennent chacun leur propre état qui est indépendant de l'état des autres sous-réseaux. Dans un but de
+simplification, nous écrivons parfois qu'un sous-réseau ``utilise'' une VM ou qu'un sous-réseau ``exécute'' une VM.
+Dans les deux cas nous cherchons à dire que le sous-réseau est une instance de cette machine virtuelle.
+
+\AVAPlatformName{} supporte le développement d'un marché riche en machines virtuelles qui profite d'une conformité
+stricte avec le jeu de règles, la confidentialité, et d'autres nouvelles fonctionnalités innovantes. Un tel dépôt
+flexible de briques réutilisables permet aux développeurs amateurs mais aussi aux grandes entreprises de déployer des
+applications système et métier entièrement conformes et intéropérables. Le jeton \AVATokenName{} représente
+l'infrastructure principale qui garantit la sécurité du système tout en fournissant une unité d'échange universelle
+entre tous les actifs deployés sur \AVAPlatformName{}.
+
+\subsection{Amorçage}
+La première étape pour participer à la plateforme \AVAPlatformName{} est l'amorçage. Ce procédé se déroule en trois
+étapes: la connection à des points d'ancrage, la mise en réseau et la découverte de l'état, et le passage en tant
+que validateur.
+
+\subsubsection{Points d'ancrage}
+Tout système constitué d'un réseau de pairs qui opère sans un jeu d'identités régies par des permissions (qui sont
+codées en dur) nécéssite un mécanisme de \emph{découverte de pairs}. Dans les réseaux de partage de fichiers pair-à-pair
+un ensemble de trackers est utilisé. Dans les réseaux de cryptomonnaies, on utilise généralement un mécanisme de noeuds
+d'ancrage DNS (que l'on appellera points d'ancrage) qui contiennent un jeu prédéfini d'adresses IP d'ancrage à partir
+desquelles les autres membres du réseau peuvent être découverts. Le rôle des noeuds d'ancrage DNS est de fournir des
+informations utiles à propos de l'ensemble des participants actifs du système. Le même mécanisme est utilisé dans
+Bitcoin Core~\cite{bitcoin_2018}, dont le code source comprend le fichier \texttt{src/chainparams.cpp} qui contient
+une liste de noeuds d'ancrage codée en dur. La différence entre BTC et \AVAPlatformName{} est que BTC ne nécessite
+qu'un seul noeud d'ancrage DNS correct, là ou \AVAPlatformName{} a besoin d'une majorité simple de noeuds d'ancrage
+étant corrects. Par exemple un nouvel utilisateur peut choisir d'amorcer sa vue du réseau à travers un ensemble
+de places d'échanges réputées et bien établies \emph{sans} avoir à leur faire confiance à tous individuellement. Notons
+cependant que la liste des noeuds d'amorçage ne nécéssite pas forcémment d'être statique ou codée en dur et peut être
+renseignée par l'utilisateur, même si dans un souci de facilité d'utilisation les clients préfèreront fournir une liste
+par défaut pointant vers des acteurs économiquement importants, comme des bourses d'échange de cryptomonnaies, avec
+lesquels les clients souhaitent partager leur vision du monde. Il n'y a aucune barrière à devenir un noeud d'ancrage,
+en conséquence un groupement de points d'ancrage ne peut pas dicter si un noeud peut ou ne peut pas rejoindre le
+réseau vu que les noeuds peuvent décrouvrir le réseau de pairs \AVAPlatformName{} le plus récent en s'attachant à
+n'importe quel groupe de noeuds d'ancrage.
+
+\subsubsection{Mise en réseau et découverte de l'état}
+Une fois connecté aux noeuds d'ancrage, un noeud lance une requête pour obtenir l'ensemble des transitions d'état
+le plus récent. Nous appelons cet ensemble de transitions la \emph{frontière admise}. Pour une chaîne la frontière
+admise est le dernier bloc accepté. Pour un DAG la frontière admise est l'ensemble des sommets qui sont acceptés mais
+qui n'ont aucun enfant accepté. Après avoir récupéré les frontières admises retournées par les points d'ancrage, les
+transitions d'état qui sont acceptées par une majorité de points d'ancrage sont définis comme acceptés. L'état correct
+est donc extrait en se synchronisant avec les noeuds échantillonnés. Tant qu'il y a une majorité de noeuds corrects
+dans l'ensemble des points d'ancrage, alors les transitions d'état acceptées doivent avoir été marquées comme
+acceptées par au moins un noeud correct. Le procédé de découverte de l'état est également utilisé dans la découverte
+du réseau. La liste des membres du réseau est définie dans la chaîne de validation. Par conséquent la synchronisation
+avec la chaîne de validation permet au noeud de découvrir la liste des validateurs courants. La chaîne de validation
+sera décrite plus en détails dans la prochaine section.
+
+\subsection{Contrôle Sybil et appartenance au réseau}
+Les protocoles de consensus fournissent des garanties de sécurité en partant de l'hypothèse qu'un seuil maximal de
+membres du système peuvent être antagonistes. Une attaque Sybil lors de laquelle un noeud peut innonder le réseau
+d'identités malicieuses à moindre coût peut facilement invalider ces garanties. Fondamentalement, une telle attaque peut
+uniquement être contrée en faisant le compromis de la présence par la preuve d'une ressource difficile à
+générer~\cite{douceur2002sybil}. Les anciens systèmes ont exploré l'utilisation de mécanismes de protection anti-Sybil
+qui incluent la preuve de travail (PoW), la preuve d'enjeu (PoS), la preuve de temps écoulé (POET), la preuve d'espace
+et temps (PoST), et la preuve d'autorité (PoA).
+
+A leur coeur, tous ces mécanismes servent la même fonction: ils demandent à tous les participants d'avoir un ``intérêt
+personnel''  sous la forme d'un engagement économique, qui fournit en retour une barrière économique contre la mauvaise
+conduite de ce participant. Ils impliquent tous une forme d'enjeu, qu'il soit sous la forme de stations de minage et de
+puissance de hachage (PoW), d'espace disque (PoST), de matériel certifié (POET) ou d'une identité approuvée (PoA). Cet
+enjeu forme la base d'un coût économique que les participants doivent supporter pour acquérir une voix. Par exemple,
+dans Bitcoin, la capacité à contribuer des blocs valides est directement proportionnelle à la puissance de hachage du
+participant qui propose les blocs. Malheureusement il y a également une importante confusion entre les protocoles de
+consensus et les mécanismes de contrôle Sybil. Nous notons que le choix des protocoles de consensus est, pour la
+plupart, directement lié au choix du mécanisme de contrôle Sybil. Cela ne veut pas dire que les mécanismes de contrôle
+Sybil peuvent être directement interchangeables, sachant qu'un choix particulier peut avoir des implications sur les
+garanties sous-jacentes du protocole de consensus. En revanche, la famille Snow* peut être couplée avec beaucoup de ces
+mécanismes connus sans nécessiter de modification importante.
+
+En fin de compte, pour sa sécurité et s'assurer que les motivations des participants soient en phase pour le bien du
+réseau, \AVATokenName{} a choisi la preuve d'enjeu comme mécanisme de contrôle Sybil principal. Certaines formes
+d'enjeu sont intrinsèquement centralisées: la fabrication de stations de minage (PoW), par exemple, est par nature
+centralisée entre les mains d'un nombre limité de personnes qui ont le savoir-faire adéquat et ont accès à la douzaine
+de brevets requis pour pouvoir fabriquer des composants électroniques de manière compétitive. De plus le minage par
+preuve de travail laisse s'écouler de la valeur à cause de l'énorme subvention annuelle des mineurs. De la même manière
+l'espace disque est abondamment détenu par les grands opérateurs de data centers. En outre tous les mécanismes de
+contrôle Sybil qui augmentent les coûts d'usage, comme l'électricité pour le hachage, transfèrent de la valeur en dehors
+de l'écosystème sans même aborder le problème de la destruction de l'environnement. Ceci en retour réduit l'enveloppe de
+rentabilité du jeton, pour lequel un mouvement de prix sur une petite période de temps peut rendre le système
+inutilisable. La preuve de travail sélectionne par nature les mineurs qui ont les relations pour se procurer de
+l'électtricité à moindre coût, ce qui n'a pas grand chose à voir avec la capacité du mineur à sérialiser des
+transactions ou avec ses contributions à l'écosystème en général. Parmi ces options, nous choisissons la preuve d'enjeu
+parce que c'est écologique, accessible, et ouvert à tous. Notons cependant que tandis que \AVATokenName{} utilise la
+preuve d'enjeu, le réseau \AVAPlatformName{} permet le lancement de sous-réseau avec preuve de travail (PoW) et preuve
+d'enjeu (PoS).
+
+Le staking par enjeu est un mécanisme naturel pour la participation dans un réseau ouvert car il met en oeuvre un
+argument économique direct: la probabilité de succès d'une attaque est directement proportionnelle à une fonction de
+coût monétaire bien définie. En d'autres termes les noeuds qui prouvent leur enjeu sont motivés économiquement à ne pas
+s'aventurer vers un comportement qui pourrait nuire à la valeur de ce qu'ils ont mis en jeu. De plus la somme mise en
+jeu ne génère pas de coût additionnel de maintenance (autre que l'opportunité d'investir cette somme dans un autre
+actif), et possède la propriété qu'elle soit, contrairement aux équipements de minage, entièrement détruite en cas
+d'attaque catastrophique. Dans le cas de la preuve de travail, l'équipement de minage peut être simplement réutilisé ou
+-- si son propriétaire en décide ainsi -- entièrement vendu sur le marché secondaire.
+
+Un noeud souhaitant participer au réseau peut le faire librement en mettant en jeu une somme qui est immobilisée pendant
+toute la durée de participation au réseau. L'utilisateur détermine la durée de cette mise en jeu. Une fois acceptée, une
+période de mise en jeu ne peut pas être annulée. Le but principal de cette démarche est de s'assurer que les noeuds
+partagent en substance la même vision stable du réseau. Nous pensons définir un temps de mise en jeu minimal de l'ordre
+de la semaine.
+
+Contrairement à d'autres systèmes qui proposent également un mécanisme de preuve d'enjeu, \AVATokenName{} ne fait pas
+usage du ``slashing'' (ou punition), et par conséquent l'intégralité du montant mis en jeu est retourné lorsque la
+période d'enjeu est écoulée. Cela évite les scénarios involontaires comme les pannes matérielles et logicielles qui
+amènent à un perte de jetons. Ceci concorde avec notre philosophie de conception dans la construction de technologie
+prévisible: les jetons mis en jeu ne sont pas en danger, même en la présence de failles logicielles ou matérielles.
+
+Dans la plateforme \AVAPlatformName, un noeud qui veut participer envoie une \emph{transaction d'enjeu} spéciale à la
+chaîne de validation. Les transactions d'enjeu définissent un montant à mettre en jeu, la clé d'enjeu du partcipant qui
+souhaite mettre en jeu, la durée, et la date à partir de laquelle la participation commence. Une fois la transaction
+acceptée, les fonds sont bloqués jusqu'à la fin de la période d'enjeu. Le montant minimal autorisé est décidé et
+appliqué par le système. Le montant mis en jeu par un participant a des implications à la fois sur la quantité
+d'influence que le participant a sur le procédé de consensus, et sur la récompense comme expliqué plus loin.
+La période d'enjeu spécifiée doit être entre $\delta_{min}$ et $\delta_{max}$, les périodes minimales et maximales pour
+lesquelles la somme mise en jeu est vérouillée quelqu'en soit le montant. Comme pour le montant mis en jeu, la période
+a également des implications sur le montant de la récompense prévue par le système. La perte ou le vol de la clé
+d'enjeu ne peut pas mener à une perte d'actif, sachant que cette clé est uniquement utilisée dans le procédé de
+consensus et non pas pour le transfert d'actifs.
+
+\subsection{Les contrats intelligents dans \AVATokenName}
+A son lancement la plateforme \AVAPlatformName{} supporte les contrats intelligents standard basés sur le langage
+Solidity à travers la machine virtuelle Ethereum (EVM). Nous envisageons que la plateforme supporte un ensemble plus
+riche et plus puissant d'outils d'écriture de contrats, incluant:
+\begin{itemize}
+\item Contrats intelligents avec exécution hors-chaîne et vérification sur la chaîne.
+\item Contrats intelligents à exécution parallèle. Tout contrat intelligent qui n'opère pas selon le même état dans tous
+les sous-réseaux d'\AVAPlatformName{} pourra s'exécuter en parallèle.
+\item Un version améliorée de Solidity, appelée Solidity++. Ce nouveau langage supportera le versionnage, les opérations
+mathématiques sûres et l'arithmétique à virgule fixe, un typage amélioré, la compilation par LLVM, et l'exécution
+"juste à temps" (JIT - Just In Time).
+\end{itemize}
+
+Si un développeur a besoin du support de l'EVM mais veut déployer des contrats intelligents dans un sous-réseau privé,
+il peut directement démarrer un sous-réseau. C'est de cette manière qu'\AVAPlatformName{} permet le sharding spécifique
+à une fonctionnalité à travers les sous-réseaux. De plus si un développeur a besoin d'intéragir avec les contrats
+intelligents Ethereum actuellement déployés, il peut interagir avec le sous-réseau Athereum qui est dérivé d'Ethereum.
+Pour finir, si un développeur a besoin d'un environnement d'exécution différent de la machine virtuelle Ethereum, il peut
+choisir de déployer son contrat intelligent à travers un sous-réseau qui implémente un environnement d'exécution
+différent comme DMAL ou WASM. Les sous-réseaux peuvent supporter des fonctionnalités additionnelles au delà du
+fonctionnement d'une machine virtuelle. Par exemple les sous-réseaux peuvent imposer des contraintes de performances
+pour les noeuds de validation les plus gros qui maintiennent des contrats intelligents pour des périodes plus longues,
+ou des validateurs qui gardent l'état du contrat de manière privée.
+
+\section{La gouvernance et le jeton \AVATokenName{}}
+\label{section:governance_and_token}
+
+\subsection{Le jeton natif \AVATokenName{}}
+Le jeton natif, \AVATokenName{}, est limité en quantité, avec une limite définie à $720,000,000$ jetons, parmi lesquels
+$360,000,000$ jetons sont disponibles au lancement du réseau principal. Cependant, contrairement à d'autres jetons en
+quantité limitée émis selon un taux d'émission perpétuel, \AVATokenName{} est conçu pour réagir aux changements de
+conditions économiques. En particulier, l'objectif de la politique monétaire d'\AVATokenName{} est d'équilibrer les
+incitations des utilisateurs à mettre en jeu leurs jetons (staking) ou les utiliser pour intéragir avec la multitude de
+services disponibles sur la plateforme. Les participants à la plateforme agissent de manière collective comme une banque
+de réserve décentralisée. Les leviers disponibles sur Avalanche sont les récompenses de staking, les frais, et les
+"parachutages" (airdrops) de jetons gratuits, qui sont tous influencés par des paramètres de gouvernance. Les
+récompenses de staking sont définis par la gouvernance sur la blockchain, et sont régies par une fonction conçue pour
+ne jamais dépasser la limite en quantité de jetons. L'incitation au staking peut se faire en augmentant les frais ou les
+récompenses de mise en jeu. De l'autre côté on peut encourager un engagement vers les services de la plateforme
+Avalanche en baissant les frais et les récompenses de staking.
+
+\subsubsection{Cas d'usage}
+\paragraph{Paiements}
+Les paiements pair à pair réellement décentralisés sont encore un doux rêve pour l'industrie à cause du manque de
+performance actuel de la part des protagonistes en place. \AVATokenName{} est aussi puissant et facile à utiliser que
+les paiements Visa, permettant jusqu'à des milliers de transactions chaque seconde au niveau mondial, d'une manière
+complètement décentralisée et sans tiers de confiance. En outre, pour les marchands à travers le monde, \AVATokenName{}
+offre une proposition de valeur directe par rapport à Visa, à savoir des frais de transaction plus faibles.
+
+\paragraph{Mise en jeu: sécuriser le système}
+Sur la plateforme \AVAPlatformName{}, le contrôle des attaques sybil est obtenu via le staking. Pour pouvoir valider, un
+participant doit bloquer une somme qui est mise en jeu. Les validateurs, parfois appelés "stakers", sont récompensés
+pour leurs services de validation sur la base du montant et de la durée de mise en jeu, parmi d'autres critères. La
+fonction de récompense choisie est prévue pour minimiser la variance, assurant que les gros stakers ne reçoivent pas de
+récompenses disproportionnées par rapport aux autres. Les participants ne sont également pas soumis au
+``facteur chance'' comme dans le minage par preuve de travail. Un tel schéma de récompense décourage également la
+formation de groupes de minage ou de staking permettant ainsi une participation au réseau réellement décentralisée et
+sans tiers de confiance.
+
+\paragraph{Echanges atomiques de jetons}
+A part assurer la sécurité centrale du système, le jeton \AVATokenName{} sert comme unité d'échange universelle. A
+partir de là, la plateforme \AVAPlatformName{} sera capable de supporter les échanges atomiques de jetons (atomic swaps)
+nativement permettant des échanges entre tous types d'actifs réellement décentralisés directement sur la plateforme.
+
+\subsection{Gouvernance}
+La gouvernance est critique pour le développement et l'adoption de toute plateforme car - comme avec d'autres types de
+systèmes - \AVAPlatformName{} fera également face à une évolution naturelle et à des mises à jour. \AVATokenName{}
+apporte une gouvernance sur la blockchain pour les paramètres critiques du réseau avec laquelle les participants ont la
+possibilité de voter des changements au réseau et se mettre d'accord sur les décisions d'évolutions du réseau de manière
+démocratique. Cela inclue les facteurs tels que le montant minimal de staking, le taux d'émission, ainsi que d'autres
+paramètres économiques. Cela permet à la plateforme d'effectuer en pratique l'optimisation de paramètres dynamiques à
+travers un oracle populaire. Cependant, contrairement à d'autres plateformes de gouvernance existantes,
+\AVAPlatformName{} ne permet pas des changements illimités sur tous les aspects du système. A la place, seul un nombre
+prédéfini de paramètres peut être modifié par gouvernance, rendant le système plus prévisible pour une sûreté de
+fonctionnement accrue. De plus, tous les paramètres gouvernables sont sujets à des limites sur des périodes de temps,
+introduisant de l'hystérésis, et assurant que le système demeure prévisible sur des petites périodes de temps.
+
+Un procédé effectif pour trouver des valeurs globales acceptables pour les paramètres du système est critique pour les
+systèmes décentralisés sans dépositaires. \AVAPlatformName{} peut utiliser son mécanisme de consensus pour élaborer un
+système permettant à toute personne de proposer des transactions spéciales qui sont en essence des sondages au niveau
+système. Tout noeud participant peut émettre de telles propositions.
+
+Le taux de récompense nominal est un paramètre important qui affecte toutes les monnaies, qu'elles soient digitales ou
+fiduciaires. Malheureusement les cryptomonnaies qui fixent ce paramètre peuvent faire face à de nombreux problèmes,
+incluant la déflation ou l'inflation. Dans ce but, le taux de récompense nominal est soumis à la gouvernance dans un
+cadre prédéfini. Cela permettra aux possesseurs de jetons de choisir si \AVATokenName{} doit finalement être limité,
+illimité, ou même déflationnaire.
+
+Les frais de transaction, dénotés par l'ensemble $\mathcal{F}$, sont également soumis à la gouvernance. En pratique
+$\mathcal{F}$ est un tuple qui décrit les frais associés à diverses instructions et transactions. Finalement, les temps
+et les montants de mise en jeu sont également modifiables par gouvernance. La liste de ces paramètres est définie en
+Figure~\ref{fig:notation}.
+
+\begin{figure}[hbtp]
+\begin{framed}
+\begin{itemize}
+\item{$\Delta$} : Montant mis en jeu, dénominé en \AVATokenName. Cette valeur définit le montant minimal qui doit être
+mis en jeu comme garantie avant de participer au système.
+\item{$\delta_{min}$} : La durée minimale requise pour laquelle un noeud met en jeu sa particpation au système.
+\item{$\delta_{max}$} : La durée maximale pendant laquelle un noeud peut engager une mise en jeu.
+\item{$\rho: (\pi\Delta,\tau\delta_{min}) \rightarrow \mathbb{R}$} : La fonction du taux de récompense, aussi appelée
+taux d'émission, qui détermine la récompense qu'un participant peut demander en fonction du montant qu'il a mis en jeu
+pour un nombre $\pi$ de noeuds lui appartenant officiellement, sur une période de $\tau$ périodes de temps
+$\delta_{min}$ consécutives, tel que $\tau\delta_{min} \leq \delta_{max}$.
+\item{$\mathcal{F}$} : la structure des frais, qui est un ensemble de paramètres gouvernables liés aux frais et qui
+spécifient les coûts de diverses transactions.
+\end{itemize}
+\end{framed}
+\caption{Paramètres principaux non liés au consensus utilisés dans \AVAPlatformName{}. Toute notation est redéfinie à
+partir de sa première utilisation.}
+\label{fig:notation}
+\end{figure}
+
+En accord avec le principe de prédictibilité d'un système financier, la gouvernance dans \AVATokenName{} comporte de
+l'hystérésis, ce qui veut dire que les changements de paramètres sont extrêmement dépendants de leur changements les
+plus récents. Il y a deux limites associées à chaque paramètre gouvernable: le temps et la plage de valeurs. Une fois
+un paramètre changé par une transaction de gouvernance, il devient très difficile de le changer à nouveau immédiatement
+et par une différence importante. Ces contraintes de difficulté et de valeur se relâchent au fur et à mesure que le
+temps passe depuis le dernier changement. Globalement, cela empêche le système de changer de manière drastique sur une
+petite période de temps, permettant aux utilisateurs de prévoir avec certitude les paramètres du système à court terme,
+tout en ayant un fort contrôle et une forte flexibilité sur le long terme.
+
+\section{Discussion}
+\label{section:discussion}
+\subsection{Optimisations}
+\subsubsection{Nettoyage}
+Beaucoup de plateformes à base de blockchain, spécialement celles implémentant un consensus de Nakamoto comme Bitcoin,
+souffrent d'une croissance perpétuelle de leur état. Celà est dû -- au niveau du protocole -- au fait qu'ils doivent
+stocker l'historique entier des transactions. Cependant, pour qu'une blockchain puisse croître significativement, elle
+doit être capable de nettoyer son historique ancien. C'est particulièrement important pour les blockchains à haute
+performance comme \AVAPlatformName{}.
+
+Le nettoyage (``pruning'' en anglais) est relativement simple dans la famille Snow*. Contrairement à Bitcoin (et autres
+protocoles similaires) pour lequel le nettoyage n'est pas possible pour cause de contraintes algorithmiques, avec
+\AVATokenName{} les noeuds n'ont pas besoin de conserver les parties profondes du DAG qui sont largement vérifiées. Ces
+noeuds n'ont pas besoin de démontrer toute histoire ancienne auprès des nouveaux noeuds qui s'amorcent, et n'ont donc à
+stocker que leur état courant, comment les soldes actuels et les transactions non traitées.
+
+\subsubsection{Les types de clients}
+\AVAPlatformName{} peut supporter trois types de clients différents: client d'archive, complet, et léger. Les noeuds
+d'archives stockent l'historique complet du sous-réseau \AVATokenName{}, le sous-réseau de staking, et le réseau gérant
+les contrats intelligents, jusqu'à la génèse de ceux-ci, ce qui veut dire que ces noeuds servent de noeuds d'amorçage
+pour les nouveaux noeuds entrants. De plus ces noeuds peuvent stocker l'historique complet d'autres sous-réseaux pour
+lesquels ils choisissent d'en être validateurs. Les noeuds d'archives sont typiquement des machines avec des grosses
+capacités de stockage qui sont payées par d'autres noeuds lorsqu'ils téléchargent un état passé. Les noeuds complets
+d'un autre côté participent à la validation, mais à la place de stocker l'historique complet ils gardent uniquement
+l'état actif (ex: le jeu de sorties non dépensées en cours). Finalement, pour ceux qui nécessitent simplement
+d'intéragir de manière sécurisée avec le réseau en utilisant la quantité de ressources la plus limitée,
+\AVAPlatformName{} propose des clients légers qui peuvent prouver qu'une transaction a été acceptée sans avoir à
+télécharger ou se synchroniser avec l'historique. Les clients légers se lancent dans les phase d'échantillonnage répété
+du protocole pour assurer la sûreté de la validation et un consensus au niveau du réseau. En conséquent les clients
+légers sur \AVAPlatformName{} offrent les même garanties de sécurité que les noeuds complets.
+
+\subsubsection{Sharding}
+Le sharding est un procédé consistant à partitionner différentes ressources système dans le but d'améliorer les
+performances et réduire la charge. Il y a différents types de mécanismes de sharding. Dans le sharding réseau,
+l'ensemble des participants est divisé en sous-réseaux séparés pour réduire la charge algorithmique; dans le sharding
+d'état les participants s'accordent sur le stockage et la maintenance de sous-parties spécifiques de l'état global
+uniquement; et en dernier le sharding de transactions pour lequel les participants se partagent le traitement des
+transactions entrantes.
+
+Dans \AVAPlatformNameFirstRelease{}, la première forme de sharding existe à travers le principe des sous-réseaux. Par
+exemple, l'on pourrait lancer un sous-réseau de l'or et et un autre sous-réseau de l'immobilier. Ces deux sous-réseaux
+peuvent exister entièrement en parallèle. Les sous-réseaux intéragissent seulement lorsqu'un utilisateur souhaite
+acheter un bien immobilier en utilisant son or, à partir de ce moment \AVAPlatformName{} permettra de faire un
+échange atomique entre les deux sous-réseaux.
+
+\subsection{Préoccupations}
+\subsubsection{Cryptographie post-quantique}
+La cryptographie post-quantique a récemment retenu l'attention générale dû aux avancements dans le développement
+d'ordinateurs et d'algorithmes quantiques. Le problème avec les ordinateurs quantiques est leur capacité à casser
+certains des protocoles cryptographiques actuellement déployés, plus spécifiquement les signatures numériques. Le modèle
+de réseau d'\AVAPlatformName{} autorise un nombre arbitraire de machines virtuelles lui permettant de supporter une
+machine virtuelle résistante aux attaques quantiques avec un mécanisme de signature numérique approprié. Nous
+anticipons plusieurs types de schémas de signatures numériques pouvant être déployés, incluant les signatures RLWE
+résistantes aux attaques quantiques. Le mécanisme de consensus ne considère aucun type de cryptographie lourd pour son
+fonctionnement principal. Au vu de cette conception, il est trivial de faire évoluer le système avec une nouvelle
+machine virtuelle qui offre des primitives de cryptographie sécurisées face au quantique.
+
+\subsubsection{Adversaires réalistes}
+La papier Avalanche~\cite{avalanche} apporte des garanties très fortes en la présence d'un adversaire hostile puissant,
+connu comme l'adversaire adaptatif aux tours dans le modèle point à point complet. En d'autres termes l'adversaire a un
+accès complet à l'état de tous les nodes honnêtes \emph{à tout moment}, connaît les choix aléatoires de chaque node
+honnête, peut également changer son propre état à n'importe quel moment, avant et après que le noeud honnête ait eu la
+chance de changer son propre état. En pratique cette adversaire est tout-puissant, à l'exception de la capacité à
+directement changer l'état d'un noeud honnête ou modifier la communication entre les noeuds honnêtes. Néanmoins, en
+réalité, un tel adversaire est purement théorique sachant que l'implémentation d'un adversaire le plus puissant qu'il
+soit est limité à des approximations statistiques de l'état du réseau. Par conséquent, en pratique nous nous attendons
+à ce que les attaques correspondant au pire scénario soient difficiles à déployer.
+
+\subsubsection{Inclusion et égalité}
+Un problème courant dans les monnaies sans tiers de confiance se pose lorsque ``les riches deviennent de plus en plus
+riches''. C'est une préoccupation valide, vu qu'un système à preuve d'enjeu mal implémenté peut en pratique permettre à
+la génération de richesse d'être disproportionnellement attribuée au participant déjà détenteur du plus grand nombre de
+jetons dans le système. Un exemple simple est celui des protocoles de consensus basés sur un leader, dans lesquels un
+sous-comité ou un leader désigné collecte toutes les récompenses pendant son fonctionnement, et où la probabilité d'être
+choisi pour collecter les récompenses est proportionnelle à la somme mise en jeu, engrangeant ainsi des effets
+importants de récompense accumulée. De plus, dans les systèmes comme Bitcoin, il y a un phénomène où ``les plus gros
+deviennent de plus en plus gros'' où les gros mineurs profitent d'un avantage par rapport aux plus petits en termes
+de blocs orphelins moins nombreux et moins de travail perdu. Par contraste, Avalanche emploie une distribution
+égalitaire de l'émission: chacun des participants au protocole de mise en jeu est récompensé de manière équitable et
+proportionnelle à la somme mise en jeu. En permettant à un grand nombre de personnes de participer en premier plan
+au staking, Avalanche peut supporter jusqu'à des millions d'individus participant de manière égale au staking. Le
+montant minimal requis pour participer au protocole sera soumis à la gouvernance, mais il sera initialisé à une valeur
+faible pour encourager une large participation. Cela implique également que la délégation ne soit pas nécessaire pour
+participer avec une faible part.
+
+\section{Conclusion}
+\label{section:conclusion}
+Dans ce papier, nous avons décrit l'architecture de la plateforme \AVAPlatformName{}. Comparée à d'autres plateformes à
+ce jour, qui exécutent soit des protocoles classiques et donc intrinsèquement non évolutifs, ou utilisent un consensus
+Nakamoto qui est inefficient et impose des coûts d'opération élevés, la plateforme \AVAPlatformName{} est légère, rapide,
+évolutive, sûre, et efficiente. Le jeton natif qui sert à sécuriser le réseau et payer pour les différents coûts
+d'infrastructure est simple et propose une compatibilité ascendante. \AVATokenName{} a la capacité à surpasser les
+autres propositions dans l'obtention d'un niveau de décentralisation élevé, la capacité à résister aux attaques, et le
+passage à l'échelle de millions de noeuds sans aucun quorum ou comité elu, et donc sans imposer aucune limite à la
+participation.
+
+En plus du moteur de consensus, \AVAPlatformName{} innove à tous les étages et introduit des idées simples mais
+importantes dans la gestion des transactions, la gouvernance, et un tas d'autres composants que l'on ne retrouve dans
+aucune autre plateforme. Chaque participant au protocole aura une voix pour influencer la manière avec laquelle le
+protocole évolue \emph{à tout moment}, rendu possible par un mécanisme de gouvernance puissant. \AVAPlatformName{}
+permet un haut niveau de customisation, permettant une connexion plug-and-play presque instantanée avec les blockchains
+existantes.
+
+\bibliography{ava-platform}
+\bibliographystyle{splncs04}
+\end{document}
