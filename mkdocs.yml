@@ -1,19 +1,16 @@
-site_name: AVA Documentation
-site_url: https://docs.ava.network/
-site_description: AVA Documentation.
-site_author: AVA Community
+site_name: Avalanche Documentation
+site_url: https://docs.avax.network/
+site_description: Avalanche Documentation.
+site_author: Avalanche Community
 copyright: 2020 AVA Labs
 
 #extra project info and template customisation
-extra:
-  support:
-  discord: https://discordapp.com/invite/Ja3CSs7
-  slack: https://ava-labs.slack.com
-  avalabs_website: https://www.avalabs.org
+# extra:   # currently unused
 
 # Repository
-repo_name: github.com/ava-labs
-repo_url: https://github.com/ava-labs/
+repo_name: Avalanche Docs
+repo_url: https://github.com/ava-labs/avalanche-docs
+edit_uri: blob/master/docs
 
 theme:
     name: 'material'
@@ -28,47 +25,57 @@ theme:
       tabs: true
 
 nav:
-- AVA Documentation :
+- Avalanche Documentation :
   - Home : index.md
-  - Quickstart : ./v1.0/en/quickstart/ava-getting-started.md
+  - Quickstart : ./v1.0/en/quickstart.md
+  - FAQ and Known Issues : ./v1.0/en/faq.md
   - System Overview: v1.0/en/core-concepts/overview.md
   - Tutorials:
+    - Deploy a Smart Contract          : ./v1.0/en/tutorials/deploy-a-smart-contract.md
+    - Set up Node Monitoring           : ./v1.0/en/tutorials/node-monitoring.md
     - Create a Fixed-Cap Asset         : ./v1.0/en/tutorials/fixed-cap-asset.md
+    - Create a NFT Part 1              : ./v1.0/en/tutorials/non-fungible-token-pt-1.md
     - Create a Variable-Cap Asset      : ./v1.0/en/tutorials/variable-cap-asset.md
     - Create a Subnet                  : ./v1.0/en/tutorials/create-a-subnet.md
-    - Add Validators to a Subnet       : ./v1.0/en/tutorials/adding-validators.md
+    - Add a Validator                  : ./v1.0/en/tutorials/adding-validators.md
     - Create a Blockchain              : ./v1.0/en/tutorials/create-a-blockchain.md
     - Create a Virtual Machine         : ./v1.0/en/tutorials/creating-a-virtual-machine.md
-    - Transfer AVA between Chains      : ./v1.0/en/tutorials/atomic-swap.md
+    - Transfer AVAX between Chains     : ./v1.0/en/tutorials/atomic-swap.md
     - Create a Local Test Network      : ./v1.0/en/tutorials/creating-a-local-testnet.md
   - APIs:
               - Introduction           : ./v1.0/en/api/intro-apis.md
               - Issuing API Calls      : ./v1.0/en/api/issuing-api-calls.md
-              - Keystore API           : ./v1.0/en/api/keystore.md
-              - AVM (X-Chain) API      : ./v1.0/en/api/avm.md
-              - Platform (P-Chain) API : ./v1.0/en/api/platform.md
-              - EVM (C-Chain) API      : ./v1.0/en/api/evm.md
               - Admin API              : ./v1.0/en/api/admin.md
+              - Auth API               : ./v1.0/en/api/auth.md
+              - AVM (X-Chain) API      : ./v1.0/en/api/avm.md
+              - EVM (C-Chain) API      : ./v1.0/en/api/evm.md
+              - Health API             : ./v1.0/en/api/health.md
+              - Info API               : ./v1.0/en/api/info.md
               - IPC API                : ./v1.0/en/api/ipc.md
+              - Keystore API           : ./v1.0/en/api/keystore.md
               - Metrics API            : ./v1.0/en/api/metrics.md
-              - Timestamp API          : ./v1.0/en/api/timestamp.md
+              - Platform (P-Chain) API : ./v1.0/en/api/platform.md
+  - Staking Explained                  : ./v1.0/en/staking.md
+  - Transaction Fees                   : ./v1.0/en/transaction-fees.md
   - Developer Tools:
               - Overview : ./v1.0/en/tools/index.md
-              - Slopes :
-                  - Overview : ./v1.0/en/tools/slopes/index.md
-                  - API : ./v1.0/en/tools/slopes/api/README.md
-                  - Manage Keys : ./v1.0/en/tools/slopes/managing-keys.md
-                  - Create Asset : ./v1.0/en/tools/slopes/create-asset.md
-                  - Send Asset : ./v1.0/en/tools/slopes/send-coins.md
+              - AvalancheJS :
+                  - Overview : ./v1.0/en/tools/avalanchejs/index.md
+                  - API : ./v1.0/en/tools/avalanchejs/api/README.md
+                  - Manage Keys : ./v1.0/en/tools/avalanchejs/managing-keys.md
+                  - Create Asset : ./v1.0/en/tools/avalanchejs/create-asset.md
+                  - Send Asset : ./v1.0/en/tools/avalanchejs/send-coins.md
               - Avash  : ./v1.0/en/tools/avash.md
   - Reference Materials:
-              - Command Line Interface      : v1.0/en/references/command-line-interface.md
-              - Cryptographic Primitives    : v1.0/en/references/cryptographic-primitives.md
-              - Serialization Primitives    : v1.0/en/references/serialization-primitives.md
-              - Transaction Format          : v1.0/en/references/avm-transaction-serialization.md
-              - Network Protocol            : v1.0/en/references/network-protocol.md
-              - Glossary                    : v1.0/en/references/glossary.md
-  - Papers                                  : v1.0/en/papers/index.md
+              - Command Line Interface           : v1.0/en/references/command-line-interface.md
+              - Cryptographic Primitives         : v1.0/en/references/cryptographic-primitives.md
+              - Serialization Primitives         : v1.0/en/references/serialization-primitives.md
+              - AVM Transaction Format           : v1.0/en/references/avm-transaction-serialization.md
+              - Platform Transaction Format      : v1.0/en/references/platform-transaction-serialization.md
+              - Coreth Atomic Transaction Format : v1.0/en/references/coreth-atomic-transaction-serialization.md
+              - Network Protocol                 : v1.0/en/references/network-protocol.md
+              - Glossary                         : v1.0/en/references/glossary.md
+  - Papers                                       : v1.0/en/papers/index.md
   - Release Notes:
             - Release History: v1.0/en/release-notes/release-history.md
             - Roadmap and Feature Pipeline: v1.0/en/references/feature-pipeline.md

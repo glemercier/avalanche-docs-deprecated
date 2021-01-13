@@ -1,23 +1,24 @@
 ---
 title: "Avash"
-excerpt: "The AVA Shell Client"
+excerpt: "The Avalanche Shell Client"
 ---
-Avash is a temporary stateful shell execution environment used to deploy local and remote networks and run tests on them. AVA nodes locally deployed by Avash are exited when Avash exits.
+Avash is a temporary stateful shell execution environment used to deploy local and remote networks and run tests on them. Avalanche nodes locally deployed by Avash are exited when Avash exits.
 
-Avash provides the ability to run Lua scripts which can execute a sequence of shell commands in Avash. This allows for automation of regular tasks. For instance, one could create a Lua script to deploy a network of AVA nodes where each node has some given configuration. This makes testing easier.
+Avash provides the ability to run Lua scripts which can execute a sequence of shell commands in Avash. This allows for automation of regular tasks. For instance, one could create a Lua script to deploy a network of Avalanche nodes where each node has some given configuration. This makes testing easier.
 
 ## Installation
 
 ### Requirements
 
   * Golang 1.13+
-  * An AVA Client Implementing AVA Standard CLI Flags"
+  * An Avalanche Client Implementing Avalanche Standard CLI Flags"
 
 ### Quick Setup
 
- 1. Install and build an AVA client
- 2. `go get github.com/ava-labs/avash`
- 3. `cd $GOPATH/src/github.com/ava-labs/avash`
+ 1. Install and build an Avalanche client
+ 2. `cd $GOPATH`
+ 3. `go get github.com/ava-labs/avash`
+ 3. `cd src/github.com/ava-labs/avash`
  4. `go build`
 
 ## Configuration
@@ -27,7 +28,7 @@ While Avash can be started without a premade configuration file, it's available 
 Below is the format of an Avash configuration file:
 
 ```yaml
-avalocation: <filepath>
+avalancheLocation: <filepath>
 datadir: <directory>
 log:
   terminal: <log-level>
@@ -43,16 +44,16 @@ The field arguments are described as follows:
 
 ### Fields
 
-#### `avalocation`
+#### `avalancheLocation`
 
 ```
-File path to AVA binary.
+File path to Avalanche binary.
 
 Type:
   optional, <filepath>
 
 Default:
-  $GOPATH/src/github.com/ava-labs/gecko/build/ava
+  $GOPATH/src/github.com/ava-labs/avalanchego/build/avalanche
 ```
 
 #### `datadir`
@@ -124,7 +125,7 @@ help procmanager start
 
 Avash comes with the following root commands:
 
- * `avawallet` - Tools for interacting with AVA Payments over the network.
+ * `avawallet` - Tools for interacting with Avalanche Payments over the network.
  * `callrpc` - Issues an RPC call to a node.
  * `exit` - Exit the shell.
  * `help` - Help about any command.
@@ -142,7 +143,7 @@ These can be enumerated or auto-completed using the tab key and are explained in
 **Warning**: Like all things in Avash, this wallet is temporarily held in memory and all data is cleaned up on exit. This should be used for testing.
 
 ```
-Tools for interacting with AVA Payments over the network. Using this 
+Tools for interacting with Avalanche Payments over the network. Using this 
 	command we can create, send, and get the status of a transaction.
 
 Usage:
@@ -224,7 +225,7 @@ hosts:
         # ...
 ```
 
-This format can be scaled to simultaneously deploy many nodes on many hosts, using `-` in YAML syntax to add new elements to the host list and each host's node list. A full list of CLI flags can be found [here](https://docs.ava.network/v1.0/en/references/command-line-interface/), where `--node-flag` corresponds to `nodeflag` in our configuration file.
+This format can be scaled to simultaneously deploy many nodes on many hosts, using `-` in YAML syntax to add new elements to the host list and each host's node list. A full list of CLI flags can be found [here](../../references/command-line-interface/), where `--node-flag` corresponds to `nodeflag` in our configuration file.
 
 #### `procmanager`
 
@@ -269,7 +270,7 @@ Usage:
 #### `startnode`
 
 ```
-Starts an ava client node using procmanager and gives it a name. Example:
+Starts an Avalanche client node using procmanager and gives it a name. Example:
 	
 startnode MyNode1 --public-ip=127.0.0.1 --staking-port=9651 --http-port=9650 ... 
 
@@ -278,12 +279,12 @@ Usage:
 
 Flags:
       --assertions-enabled                   Turn on assertion execution. (default true)
-      --ava-tx-fee uint                      Ava transaction fee, in nAVA.
+      --avax-tx-fee uint                     Transaction fee, in nAVAX.
       --bootstrap-ids string                 Comma separated list of bootstrap peer ids to connect to. Example: JR4dVmy6ffUGAKCBDkyCbeZbyHQBeDsET,8CrVPQZ4VSqgL8zTdvL14G8HqAfrBr4z
       --bootstrap-ips string                 Comma separated list of bootstrap nodes to connect to. Example: 127.0.0.1:9630,127.0.0.1:9620
-      --client-location string               Path to AVA node client, defaulting to the config file's value.
+      --client-location string               Path to Avalanche node client, defaulting to the config file's value.
       --data-dir string                      Name of directory for the data stash.
-      --db-dir string                        Database directory for Ava state. (default "db1")
+      --db-dir string                        Database directory for Avalanche state. (default "db1")
       --db-enabled                           Turn on persistent storage. (default true)
   -h, --help                                 help for startnode
       --http-port uint                       Port of the HTTP server. (default 9650)
@@ -304,7 +305,8 @@ Flags:
       --snow-virtuous-commit-threshold int   Beta value to use for virtuous transactions. (default 5)
       --staking-port uint                    Port of the consensus server. (default 9651)
       --staking-tls-cert-file string         TLS certificate file for staking connections. Relative to the avash binary if doesn't start with '/'. Ex: certs/keys1/staker.crt
-      --staking-tls-enabled                  Require TLS to authenticate staking connections.
+      --p2p-tls-enabled                      Require TLS authentication for all P2P connections.
+      --staking-enabled                  Utilize staking (also requires p2p tls to be enabled).
       --staking-tls-key-file string          TLS private key file for staking connections. Relative to the avash binary if doesn't start with '/'. Ex: certs/keys1/staker.key
       --xput-server-port uint                Port of the deprecated throughput test server. (default 9652)
 ```

@@ -1,4 +1,4 @@
-This is the repository containing the documentation for the AVA Platform. 
+This is the repository containing the documentation for the Avalanche Platform. 
 
 
 # Installing
@@ -48,4 +48,5 @@ In addition, the generated documents are placed into the "/site" folder in the d
 # Editing
 
 The documentation is generated from MarkDown files located in the "/docs" folder in the document root. Edit the *.md files in that folder and then re-build the site. ***DO NOT EDIT CONTENTS OF THE SITE FOLDER DIRECTLY!!!***
+
 

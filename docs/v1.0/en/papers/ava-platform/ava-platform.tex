@@ -24,9 +24,9 @@
 \newcommandx{\XXXimprovement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
 \newcommandx{\XXX}[2][1=]{\todo[disable,#1]{#2}}
 \usepackage{fancyhdr}
-\newcommandx{\AVATokenName}{\texttt{\$AVA}}
-\newcommandx{\AVAPlatformName}{\texttt{AVA}}
-\newcommandx{\AVAPlatformNameFirstRelease}{\texttt{AVA Borealis}}
+\newcommandx{\AVATokenName}{\texttt{\$AVAX}}
+\newcommandx{\AVAPlatformName}{\texttt{Avalanche}}
+\newcommandx{\AVAPlatformNameFirstRelease}{\texttt{Avalanche Borealis}}
 \newcommandx{\genericAvalanche}{$\mathtt{A}^{*}$}
 \usepackage[yyyymmdd,hhmmss]{datetime}
 
@@ -50,8 +50,8 @@
 \begin{abstract}
 This paper provides an architectural overview of the first release of the \AVAPlatformName{} platform, codenamed \AVAPlatformNameFirstRelease{}. For details on the economics of the native token, labeled \AVATokenName{}, we guide the reader to the accompanying token dynamics paper~\cite{avatokenpaper}.
 
-\underline{Disclosure:} The information described in this paper is preliminary and subject to change at any time. Furthermore, this paper may contain “forward-looking statements.”\footnote{Forward-looking statements generally relate to future events or our future performance. This includes, but is not limited to, AVA’s projected performance; the expected development of its business and projects; execution of its vision and growth strategy; and completion of projects that are currently underway, in development or otherwise under consideration. Forward-looking statements represent our management’s beliefs and assumptions only as of the date of this presentation.
-These statements are not guarantees of future performance and undue reliance should not be placed on them. Such forward-looking statements necessarily involve known and unknown risks, which may cause actual performance and results in future periods to differ materially from any projections expressed or implied herein. Ava undertakes no obligation to update forward-looking statements.
+\underline{Disclosure:} The information described in this paper is preliminary and subject to change at any time. Furthermore, this paper may contain “forward-looking statements.”\footnote{Forward-looking statements generally relate to future events or our future performance. This includes, but is not limited to, \AVAPlatformName{}'s projected performance; the expected development of its business and projects; execution of its vision and growth strategy; and completion of projects that are currently underway, in development or otherwise under consideration. Forward-looking statements represent our management’s beliefs and assumptions only as of the date of this presentation.
+These statements are not guarantees of future performance and undue reliance should not be placed on them. Such forward-looking statements necessarily involve known and unknown risks, which may cause actual performance and results in future periods to differ materially from any projections expressed or implied herein. \AVAPlatformName{} undertakes no obligation to update forward-looking statements.
 Although forward-looking statements are our best prediction at the time they are made, there can be no assurance that they will prove to be accurate, as actual results and future events could differ materially. The reader is cautioned not to place undue reliance on forward-looking statements.}
 
 \end{abstract}
@@ -127,7 +127,7 @@ Surprisingly, while the core mechanism of operation is quite simple, these proto
 
 In Snow-type protocols, such delegation is not necessary, allowing every node operator to have a first-hand say in the system, at all times. Another design, typically referred to as state sharding, attempts to provide scalability by parallelizing transaction serialization to independent networks of validators. Unfortunately, the security of the system in such a design becomes only as high as the easiest corruptible independent shard. Therefore, neither subcommittee election nor sharding are suitable scaling strategies for crypto platforms. 
 \item \textit{Adaptive}. Unlike other voting-based systems, Snow* protocols achieve higher performance when the adversary is small, and yet highly resilient under large attacks. 
-\item \textit{Asynchronously Safe}. Snow* protocols, unlike longest-chain protocols, do not require synchronicity to operate safely, and therefore prevent double-spends even in the face of network partitions. In Bitcoin, for example, it if synchronicity assumption is violated, it is possible to operate to independent forks of the Bitcoin network for prolonged periods of time, which would invalidate any transactions once the forks heal. 
+\item \textit{Asynchronously Safe}. Snow* protocols, unlike longest-chain protocols, do not require synchronicity to operate safely, and therefore prevent double-spends even in the face of network partitions. In Bitcoin, for example, if synchronicity assumption is violated, it is possible to operate to independent forks of the Bitcoin network for prolonged periods of time, which would invalidate any transactions once the forks heal. 
 \item \textit{Low Latency}. Most blockchains today are unable to support business applications, such as trading or daily retail payments. It is simply unworkable to wait minutes, or even hours, for confirmation of transactions. Therefore, one of the most important, and yet highly overlooked, properties of consensus protocols is the time to finality. Snow* protocols reach finality typically in $\leq 1$ second, which is significantly lower than both longest-chain protocols and sharded blockchains, both of which typically span finality to a matter of minutes. 
 \item \textit{High Throughput}. Snow* protocols, which can build a linear chain or a DAG, reach thousands of transactions per second (5000+ tps), while retaining full decentralization. New blockchain solutions that claim high TPS typically trade off decentralization and security and opt for more centralized and insecure consensus mechanisms. Some projects report numbers from highly controlled settings, thus misreporting true performance results. The reported numbers for \AVATokenName{} are taken directly from a real, fully implemented \AVAPlatformName{} network running on 2000 nodes on AWS, geo-distributed across the globe on low-end machines. Higher performance results (10,000+) can be achieved through assuming higher bandwidth provisioning for each node and dedicated hardware for signature verification. Finally, we note that the aforementioned metrics are at the base-layer. Layer-2 scaling solutions immediately augment these results considerably. 
 \end{itemize}
@@ -167,40 +167,55 @@ In this section, we provide an architectural overview of the platform and discus
 \subsection{Architecture}
 
 \subsubsection{Subnetworks} 
-% To begin discussion of the platform, we must discuss the subnet architecture, the basic building block of the platform. 
-The modern internet architecture is described as having a ``narrow waist'' architecture, where there is a single communication protocol stack in the middle, composed of HTTP/TLS/IP/TCP protocols, and a very large array of networks at the bottom and applications at the top. Such a design was not planned, but rather became nascent as the internet evolved and refined in function. Such an architectural model is in stark contrast to how blockchain platforms have been developed to date. Nearly all blockchain platforms follow a monolithic architecture, typically inspired simply by Bitcoin's model. Naturally, this presents a large set of limitations that prevent blockchain platforms from many use cases. 
+A subnetwork, or subnet, is a dynamic set of validators working together to achieve consensus on the state of a set of blockchains.
+Each blockchain is validated by one subnet, and a subnet can validate arbitrarily many blockchains.
+A validator may be a member of arbitrarily many subnets.
+A subnet decides who may enter it, and may require that its constituent validators have certain properties.
+The \AVAPlatformName{} platform supports the creation and operation of arbitrarily many subnets.
+In order to create a new subnet or to join a subnet, one must pay a fee denominated in \AVATokenName{}.
 
-\AVAPlatformName{} is designed under the same architectural model as the internet, and thus it is designed to be extensible, modular, and composable. The \AVAPlatformName{} platform has multiple, logically separate subnetworks, each supporting their own execution environments, rulesets, and validators. When creating a new subnetwork, one can specify a multitude of parameters, including -- but not limited to -- the following:
+The subnet model offers a number of advantages:
 \begin{itemize}
-\item{} Who may propose and validate blocks?
-\item{} What constitutes a valid block?
-\item{} The genesis state of the chain.
-\item{} What state transition occurs when a block is accepted?
-\item{} What RPC endpoints are exposed?
-\item{} What to save to the database, and when?
+\item{} If a validator doesn't care about the blockchains in a given subnet, it will simply not join that subnet.
+This reduces network traffic, as well as the computational resources required of validators.
+This is in contrast to other blockchain projects, in which every validator must validate every transaction, even those they don't care about. 
+\item{} Since subnets decide who may enter them, one can create private subnets.
+That is, each blockchain in the subnet is validated only by a set of trusted validators.
+\item{} One can create a subnet where each validator has certain properties.
+For example, one could create a subnet where each validator is located in a certain jurisdiction, or where each validator
+is bound by some real-world contract. This may be beneficial for compliance reasons.
 \end{itemize}
-The subnet architecture, therefore, allows anyone to deploy their own blockchain that fits their custom requirements. Everything is ultimately a subnetwork in \AVAPlatformName{}, including the subnetwork where the native token, \AVATokenName{}, resides. The subnetwork where \AVATokenName{} resides, labeled by ID-0, is special due to the following properties:
-\begin{enumerate}
-\item Every validator in the \AVAPlatformName{} network is also a validator of the \AVATokenName{} token subnetwork.
-\item Any cross-subnetwork transactions, such as asset transfers, are managed by the \AVATokenName{} token subnetwork.
-\item Creation of a new subnetwork pays fees in \AVATokenName{}, which is required in order to modify the staking subnetwork. 
-\end{enumerate}
-We note that subnets are not isolated networks. They are fully interoperable with the rest of the network, meaning that they can atomically transact with other subnets. 
+
+There is one special subnet called the Primary Network.
+It is validated by all validators. 
+(That is, in order to validate any subnet, one must also validate the Primary Network.)
+The Primary Network validates a set of pre-defined blockchains, including the blockchain where \AVATokenName{} lives and is traded.
 
 \subsubsection{Virtual Machines}
-% While operationally the \AVAPlatformName{} is a collection of subnetworks, these subnets had to be instantiated and launched through some well-defined mechanism. 
-% The toolset that provides the ``blueprint'' for deploying subnets in \AVAPlatformName{} is called the ``virtual-machine'' module (VMs). 
-% Effectively, subnetworks are concrete instantiations of virtual machines, in the same way that objects are concrete instantiation of classes in object oriented languages. 
+% The \AVAPlatformName{} is a collection of blockchains, and these blockchains have to be instantiated and launched through some well-defined mechanism. 
+% The toolset that provides the ``blueprint'' for deploying blockchains in \AVAPlatformName{} is called the ``virtual-machine'' module (VMs). 
+% Effectively, a blockchain is a concrete instantiations of virtual machines, in the same way that objects are concrete instantiation of classes in object-oriented languages. 
 
-In order to launch a new subnet, a developer will first write the code for the corresponding virtual machine, or VM. 
-VMs provide the blueprint for deploying subnets in \AVAPlatformName{}. 
-When ready to create a subnet, the developer specifies the VM to use, as well as the genesis state of that VM. The behavior of a chain/DAG on a given subnet is defined entirely by the VM that the subnet uses. Naturally, since a subnet is just an instance of a VM, there can be arbitrarily many subnets that use the same VM. However, although many subnets may use the same VM, they maintain their own state, which is independent from that of other subnets. For simplicity, we sometimes write that a subnet ``uses'' a VM or that a subnet ``runs'' a VM. In both cases we mean that the subnet is an instance of that VM.
+Each blockchain is an instance of a Virtual Machine (VM.)
+A VM is a blueprint for a blockchain, much like a class is a blueprint for an object in an object-oriented programming language.
+The interface, state and behavior of a blockchain is defined by the VM that the blockchain runs.
+The following properties of a blockchain, and other, are defined by a VM: 
+\begin{itemize}
+\item{} The contents of a block
+\item{} The state transition that occurs when a block is accepted
+\item{} The APIs exposed by the blockchain and their endpoints
+\item{} The data that is persisted to disk
+\end{itemize}
 
-\AVAPlatformName{} supports the development of a rich marketplace of virtual machines that can enjoy strict compliance rulesets, privacy, and innovative new features. Such a flexible repository of FSSs allows both hobbyist developers as well as large enterprises to deploy fully compliant and interoperable business and system logic. The AVA token provides the core infrastructure for enabling the security of the system while simultaneously providing the universal unit of exchange (i.e. interoperation) between any assets deployed on AVA. 
+We say that a blockchain ``uses'' or ``runs'' a given VM.
+When creating a blockchain, one specifies the VM it runs, as well as the genesis state of the blockchain.
+A new blockchain can be created using a pre-existing VM, or a developer can code a new one. 
+There can be arbitrarily many blockchains that run the same VM.
+Each blockchain, even those running the same VM, is logically independent from others and maintains its own state.
 
-% The AVA platform will allow the tokenization of all types of assets. This includes support for arbitrary scripting languages, multiple types of virtual machines (EVM, WASM, etc), and simple-to-use libraries for token creation. For example, developers can create an asset that has features of both BTC and ZEC. This flexibility enables interoperability amongst various platforms, enabling true backwards compatibility and new, more expressive, transactions. 
+% The \AVAPlatformName{} platform will allow the tokenization of all types of assets. This includes support for arbitrary scripting languages, multiple types of virtual machines (EVM, WASM, etc), and simple-to-use libraries for token creation. For example, developers can create an asset that has features of both BTC and ZEC. This flexibility enables interoperability amongst various platforms, enabling true backwards compatibility and new, more expressive, transactions. 
 
-% For public infrastructure developers, this means that dapps can be ported from existing platforms to AVA with little modification. For private enterprise developers, this means the ability to deploy dapps that must comply with strict regulatory and privacy guarantees. We believe that such flexibility, for the first time, allows a truly interoperable network of nodes under all forms of compliance guarantees, whether permissioned or permissionless, and whether public, or private. 
+% For public infrastructure developers, this means that dapps can be ported from existing platforms to \AVAPlatformName{} with little modification. For private enterprise developers, this means the ability to deploy dapps that must comply with strict regulatory and privacy guarantees. We believe that such flexibility, for the first time, allows a truly interoperable network of nodes under all forms of compliance guarantees, whether permissioned or permissionless, and whether public, or private. 
 
 \subsection{Bootstrapping}
 The first step in participating in \AVAPlatformName{} is bootstrapping. The process occurs in three stages: connection to seed anchors, network and state discovery, and becoming a validator. 
@@ -226,7 +241,7 @@ This state discovery process is also used for network discovery. The membership 
 
 \subsection{Sybil Control and Membership}
 Consensus protocols provide their security guarantees under the assumption that up to a threshold number of members in the system could be adversarial.
-A Sybil attack, wherein a node cheaply foods the network with malicious identities, can trivially invalidate these guarantees. 
+A Sybil attack, wherein a node cheaply floods the network with malicious identities, can trivially invalidate these guarantees. 
 Fundamentally, such an attack can only be deterred by trading off presence with proof of a hard-to-forge resource~\cite{douceur2002sybil}. 
 Past systems have explored the use of Sybil deterrence mechanisms that span proof-of-work (PoW), proof-of-stake (PoS), proof-of-elapsed-time (POET), proof-of-space-and-time (PoST), and proof-of-authority (PoA).
 
@@ -261,7 +276,7 @@ This prevents unwanted scenarios such as a client software or hardware failure l
 This dovetails with our design philosophy of building predictable technology: the staked tokens are not at risk, even in the presence of software or hardware flaws.
 
 %There are two possible ways of building in a PoS mechanism: internal or external staking. In \AVATokenName, the method of choice is internal staking.
-In \AVAPlatformName, a node that wants to participate issues a special \emph{stake transaction} to the validator chain.
+In \AVAPlatformName{}, a node that wants to participate issues a special \emph{stake transaction} to the validator chain.
 Staking transactions name an amount to stake, the staking key of the participant that is staking, the duration, and the time that validation will start. 
 Once the transaction is accepted, the funds will be locked until the end of the staking period. The minimal allowed amount is decided and enforced by the system. 
 The stake amount placed by a participant has implications for both the amount of influence the participant has in the consensus process, as well as the reward, as discussed later. 
@@ -301,7 +316,7 @@ Subnets can support additional features beyond VM behavior. For example, subnets
 % In this section, we briefly discuss the monetary policy of the token, and follow up with its most important use cases.
 
 \subsubsection{Monetary Policy}
-The native token, \AVATokenName{}, is capped-supply, where the cap is set at $720,000,000$ tokens, with $360,000,000$ tokens available on mainnet launch. However, unlike other capped-supply tokens which bake the rate of minting perpetually, \AVATokenName{} is designed to react to changing economic conditions. In particular, the objective of \AVATokenName{}'s monetary policy is to balance the incentives of users to stake the token versus using it to interact with the variety of services available on the platform. Participants in the platform collectively act as a decentralized reserve bank. The levers available on AVA are staking rewards, fees, and airdrops, all of which are influenced by governable parameters. Staking rewards are set by on-chain governance, and are ruled by a function designed to never surpass the capped supply. Staking can be induced by increasing fees or increasing staking rewards. On the other hand, we can induce increased engagement with the AVA platform services by lowering fees, and decreasing the staking reward. 
+The native token, \AVATokenName{}, is capped-supply, where the cap is set at $720,000,000$ tokens, with $360,000,000$ tokens available on mainnet launch. However, unlike other capped-supply tokens which bake the rate of minting perpetually, \AVATokenName{} is designed to react to changing economic conditions. In particular, the objective of \AVATokenName{}'s monetary policy is to balance the incentives of users to stake the token versus using it to interact with the variety of services available on the platform. Participants in the platform collectively act as a decentralized reserve bank. The levers available on \AVAPlatformName{} are staking rewards, fees, and airdrops, all of which are influenced by governable parameters. Staking rewards are set by on-chain governance, and are ruled by a function designed to never surpass the capped supply. Staking can be induced by increasing fees or increasing staking rewards. On the other hand, we can induce increased engagement with the \AVAPlatformName{} platform services by lowering fees, and decreasing the staking reward. 
 
 \subsubsection{Uses}
 \paragraph{Payments}
@@ -311,7 +326,7 @@ True decentralized peer-to-peer payments are largely an unrealized dream for the
 On the \AVAPlatformName{} platform, sybil control is achieved via staking. In order to validate, a participant must lock up coins, or stake. Validators, sometimes referred to as stakers, are compensated for their validation services based on staking amount and staking duration, amongst other properties. The chosen compensation function should minimize variance, ensuring that large stakers do not disproportionately receive more compensation. Participants are also not subject to any ``luck'' factors, as in PoW mining. Such a reward scheme also discourages the formation of mining or staking pools enabling truly decentralized, trustless participation in the network.
 
 \paragraph{Atomic swaps}
-Besides providing the core security of the system, the AVA token serves as the universal unit of exchange. From there, the AVA platform will be able to support trustless atomic swaps natively on the platform enabling native, truly decentralized exchanges of any type of asset directly on AVA. 
+Besides providing the core security of the system, the \AVATokenName{} token serves as the universal unit of exchange. From there, the \AVAPlatformName{} platform will be able to support trustless atomic swaps natively on the platform enabling native, truly decentralized exchanges of any type of asset directly on \AVAPlatformName{}. 
 
 \subsection{Governance}
 Governance is critical to the development and adoption of any platform because – as with all other types of systems – \AVAPlatformName{} will also face natural evolution and updates. \AVATokenName{} provides on-chain governance for critical parameters of the network where participants are able to vote on changes to the network and settle network upgrade decisions democratically. This includes factors such as the minimum staking amount, minting rate, as well as other economic parameters. This enables the platform to effectively perform dynamic parameter optimization through a crowd oracle. However, unlike some other governance platforms out there, \AVAPlatformName{} does not allow unlimited changes to arbitrary aspects of the system. Instead, only a pre-determined number of parameters can be modified via governance, rendering the system more predictable and increasing safety. Further, all governable parameters are subject to limits within specific time bounds, introducing hysteresis, and ensuring that the system remains predictable over short time ranges. 
@@ -334,7 +349,7 @@ The list of these parameters is defined in Figure~\ref{fig:notation}.
 \begin{figure}[hbtp]
 \begin{framed}
 \begin{itemize}
-\item{$\Delta$} : Staking amount, denominated in \AVATokenName. This value defines the minimal stake required to be placed as bond before participating in the system.
+\item{$\Delta$} : Staking amount, denominated in \AVATokenName{}. This value defines the minimal stake required to be placed as bond before participating in the system.
 % \item{$\bar{f}$} : The minimal time before a node can request to mint new coins, calculated as elapsed time since last minting event. 
 \item{$\delta_{min}$} : The minimal amount of time required for a node to stake into the system.
 \item{$\delta_{max}$} : The maximal amount of time a node can stake.
@@ -383,7 +398,7 @@ Nonetheless, in reality, such an adversary is purely theoretical since practical
 
 \subsubsection{Inclusion and Equality}
 A common problem in permissionless currencies is that of the ``rich getting richer''. This is a valid concern, since a PoS system that is improperly implemented may in fact allow wealth generation to be disproportionately attributed to the already large holders of stake in the system. A simple example is that of leader-based consensus protocols, wherein a subcommittee or a designated leader collects all the rewards during its operation, and where the probability of being chosen to collect rewards is proportional to the stake, accruing strong reward compounding effects. Further, in systems such as Bitcoin, there is a ``big get bigger'' phenomenon where the big miners enjoy a premium over smaller ones in terms of fewer orphans and less lost work.
-In contrast, AVA employs an egalitarian distribution of minting: every single participant in the staking protocol is rewarded equitably and proportionally based on stake. By enabling very large numbers of people to participate first-hand in staking, AVA can accommodate millions of people to participate equally in staking. The minimum amount required to participate in the protocol will be up for governance, but it will be initialized to a low value to encourage wide participation. This also implies that delegation is not required to participate with a small allocation. 
+In contrast, \AVAPlatformName{} employs an egalitarian distribution of minting: every single participant in the staking protocol is rewarded equitably and proportionally based on stake. By enabling very large numbers of people to participate first-hand in staking, \AVAPlatformName{} can accommodate millions of people to participate equally in staking. The minimum amount required to participate in the protocol will be up for governance, but it will be initialized to a low value to encourage wide participation. This also implies that delegation is not required to participate with a small allocation. 
 
 \section{Conclusion}
 \label{section:conclusion}

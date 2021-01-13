@@ -1,8 +1,14 @@
 # Create a New Virtual Machine
 
+## Note
+
+The code below is slightly out of date.
+Some methods, interfaces and implementations are slightly different than in this tutorial.
+We're going to leave this up because the current code is very similar and this tutorial is still useful in demonstrating how Avalanche's VM model works.
+
 ## Introduction
 
-One of the core features of the AVA network is the creation of new, custom blockchains, which
+One of the core features of the Avalanche network is the creation of new, custom blockchains, which
 are defined by [Virtual Machines.](../core-concepts/overview.md#what-are-virtual-machines)
 
 In this tutorial, we'll create a very simple Virtual Machine.
@@ -20,19 +26,19 @@ which has a timestamp from today, has as its payload the hash of your manuscript
 (This follows from the fact that finding the pre-image of a hash is impossible.)
 
 Before we get to the implementation of the Virtual Machine, we'll look at the interface that a Virtual Machine
-must implement to be compatible with AVA's Avalanche consensus engine.
+must implement to be compatible with the platform's Avalanche consensus engine.
 
 We'll show and explain all the code that constitutes this Virtual Machine in snippets.
 In-line comments explain what's going on in the code.
 At the bottom of some snippets, we expound further on some portions of the code.
-If you want to see the code in one place, rather than in snippets, you can see it in our [Github repository.](https://github.com/ava-labs/gecko/tree/platform/vms/timestamp)
+If you want to see the code in one place, rather than in snippets, you can see it in our [Github repository.](https://github.com/ava-labs/avalanchego/tree/master/vms/timestampvm)
 
 ## The `snowman.VM` Interface
 
-To reach consensus on linear blockchains (as opposed to DAG blockchains), AVA uses the Avalanche-powered **Snowman** consensus engine.
+To reach consensus on linear blockchains (as opposed to DAG blockchains), Avalanche uses the Avalanche-powered **Snowman** consensus engine.
 The blockchain we're defining is linear, so it will use Snowman. 
 In order to be compatible with Snowman, the Virtual Machine that defines the blockchain must implement the `snowman.VM` interface, which
-we include below from its declaration in [`github.com/ava-labs/gecko/snow/engine/snowman/vm.go`.](https://github.com/ava-labs/gecko/blob/master/snow/engine/snowman/vm.go)
+we include below from its declaration in [`github.com/ava-labs/avalanchego/snow/engine/snowman/vm.go`.](https://github.com/ava-labs/avalanchego/blob/master/snow/engine/snowman/vm.go)
 
 The interface is big, but don't worry. We'll explain each method and see an implementation example, and it's not necessary you understand every nuance.
 
@@ -122,7 +128,7 @@ type ChainVM interface {
 You may have noticed the `snowman.Block` type referenced in the `snowman.VM` interface.
 It describes the methods that a block must implement to be a block in a linear (Snowman) chain.
 
-Let's look at this interface and its methods, which we copy from [`github.com/ava-labs/gecko/snow/consensus/snowman/block.go`.](https://github.com/ava-labs/gecko/blob/master/snow/consensus/snowman/block.go)
+Let's look at this interface and its methods, which we copy from [`github.com/ava-labs/avalanchego/snow/consensus/snowman/block.go`.](https://github.com/ava-labs/avalanchego/blob/master/snow/consensus/snowman/block.go)
 Again, it's OK if you don't understand every detail.
 We'll see an example soon.
 
@@ -533,7 +539,7 @@ func (vm *VM) CreateHandlers() map[string]*common.HTTPHandler {
 
 ### Service
 
-Gecko uses [Gorilla's RPC library.](https://www.gorillatoolkit.org/pkg/rpc) to implement APIs.
+AvalancheGo uses [Gorilla's RPC library.](https://www.gorillatoolkit.org/pkg/rpc) to implement APIs.
 
 Using Gorilla, there is a struct for each API service. 
 In the case of this blockchain, there's only one API service.
@@ -649,6 +655,101 @@ func (s *Service) GetBlock(_ *http.Request, args *GetBlockArgs, reply *GetBlockR
 	reply.Data = byteFormatter.String()
 
 	return nil
+}
+```
+
+#### API
+
+The resulting API has the following methods: 
+
+***
+
+**timestamp.getBlock**
+
+Get a block by its ID. If no ID is provided, get the latest block.
+
+**Signature**
+
+```go
+timestamp.getBlock({id: string}) ->
+    {
+        id: string,
+        data: string,
+        timestamp: int,
+        parentID: string
+    }
+```
+
+* `id` is the ID of the block being retrieved. If omitted from arguments, gets the latest block.
+* `data` is the base 58 (with checksum) representation of the block's 32 byte payload.
+* `timestamp` is the Unix timestamp when this block was created.
+* `parentID` is the block's parent.
+
+**Example Call**
+
+```json
+curl -X POST --data '{
+    "jsonrpc": "2.0",
+    "method": "timestamp.getBlock",
+    "params":{
+    	"id":"xqQV1jDnCXDxhfnNT7tDBcXeoH2jC3Hh7Pyv4GXE1z1hfup5K"
+    },
+    "id": 1
+}' -H 'content-type:application/json;' 127.0.0.1:9650/ext/bc/timestamp
+```
+
+**Example Response**
+
+```json
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "timestamp": "1581717416",
+        "data": "11111111111111111111111111111111LpoYY",
+        "id": "xqQV1jDnCXDxhfnNT7tDBcXeoH2jC3Hh7Pyv4GXE1z1hfup5K",
+        "parentID": "22XLgiM5dfCwTY9iZnVk8ZPuPe3aSrdVr5Dfrbxd3ejpJd7oef"
+    },
+    "id": 1
+}
+```
+
+***
+
+**timestamp.proposeBlock**
+
+Propose the creation of a new block.
+
+**Signature**
+
+```go
+timestamp.proposeBlock({data: string}) -> {success: bool}
+```
+
+* `data` is the base 58 (with checksum) representation of the proposed block's 32 byte payload.
+
+**Example Call**
+
+```json
+curl -X POST --data '{
+    "jsonrpc": "2.0",
+    "method": "timestamp.proposeBlock",
+    "params":{
+    	"data":"SkB92YpWm4Q2iPnLGCuDPZPgUQMxajqQQuz91oi3xD984f8r"
+    },
+    "id": 1
+}' -H 'content-type:application/json;' 127.0.0.1:9650/ext/bc/timestamp
+
+```
+
+**Example Response**
+
+```json
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "Success": true
+    },
+    "id": 1
 }
 ```
 

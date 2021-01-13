@@ -1,6 +1,6 @@
 # Networking
 
-AVA network defines the core communication format between AVA nodes. It uses the [primitive serialization](../serialization-primitives) format for payload packing and [Salticidae's](https://github.com/ava-labs/salticidae-go) message format. The opcode field is one byte.
+Avalanche network defines the core communication format between Avalanche nodes. It uses the [primitive serialization](../serialization-primitives) format for payload packing.
 
 `"Containers"` are mentioned extensively in the description. A Container is simply a generic term for blocks or vertices, without needing to specify whether the consensus algorithm is DAG or Chain.
 
@@ -28,7 +28,7 @@ A node receiving a `GetVersion` message must respond with a `Version` message co
 
 ## Version
 
-`Version` ensures that the nodes we are connected to are running compatible versions of AVA, and at least loosely agree on the current time.
+`Version` ensures that the nodes we are connected to are running compatible versions of Avalanche, and at least loosely agree on the current time.
 
 The OpCode used by `Version` messages is: `0x01`.
 

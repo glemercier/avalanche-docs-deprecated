@@ -1,6 +1,6 @@
 # Making API Calls
 
-This guide explains how to make calls to APIs exposed by AVA nodes.
+This guide explains how to make calls to APIs exposed by Avalanche nodes.
 
 ## Endpoint
 
@@ -102,4 +102,6 @@ Such extension should specify how to make calls and parse responses to them in t
 
 ## Sending and Receiving Bytes
 
-Unless otherwise noted, when bytes are sent in an API call/response, they are in their base 58 (with checksum) representation.
+Unless otherwise noted, when bytes are sent in an API call/response, they are in [CB58] representation, a base-58 encoding with a checksum
+
+[CB58]: ../../references/glossary/#cb58

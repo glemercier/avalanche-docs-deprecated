@@ -2,12 +2,12 @@
 
 ## Introduction
 
-This document describes the core concepts and architecture of the AVA network.
+This document describes the core concepts and architecture of the Avalanche network.
 
-## What is a Blockchain?
+## What is Blockchain?
 
 A blockchain is a decentralized digital ledger. It's decentralized because there is no single
-entity in charge of maintaining the ledger. Many parties, called **validators**, maintain their own
+entity in charge of maintaining the ledger. Many parties, called **validators**, maintain their
 copy of the ledger. The validators use a **consensus protocol** to ensure they always agree on the
 contents of the ledger.
 
@@ -19,7 +19,7 @@ the consensus protocol.
 
 An application stores some information, or **state**. You can interact with the application by performing a **transaction**.
 Transactions change the state of the application or, in other words, cause a **state transition**.
-Applications also allows users to retrieve information about the state (query it) without modifying it.
+Applications also allow users to retrieve information about the state (query it) without modifying it.
 
 A **decentralized application** (dApp) is one where there is no single authority that maintains the state and processes transactions.
 This might all seem very abstract, so let's look at Bitcoin through the lens of decentralized applications.
@@ -32,14 +32,14 @@ Bitcoin is decentralized because many independent validators maintain the blockc
 
 ## A Brief History of Blockchains
 
-In order to understand the value AVA provides, it's necessary to look at legacy blockchain technologies.
+To understand the value Avalanche provides, it's necessary to look at legacy blockchain technologies.
 
 ### Blockchain 1.0
 
 Bitcoin demonstrated the value of blockchains and decentralization by creating a robust, decentralized payments system.
 However, the Bitcoin network supports a small number of transactions per second, and Bitcoin's architecture makes 
 it difficult to adapt its codebase for any use other than digital payments.
-A number of other blockchain platforms duplicated the Bitcoin code base, with some small modifications, to issue their own coins.
+Several other blockchain platforms duplicated the Bitcoin code base, with some small modifications, to issue their own coins.
 Most of these copycat efforts provided zero additional value from both a technical and business perspective.
 Bitcoin's main value proposition today is as a store of value and hedge against inflation.
 
@@ -51,28 +51,28 @@ Before, it had been impossible to launch a blockchain-based decentralized applic
 and launching one's own blockchain. 
 Ethereum sparked a huge wave of new dApps, including DeFi (decentralized finance) applications.
 
-### Blockchain 3.0 and AVA
+### Blockchain 3.0 and Avalanche
 
-Like Bitcoin and Ethereum, AVA introduces new paradigms to the blockchain world.
+Like Bitcoin and Ethereum, Avalanche introduces new paradigms to the blockchain world.
 
-Unlike legacy blockchain networks, which have only one blockchain and one validator set, **AVA is a heterogeneous network of many blockchains and validator sets.**
+Unlike legacy blockchain networks, which have only one blockchain and one validator set, **Avalanche is a heterogeneous network of many blockchains and validator sets.**
 
-Just as Ethereum allows one to launch a decentralized application defined by a smart contract, AVA allows one to launch a decentralized applications defined by a **Virtual Machine.**
+Just as Ethereum allows one to launch a decentralized application defined by a smart contract, Avalanche allows one to launch a decentralized application defined by a **Virtual Machine.**
 Unlike Ethereum, each dApp runs on its own independent blockchain.
 Each blockchain is validated by a **Subnet,** a dynamic, custom set of validators.
 This allows for the creation of private blockchains.
 
-AVA is not just a platform for creating custom dApps. It also has native support for creating and trading smart digital assets.
+Avalanche is not just a platform for creating custom dApps. It also has native support for creating and trading smart digital assets.
 An asset can have a complex, custom ruleset that defines its behavior (eg "can't be traded until next year"), allowing users to get the functionality they want and to comply with regulations.
 
-AVA is the first blockchain network to use **Avalanche**, a new family of consensus protocols
-created by distributed systems researchers in 2018 that allow AVA to process thousands of transactions per second.
-Avalanche permanently finalizes transactions in a few seconds, making AVA suitable for real-time payments.
+Avalanche is the first blockchain network to use **Avalanche**, a new family of consensus protocols
+created by distributed systems researchers in 2018 that allow Avalanche to process thousands of transactions per second.
+Avalanche permanently finalizes transactions in a few seconds, making Avalanche suitable for real-time payments.
 Avalanche can be used to achieve consensus on not only linear blockchains but also on blockchains that are **Directed Acyclic Graphs (DAGs).**
 
-AVA uses **Proof-of-Stake**, which allows tens of thousands of validators to have a first-hand say in the system while consuming minimal energy.
+Avalanche uses **Proof-of-Stake**, which allows tens of thousands of validators to have a first-hand say in the system while consuming minimal energy.
 
-The following sections explain AVA's architecture, innovations and capabilities in greater detail.
+The following sections explain Avalanche's architecture, innovations and capabilities in greater detail.
 
 ## What are Virtual Machines
 
@@ -80,15 +80,15 @@ A **Virtual Machine** (VM) defines the application-level logic of a blockchain.
 In technical terms, it defines a state machine.
 It specifies the blockchain's state, state transition function, transactions and the API through which users can interact with the blockchain.
 
-Every blockchain on the AVA network is an instance of a Virtual Machine.
+Every blockchain on the Avalanche network is an instance of a Virtual Machine.
 (We sometimes say, equivalently, that a blockchain *runs* a Virtual Machine.)
 
 When a developer writes a Virtual Machine they do not need to concern themself
 with lower-level logic like networking, consensus and the structure of the blockchain.
-AVA does all of that behind the scenes so that developers can focus on the thing they'd like to build.
+Avalanche does all of that behind the scenes so that developers can focus on the thing they'd like to build.
 
 Think of a Virtual Machine as a blueprint for a blockchain; one can use the same Virtual Machine to
-create arbitrarily many blockchains, each of which follows the same ruleset but is logically independent from other blockchains.
+create arbitrarily many blockchains, each of which follows the same ruleset but is logically independent of other blockchains.
 
 ### Why Virtual Machines
 
@@ -103,20 +103,20 @@ Developers didn't need to worry about networking and consensus but creating dece
 The Ethereum Virtual Machine has low performance and imposes restrictions on smart contract developers.
 Solidity and the other few languages for writing Ethereum smart contracts are unfamiliar to most programmers.
 
-AVA Virtual Machines make it easy to define a blockchain-based decentralized application.
+Avalanche Virtual Machines make it easy to define a blockchain-based decentralized application.
 Rather than lightly-used, poorly-understood languages like Solidity, developers can write Virtual Machines in Go.
-(AVA will support VM creation in other popular languages in the future.)
+(Avalanche will support VM creation in other popular languages in the future.)
 
-Virtual machines can contain almost any arbitrary logic and AVA imposes few restrictions on a VM's functionality.
+Virtual machines can contain almost any arbitrary logic and Avalanche imposes few restrictions on a VM's functionality.
 
-### Creating Your Own Blockchain and Virtual Machine
+### Creating Your Blockchain and Virtual Machine
 
-AVA is a network of custom, independent blockchains, so naturally blockchain creation is a core feature of AVA.
+Avalanche is a network of custom, independent blockchains, so naturally blockchain creation is a core feature of Avalanche.
 
-AVA does not yet support creation of new Virtual Machines.
-This means that presently, AVA only supports creation of new instances of the [AVM](../api/avm.md) or the [Timestamp VM.](../api/timestamp.md) That is, one can only create a new blockchain that runs the AVM or Timestamp VM. See [this tutorial](../tutorials/create-a-blockchain.md) to learn how to do so.
+Avalanche does not yet support the creation of new Virtual Machines.
+This means that presently, Avalanche only supports the creation of new instances of the [AVM](../api/avm.md). See [this tutorial](../tutorials/create-a-blockchain.md) to learn how to do so.
 
-In the future AVA will allow users to define and launch custom blockchains, and we'll release SDKs to help developers do so. 
+In the future, Avalanche will allow users to define and launch custom blockchains, and we'll release SDKs to help developers do so. 
 
 To get an idea of what a Virtual Machine implementation looks like, check out [this tutorial](../tutorials/creating-a-virtual-machine.md), which shows and explains all of the code in a simple Virtual Machine, the Timestamp VM.
 
@@ -130,16 +130,16 @@ A node may be a member of arbitrarily many Subnets.
 A Subnet manages its own membership and it may require that its constituent validators have certain properties.
 This is very useful and we explore its ramifications in more depth below.
 
-There is a special Subnet called the **Default Subnet,** which validates AVA's [built-in blockchains.](#built-in-blockchains) 
-All members of all Subnets must also be a member of the **Default Subnet.**
-In order to become a member of the Default Subnet, one must [stake](#what-is-staking) some [AVA tokens.](#the-x-chain)
-The upshot of the preceding two points is that all validators of all blockchains must also validate AVA's built-in blockchains and must have staked AVA tokens.
+There is a special Subnet called the **Primary Network,** which validates Avalanche's [built-in blockchains.](#built-in-blockchains) 
+All members of all Subnets must also be a member of the **Primary Network.**
+In order to become a member of the Primary Network, one must [stake](#what-is-staking) some [AVAX tokens.](#the-x-chain)
+The upshot is that all validators of all blockchains must also validate Avalanche's built-in blockchains and must have staked AVAX tokens.
 
 There are tutorials on [creating a subnet](../tutorials/create-a-subnet.md) and [adding validators to a subnet.](../tutorials/adding-validators.md)
 
 ### Compliance
 
-AVA's Subnet architecture makes regulatory compliance manageable.
+Avalanche's Subnet architecture makes regulatory compliance manageable.
 As mentioned above, a Subnet may require validators to meet an arbitrary set of requirements. 
 This may include compliance requirements, such as:
 
@@ -164,9 +164,9 @@ Different blockchain-based applications may require validators to have certain p
 
 ## Built-in blockchains
 
-As mentioned before, AVA is a network of blockchains.
-There are 3 blockchains that are inherent to the AVA network.
-They are validated by the [Default Subnet.](#what-are-subnets)
+As mentioned before, Avalanche is a network of blockchains.
+There are 3 blockchains that are inherent to the Avalanche network.
+They are validated by the [Primary Network.](#what-are-subnets)
 
 ### The X-Chain
 
@@ -175,18 +175,17 @@ The **X-Chain** acts as a decentralized platform for creating and trading **smar
 A smart digital asset is a representation of a real-world thing, such as an equity or bond,
 with a set of rules that govern its behavior, like "can't be traded until tomorrow" or "can only be sent to US citizens."
 
-One of the assets traded on the X-Chain is **AVA**. AVA is the AVA network's native token.
-When one issues a transaction to a blockchain on the AVA network they pay a fee denominated in AVA.
-Right now there are no transaction fees but there will be in the future.
+One of the assets traded on the X-Chain is **AVAX**. AVAX is the Avalanche network's native token.
+When one issues a transaction to a blockchain on the Avalanche network they pay a fee denominated in AVAX.
 
-The X-Chain is an instance of the AVA Virtual Machine (AVM).
+The X-Chain is an instance of the Avalanche Virtual Machine (AVM).
 (Recall that all blockchains are an instance of a Virtual Machine.)
 
 See [here](../tutorials/fixed-cap-asset.md) for tutorials on creating and trading new assets on the X-Chain.
 
 ### The P-Chain
 
-Another chain inherent to the AVA network is the **P-Chain**, which manages metadata about the AVA network.
+Another chain inherent to the Avalanche network is the **P-Chain**, which manages metadata about the Avalanche network.
 (P stands for platform.)
 
 The [P-Chain's API](../api/platform.md) allows clients to create subnets, add validators to subnets and create blockchains.
@@ -208,7 +207,7 @@ In 2018 distributed systems researchers created Avalanche, a novel consensus pro
 
 ### Classical and Nakamoto Consensus Protocols
 
-In order to illustrate what differentiates Avalance, it's worth reviewing legacy consensus protocols.
+To illustrate what differentiates Avalance, it's worth reviewing legacy consensus protocols.
 
 Classical protocols, including PBFT, Libra's HotStuff, Hedera Hashgraph, HyperLedger and Tendermint/Cosmos, are based on all-to-all voting.
 They typically have a designated leader who initiates the decision process and a series of rounds of all-to-all communication. This process is inherently expensive; all-to-all communication
@@ -229,7 +228,7 @@ That is, when it is queried about the transaction in the future, it will reply t
 
 The validator repeats this sampling process until *alpha* of the validators queried reply the same way (accept/reject) for *beta* consecutive rounds. 
 
-In the case common case when a transaction has no conflicts, finalization happens very quickly.
+In the common case when a transaction has no conflicts, finalization happens very quickly.
 When conflicts exist, honest validators quickly cluster around preferring one of the conflicting transactions, entering a positive feedback loop until all correct validators prefer that transaction, leading to its acceptance and the rejection of conflicting transactions. Avalanche gets its name from this cascading property.
 
 It is guaranteed (with arbitrarily high probability based on system parameters) that if any honest validator accepts (rejects) a transaction, all honest validators will accept (reject) that transaction.
@@ -238,7 +237,7 @@ It is guaranteed (with arbitrarily high probability based on system parameters) 
 
 Protocols in the Avalanche family are very fast.
 They can achieve irreversible finality in 1-2 seconds, quicker than a typical credit card transaction.
-They support many thousands of transactions per second, in excess of Visa's typical throughput.
+They support many thousands of transactions per second, over Visa's typical throughput.
 
 In a given round a validator queries only a small sub-sample of validators, allowing Avalanche to scale to up to millions of participants.
 No other proof-of-stake protocol can support nearly as many validators without compromising the decentralization of the network.
@@ -249,7 +248,7 @@ Unlike Nakamoto protocols, they use very little energy, and when there is no wor
 Finally, Avalanche protocols are highly secure.
 Because they operate without a leader, they are immune to a large class of attacks that
 other consensus protocol families face.
-The large number of validators ensures immutability and censorship resistance that proof-of-work protocols, backed by small numbers of mining pools, cannot achieve.
+A large number of validators ensures immutability and censorship resistance that proof-of-work protocols, backed by small numbers of mining pools, cannot achieve.
 Most projects that use proof-of-stake attempt to scale by delegating validation to a subcommittee.
 The cost of violating safety in such a system is only as low as the cost of corrupting any subcommittee, which may be very low. 
 In Avalanche protocols, such delegation is not necessary because the protocol allows every validator to have a first-hand say in consensus. 
@@ -276,49 +275,48 @@ The table below provides a comparison of the Avalanche, Nakamoto and Classical c
 
 ### Sybil Attacks 
 
-In a decentralized network like Bitcoin, Ethereum or AVA, each validator influences which transactions are accepted and which are rejected.
+In a decentralized network like Bitcoin, Ethereum or Avalanche, each validator influences which transactions are accepted and which are rejected.
 
 A [**sybil attack**](https://en.wikipedia.org/wiki/Sybil_attack) is an attack where the attacker controls many validators and therefore gains an unsafe amount of influence over the network.
 This is analogous to vote-stuffing in an election.
 
-Proof-of-Stake is the method by which the AVA network prevents sybil attacks.
+Proof-of-Stake is the method by which the Avalanche network prevents Sybil attacks.
 
 ### How Does Proof-of-Stake Work
 
-To resist sybil attacks, a decentralized network must require that influence over the network is paid for with a scarce resource so that it is infeasibly expensive for an attacker to gain enough influence over the network to compromise its security. In proof-of-work systems, the scarce resource is computing power. On the AVA network, the scarce resource is the native token, AVA.
+To resist sybil attacks, a decentralized network must require that influence over the network is paid for with a scarce resource so that it is infeasibly expensive for an attacker to gain enough influence over the network to compromise its security. In proof-of-work systems, the scarce resource is computing power. On the Avalanche network, the scarce resource is the native token, AVAX.
 
-If a node wishes to validate for any blockchain it must *stake* AVA.
-To stake is to lock up some $AVA tokens, making them temporarily unspendable. 
+If a node wishes to validate for any blockchain it must *stake* AVAX.
+To stake is to lock up some AVAX tokens, making them temporarily unspendable. 
 
-### How Can I Validate the Default Subnet (Stake AVA)
+### How Can I Validate the Primary Network (Stake AVAX)
 
-See [this tutorial.](../tutorials/adding-validators.md#add-a-validator-to-the-default-subnet)
+See [this tutorial.](../tutorials/adding-validators.md#add-a-validator-to-the-primary-network)
 
 ### Validation Rewards
 
-When a validator is done validating the Default Subnet it receives back the AVA tokens it staked. 
+When a validator is done validating the Primary Network it receives back the AVAX tokens it staked. 
 Additionally, it may receive a reward for helping to secure the network by validating.
 
-Right now, a reward is always paid out to validators.
-In the future, a validator will only receive the validation reward if it is sufficiently responsive and correct during the time it validates.
+A validator only receives a validation reward if it is sufficiently responsive and correct during the time it validates.
 
-See the [AVA token paper](https://files.avalabs.org/papers/ava-token.pdf) to learn more about AVA and the mechanics of staking.
+See the [Avalanche token paper](https://files.avalabs.org/papers/token.pdf) to learn more about AVAX and the mechanics of staking.
 
 ## Summary
 
 ### High performance
 
-Blockchains built on AVA use the innovative Avalanche consensus protocol to 
+Blockchains built on Avalanche use the innovative Avalanche consensus protocol to 
 handle thousands of transactions per second and permanently finalize transactions in seconds.
 
 ### Safety
 
-AVA allows tens-of-thousands of validators to have a first-hand say in the system,
-making AVA robust and resistant to attacks.
+Avalanche allows tens-of-thousands of validators to have a first-hand say in the system,
+making Avalanche robust and resistant to attacks.
 
 ### Sustainability
 
-AVA uses energy-efficient Proof-of-Stake rather than Proof-of-Work.
+Avalanche uses energy-efficient Proof-of-Stake rather than Proof-of-Work.
 
 ### Flexibility
 
@@ -330,8 +328,8 @@ Users can create Subnets, allowing for private blockchains.
 
 ## Next steps
 
-- [Get started with the quickstart tutorial](../../quickstart/ava-getting-started/)
+- [Get started with the quickstart tutorial](../quickstart.md)
 - [Follow the Quickstart guide](../tutorials/fixed-cap-asset.md)
-- [Explore AVA's APIs](../../api/intro-apis/)
-- [Explore reference materials](../../references/cryptographic-primitives)
+- [Explore Avalanche's APIs](../api/intro-apis.md)
+- [Explore reference materials](../references/cryptographic-primitives.md)
 - [Read the whitepaper and other papers](../../papers/)

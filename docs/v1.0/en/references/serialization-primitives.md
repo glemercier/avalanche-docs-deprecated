@@ -1,7 +1,7 @@
 # Serialization of Primitive Types
 
-AVA uses a simple, uniform and elegant representation for all internal data.
-This document describes how primitive types are encoded on the AVA platform.
+Avalanche uses a simple, uniform and elegant representation for all internal data.
+This document describes how primitive types are encoded on the Avalanche platform.
 Transactions are encoded in terms of these basic primitive types.
 
 ## Byte
@@ -139,7 +139,7 @@ Example:
 
 ```yaml
 Packing:
-    "Ava"
+    "Avax"
 Results in:
-    [0x00, 0x03, 0x41, 0x76, 0x61]
+    [0x00, 0x04, 0x41, 0x76, 0x61, 0x78]
 ```

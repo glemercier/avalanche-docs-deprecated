@@ -2,11 +2,11 @@
 
 ## Subnet Creation
 
-Currently there is only one subnet (the default subnet.) We want to allow users to create their own subnets, which may impose requirements upon those that validate the subnet.
+Currently there is only one subnet (the Primary Network.) We want to allow users to create their own subnets, which may impose requirements upon those that validate the subnet.
 
 ## Governable Transaction Fees
 
-Fees are essential for DDoS protection. Right now they’re being statically set at a fixed rate. Fees are already part of the Platform Chain, and we will be making that a governance parameter. We are also exploring a more flexible fee structure for the AVA token DAG.
+Fees are essential for DDoS protection. Right now they’re being statically set at a fixed rate. Fees are already part of the Platform Chain, and we will be making that a governance parameter. We are also exploring a more flexible fee structure for the AVAX token DAG.
 
 ## Cedrus Upgrade
 
@@ -14,19 +14,19 @@ Cedrus is a write-optimized database we're developing to replace LevelDB and the
 
 ## Subnet Incentives
 
-Some subnets will want a method for incentivising validators in the AVA platform to validate for their network. To assist with this, the Platform chain will offer a method to incentivize validators in AVA from a budget allocated to the subnetwork. This budget can increase as needed to keep validators checking the subnetworks.
+Some subnets will want a method for incentivising validators in the Avalanche platform to validate for their network. To assist with this, the Platform chain will offer a method to incentivize validators in AVAX from a budget allocated to the subnetwork. This budget can increase as needed to keep validators checking the subnetworks.
 
 ## Atomic Commitment Across Blockchains
 
-An advantage of the AVA platform is that blockchains are all using the same underlying protocol for consensus on their transactions. This enables transactions to atomically commit across multiple blockchains. These atomic commitments provide the capability for AVA validators to verify transactions across two or more blockchains. We envision atomic commitments as the primary mechanism for token transfer across the AVA platform.
+An advantage of the Avalanche platform is that blockchains are all using the same underlying protocol for consensus on their transactions. This enables transactions to atomically commit across multiple blockchains. These atomic commitments provide the capability for Avalanche validators to verify transactions across two or more blockchains. We envision atomic commitments as the primary mechanism for token transfer across the Avalanche platform.
 
 ## Expand Governance Parameters
 
 Currently, the Platform chain has one governable parameter, time. The rest of the parameters are currently hard-coded for testing. We are going to add the ability to change them. This includes specifying how much each parameter can change, based on the last time they were modified.
 
-## NAT Traversal
+## Improved NAT Traversal
 
-Our current library for peer-to-peer communication, salticidae, does not support NAT traversal. The lack of this feature makes it more difficult for nodes to run in heavily virtualized environments. It is essential we enable this functionality to enable development across a wider variety of network environments.  
+NAT Traversal is critical for peer-to-peer communication for nodes that are hidden behind their router. It is essential we improve this functionality to enable development across a wider variety of network environments.
 
 ## Pruning
 
@@ -34,15 +34,11 @@ Our current implementation stores the entire transaction history. We plan to imp
 
 ## Node Reputation
 
-We plan to add the ability for validators to track the uptime and virtuousness of other validators on the network. Currently, validators always vote to provide staking rewards to a validator leaving the staking set. Once uptime and virtuousness is tracked, a validator can vote to deny staking rewards for the validators which are not adhering to the promises made when they staked their AVA. Doing so improves the quality of service of stakers on the network.
+We plan to add the ability for validators to track the uptime and virtuousness of other validators on the network. Currently, validators always vote to provide staking rewards to a validator leaving the staking set. Once uptime and virtuousness is tracked, a validator can vote to deny staking rewards for the validators which are not adhering to the promises made when they staked their Avalanche. Doing so improves the quality of service of stakers on the network.
 
 ## Blockchain Sandboxing
 
 It’s important that blockchains not operate outside of their expected environment. We want to give developers freedom to create the blockchain they want, but we also must protect the network from malware threats. Our sandboxing solution will do just that.
-
-## Improve Build Process (inc. static linking salticidae)
-
-Our current build process includes the salticidae library. Salticidae is a highly efficient C++ p2p networking library and serves us well as it interfaces with any client implementation that can utilize C++ libraries. However, the build process needs expanding. We must support Windows, Mac OS X, various Linux and Unix distributions, and potentially other platforms including mobile. For this to work, we must be able to create statically linked version of the salticidae library or add the library to modern package management systems so they can be installed (a la homebrew or apt-get). This will improve our cross-platform capability, which is essential for reaching the widest audience of developers and validators.
 
 ## Memory Management
 
@@ -65,14 +61,13 @@ We’re going to look into the possibility of changing addressing from secp256k1
 The current addressing system mimics the Bitcoin address system. We’re going to augment our system in the following way:
 Add Reed-Solomon codes to private keys in addition to the checksum.
 Add prefix byte for private key similar to WIF for the purpose of determining if a key is mainnet, testnet, or other ([https://en.bitcoin.it/wiki/Wallet_import_format](https://en.bitcoin.it/wiki/Wallet_import_format))
-Add a prefix for versioning addresses of the format bytes(AVA + version#)
+Add a prefix for versioning addresses of the format bytes(Avalanche + version#)
 
 ## Additional Features
 
 * HD Mnemonic Wallet
-* AVA Wallet GUI
-* AVA Network Monitoring
-* AVA DAG Explorer
-* AVA Chain Explorer
+* Avalanche Wallet GUI
+* Avalanche Network Monitoring
+* Avalanche Explorer
 * Binary Consensus on DAG
 * Self-signing RPC Package (WASM?)

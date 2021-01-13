@@ -8,7 +8,7 @@ The API allows clients to get statistics about a node's health and performance.
 /ext/metrics
 ```
 
-# Usage
+## Usage
 
 To get the node metrics:
 

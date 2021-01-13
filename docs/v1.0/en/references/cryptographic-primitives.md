@@ -1,41 +1,58 @@
 # Cryptographic Primitives
 
-AVA uses a variety of cryptographic primitives for its different functions. This file summarizes the type and kind
+Avalanche uses a variety of cryptographic primitives for its different functions. This file summarizes the type and kind
 of cryptography used at the network and blockchain layers.
 
 ***
 
 ## Cryptography in the Network Layer
 
-AVA uses Transport Layer Security, TLS, to protect node-to-node communications from eavesdroppers.
+Avalanche uses Transport Layer Security, TLS, to protect node-to-node communications from eavesdroppers.
 TLS combines the practicality of public-key cryptography with the efficiency of symmetric-key cryptography.
 This has resulted in TLS becoming the standard for internet communication.
 Whereas most classical consensus protocols employ public-key cryptography to prove receipt of messages to third parties,
 the novel Snow* consensus family does not require such proofs.
-This enables AVA to employ TLS in authenticating stakers, and eliminates the need for costly public-key cryptography
+This enables Avalanche to employ TLS in authenticating stakers, and eliminates the need for costly public-key cryptography
 for signing network messages. 
 
 ### TLS Certificates
 
-AVA does not rely on any centralized third-parties, and in particular, it does not use certificates issued by
+Avalanche does not rely on any centralized third-parties, and in particular, it does not use certificates issued by
 third party authenticators. All certificates used within the network layer to identify endpoints are self-signed,
 thus creating a self-sovereign identity layer. No third parties are ever involved.
 
 ### TLS Addresses
 
 To avoid posting the full TLS certificate to the Platform chain, the certificate is first hashed.
-For consistency, AVA employs the same hashing mechanism for the TLS certificates as is used in Bitcoin.
-Namely, the DER representation of the certificate is hashed with sha256, and the result is then hashed with ripemd160 to yield a 20-byte identifier for stakers.
+For consistency, Avalanche employs the same hashing mechanism for the TLS certificates as is used in Bitcoin.
+Namely, the DER representation of the certificate is hashed with sha256, and the result is then hashed with ripemd160 to yield a 20-byte identifier for stakers. 
+
+This 20-byte identifier is represented by "NodeID-" followed by the data's [CB58](../glossary/#cb5) encoded string. 
 
 ***
 
-## Cryptography in the AVA Virtual Machine
+## Cryptography in the Avalanche Virtual Machine
 
-The AVA virtual machine uses elliptic curve cryptography, specifically `secp256k1`, for its signatures on the blockchain.
+The Avalanche virtual machine uses elliptic curve cryptography, specifically `secp256k1`, for its signatures on the blockchain.
+
+This 32-byte identifier is represented by "PrivateKey-" followed by the data's [CB58](../glossary/#cb5) encoded string.
 
 ### Secp256k1 Addresses
 
-AVA follows the exact same approach as Bitcoin and hashes the ECDSA public key. First the 33-byte compressed representation of the public key is hashed with sha256, then the result is hashed with ripemd160 to yield a 20-byte address for each user.
+Avalanche is not prescriptive about addressing schemes, choosing to instead leave addressing up to each blockchain.
+
+The addressing scheme of the X-Chain and the P-Chain relies on secp256k1.
+Avalanche follows similar approach as Bitcoin and hashes the ECDSA public key.
+The 33-byte compressed representation of the public key is hashed with sha256 **once**.
+The result is then hashed with ripemd160 to yield a 20-byte address. 
+
+Avalanche uses the convention `chainID-address` to specify which chain an address exists on.
+`chainID` may be replaced with an alias of the chain.
+When transmitting information through external applications, the CB58 convention is required.
+
+Read more about the [addressing scheme](../glossary/#address) and [Bech32](../glossary/#bech32) in the [Glossary](../glossary/). 
+
+
 
 ### Secp256k1 Recoverable Signatures
 
@@ -71,11 +88,11 @@ Morty was never seen again.
 
 ## Cryptography in Ethereum Virtual Machine
 
-AVA nodes support the full Ethereum virtual machine, and precisely duplicate all of the cryptographic constructs used in Ethereum.
+Avalanche nodes support the full Ethereum virtual machine, and precisely duplicate all of the cryptographic constructs used in Ethereum.
 This includes the Keccak hash function, and the other mechanisms used for cryptographic security in the EVM.
 
 ***
 
 ## Cryptography in Other Virtual Machines
 
-Since AVA is an extensible platform, we expect that people will add additional cryptographic primitives to the system over time.
+Since Avalanche is an extensible platform, we expect that people will add additional cryptographic primitives to the system over time.

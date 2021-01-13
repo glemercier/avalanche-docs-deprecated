@@ -2,8 +2,8 @@
 LATEX=pdflatex
 
 BIBTEX=bibtex
-BIBFILE=ava-token
-PAPER=ava-token
+BIBFILE=avax-token
+PAPER=avax-token
 TEXFILES = $(wildcard *.tex) $(wildcard sections/*.tex) $(wildcard figures/*.tex) $(wildcard figures/*.pdf)
 
 SUBDIRS =

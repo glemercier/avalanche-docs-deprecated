@@ -1,9 +1,26 @@
 # IPC API
 
-The IPC API allows users to create a UNIX domain socket for a blockchain to publish to.
-When the blockchain accepts a vertex/block it will publish the vertex to the socket.
+The IPC API allows users to create UNIX domain sockets for blockchains to publish to.
+When the blockchain accepts a vertex/block it will publish it to a socket and the decisions contained inside will be published to another.
 
 A node will only expose this API if it is started with [command-line argument](../references/command-line-interface.md) `api-ipcs-enabled=true`. 
+
+## IPC Message format
+
+Socket messages consist of a 64bit integer in BigEndian format followed by that many bytes.
+
+Example:
+
+```yaml
+Sending:
+    [0x41, 0x76, 0x61, 0x78]
+Writes to the socket:
+    [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x41, 0x76, 0x61, 0x78]
+```
+
+## IPC socket URL format
+
+The names of the sockets are of the form `<network_id>-<chain_id>-<event_type>` where `<event_type>` is either `consensus` or `decisions`. The consensus socket receives verticies and blocks and while the decisions socket recives individual transactions.
 
 ## Format
 
@@ -22,11 +39,12 @@ Register a blockchain so it publishes accepted vertices to a Unix domain socket.
 #### Signature
 
 ```go
-ipcs.publishBlockchain({blockchainID: string}) -> {url: string}
+ipcs.publishBlockchain({blockchainID: string}) -> {consensusURL: string, decisionsURL: string}
 ```
 
 * `blockchainID` is the blockchain that will publish accepted vertices.
-* `url` is the path of the Unix domain socket the vertices are published to.
+* `consensusURL` is the path of the Unix domain socket the vertices are published to.
+* `decisionsURL` is the path of the Unix domain socket the transactions are published to.
   
 #### Example Call
 
@@ -35,7 +53,7 @@ curl -X POST --data '{
     "jsonrpc": "2.0",
     "method": "ipcs.publishBlockchain",
     "params":{
-        "blockchainID":"GJABrZ9A6UQFpwjPU8MDxDd8vuyRoDVeDAXc694wJ5t3zEkhU"
+        "blockchainID":"11111111111111111111111111111111LpoYY"
     },
     "id": 1
 }' -H 'content-type:application/json;' 127.0.0.1:9650/ext/ipcs
@@ -47,7 +65,8 @@ curl -X POST --data '{
 {
     "jsonrpc":"2.0",
     "result":{
-        "url":"ipc:///tmp/GJABrZ9A6UQFpwjPU8MDxDd8vuyRoDVeDAXc694wJ5t3zEkhU.ipc"
+        "decisionsURL":"/tmp/1-11111111111111111111111111111111LpoYY-consensus",
+        "consensusURL":"/tmp/1-11111111111111111111111111111111LpoYY-decisions"
     },
     "id":1
 }
@@ -72,7 +91,7 @@ curl -X POST --data '{
     "jsonrpc": "2.0",
     "method": "ipcs.unpublishBlockchain",
     "params":{
-        "blockchainID":"GJABrZ9A6UQFpwjPU8MDxDd8vuyRoDVeDAXc694wJ5t3zEkhU"
+        "blockchainID":"11111111111111111111111111111111LpoYY"
     },
     "id": 1
 }' -H 'content-type:application/json;' 127.0.0.1:9650/ext/ipcs

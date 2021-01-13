@@ -23,9 +23,9 @@
 \newcommandx{\XXXimprovement}[2][1=]{\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]{#2}}
 \newcommandx{\XXX}[2][1=]{\todo[disable,#1]{#2}}
 \usepackage{fancyhdr}
-\newcommandx{\AVATokenName}{\texttt{\$AVA}}
-\newcommandx{\AVAPlatformName}{\texttt{AVA}}
-\newcommandx{\AVAPlatformNameFirstRelease}{\texttt{AVA BOREALIS}}
+\newcommandx{\AVATokenName}{\texttt{\$AVAX}}
+\newcommandx{\AVAPlatformName}{\texttt{Avalanche}}
+\newcommandx{\AVAPlatformNameFirstRelease}{\texttt{Avalanche BOREALIS}}
 \newcommandx{\genericAvalanche}{$\mathtt{A}^{*}$}
 \usepackage[yyyymmdd,hhmmss]{datetime}
 \newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
@@ -60,7 +60,7 @@ For additional details on \AVAPlatformName{}, which serves as a versatile and un
    \scriptsize Git Commit: \input{/tmp/temp.dat}
 \end{center}
 
-\noindent{\setstretch{0.5}\scriptsize\underline{Disclosure:} The information described in this paper is preliminary and subject to change at any time. Furthermore, this paper may contain “forward-looking statements”. Forward-looking statements generally relate to future events or our future performance. This includes, but is not limited to, AVA’s projected performance; the expected development of its business and projects; execution of its vision and growth strategy; and completion of projects that are currently underway, in development or otherwise under consideration. Forward-looking statements represent our management’s beliefs and assumptions only as of the date of this presentation. These statements are not guarantees of future performance and undue reliance should not be placed on them. Such forward-looking statements necessarily involve known and unknown risks, which may cause actual performance and results in future periods to differ materially from any projections expressed or implied herein. Ava undertakes no obligation to update forward-looking statements. Although forward-looking statements are our best prediction at the time they are made, there can be no assurance that they will prove to be accurate, as actual results and future events could differ materially. The reader is cautioned not to place undue reliance on forward-looking statements.}
+\noindent{\setstretch{0.5}\scriptsize\underline{Disclosure:} The information described in this paper is preliminary and subject to change at any time. Furthermore, this paper may contain “forward-looking statements”. Forward-looking statements generally relate to future events or our future performance. This includes, but is not limited to, \AVAPlatformName{}'s projected performance; the expected development of its business and projects; execution of its vision and growth strategy; and completion of projects that are currently underway, in development or otherwise under consideration. Forward-looking statements represent our management’s beliefs and assumptions only as of the date of this presentation. These statements are not guarantees of future performance and undue reliance should not be placed on them. Such forward-looking statements necessarily involve known and unknown risks, which may cause actual performance and results in future periods to differ materially from any projections expressed or implied herein. \AVAPlatformName{} undertakes no obligation to update forward-looking statements. Although forward-looking statements are our best prediction at the time they are made, there can be no assurance that they will prove to be accurate, as actual results and future events could differ materially. The reader is cautioned not to place undue reliance on forward-looking statements.}
     
 
 \section{Introduction}
@@ -99,7 +99,7 @@ The list of these parameters is defined in Figure~\ref{fig:notation}.
 \begin{figure}[hbtp]
 \begin{framed}
 \begin{itemize}
-\item{$\Delta$} : Staking amount, denominated in \AVATokenName{}. This value defines the minimal stake required to be placed as bond before participating in the system. The default value on genesis will be 20,000 \AVATokenName{}.
+\item{$\Delta$} : Staking amount, denominated in \AVATokenName{}. This value defines the minimal stake required to be placed as bond before participating in the system. The default value on genesis will be 2,000 \AVATokenName{}.
 % \item{$\bar{f}$} : The minimal time before a node can request to mint new coins, calculated as elapsed time since last minting event. 
 \item{$\delta_{min}$} : The minimal amount of time required for a node to stake into the system. The default value on genesis will be 2 weeks.
 \item{$\delta_{max}$} : The maximal amount of time a node can stake. The default value on genesis will be 52 weeks.
@@ -116,7 +116,7 @@ Ultimately, we note that governance in \AVATokenName{} has hysteresis, meaning t
 
 \section{Token Economics}
 
-\AVATokenName{} has a capped-supply of 720,000,000 (720M) tokens. The genesis block will have 360M \AVATokenName{} tokens. The rest of the  360M tokens will be minted according to Equation~\ref{equation:minting_function}. For a graphical representation, Figure~\ref{figure:mintingfunction_graph} shows the token emissions curve between \AVATokenName{} and BTC. The principle of the emissions function chosen for \AVAPlatformName{} is simple: reach a capped supply, in a fashion similar to Bitcoin's emissions curve, and yet maintain the ability to govern the rate at which the system reaches this limit.
+\AVATokenName{} has a capped-supply of 720,000,000 (720M) tokens. The genesis block will have 360M \AVATokenName{} tokens. The rest of the  360M tokens will be minted according to Equation~\ref{eq:minting-function}. For a graphical representation, Figure~\ref{fig:mintingfunction-graph} shows the token emissions curve between \AVATokenName{} and BTC. The principle of the emissions function chosen for \AVAPlatformName{} is simple: reach a capped supply, in a fashion similar to Bitcoin's emissions curve, and yet maintain the ability to govern the rate at which the system reaches this limit.
 
 \subsection{Minting Function}
 
@@ -124,7 +124,7 @@ $R_j$ is total number of tokens at year $j$, with $R_1 = 360M$, and $R_l$ repres
 
 \begin{equation}
 R_j = R_{l} + \sum_{\forall u} \rho(u.s_{amount}, u.s_{time}) \times (c_j/L) \times \left(\sum\limits_{i=0}^{j}\ \ddfrac{1}{\left(\gamma + \ddfrac{1}{1 + i^{\lambda}}\right)^i} \right)
-\label{equation:minting_function}
+\label{eq:minting-function}
 \end{equation}
 where, 
 \begin{equation}
@@ -144,7 +144,7 @@ If the entire supply of tokens at year $j$ is staked for the maximum amount of s
 \includegraphics[width=\linewidth]{./mintingfunction_20years.pdf}
 \includegraphics[width=\linewidth]{./mintingfunction_100years.pdf}
 \caption{Token emissions between \AVATokenName{} and BTC, calculated over a 20 year and 100 year horizon, with $\gamma = 1.15$ and $\lambda=1.1$. The curve for ``\AVATokenName{} (100\% staked)'' represents the case where every token is being staked repeatedly for the maximum staking duration of one year, i.e. $\sum_{\forall u} \rho(u.s_{amount}, u.s_{time}) = 1$. On the other hand, the curve of ``\AVATokenName{} (lower)'' represents the case where only 50\% of the tokens are being staked repeatedly over the minimal staking duration of two weeks, i.e. $\sum_{\forall u} \rho(u.s_{amount}, u.s_{time}) = 0.45$. We note that, for simplicity, these graphs represent the case where $\gamma$ and $\lambda$ are fixed at genesis and never governed afterwards. The goal of changing $\gamma$ and $\lambda$ is to increase total supply of tokens in case the empirically observed total staked supply is too low.}
-\label{figure:mintingfunction_graph}
+\label{fig:mintingfunction-graph}
 \end{figure}
 \clearpage
 \section{Minting Mechanism}
@@ -167,7 +167,7 @@ This mechanism has important consequences. In particular, since there is no ``le
 
 % The reward also scales monotonically with the length of time that coins are staked.  
 
-% In addition to minting as a reward for participation in the consensus protocol, we can also reward users for other types of engagement, such as contributing positively to the AVA ecosystem.  We anticipate implementing these rewards as use it or lose it coins, wherein we would airdrop coins to particular keys; these coins would vanish or revert back to another address if not claimed or used before a set amount of time.  This ensures the coins are being distributed to active users and avoids tying up more coins in inactive accounts. Destroying coins not used before a particular time can also be used to stimulate economic activity, as people will be disinclined to let the coins go to waste.    
+% In addition to minting as a reward for participation in the consensus protocol, we can also reward users for other types of engagement, such as contributing positively to the \AVAPlatformName{} ecosystem.  We anticipate implementing these rewards as use it or lose it coins, wherein we would airdrop coins to particular keys; these coins would vanish or revert back to another address if not claimed or used before a set amount of time.  This ensures the coins are being distributed to active users and avoids tying up more coins in inactive accounts. Destroying coins not used before a particular time can also be used to stimulate economic activity, as people will be disinclined to let the coins go to waste.    
 
 \section{Transaction Economy}
 \subsection{Fees Structure}
@@ -201,6 +201,6 @@ The PoW is initially of low difficulty and therefore a transaction can be immedi
 However, if a specific key generates a large amount of transactions in a short amount of time, each subsequent transaction will carry a larger amount of difficulty in its PoW puzzle. 
 This mechanism works in conjunction with the fee burning. 
 
-\bibliography{ava-token}
+\bibliography{avax-token}
 \bibliographystyle{splncs04}
 \end{document}
