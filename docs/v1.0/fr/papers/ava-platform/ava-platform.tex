@@ -56,16 +56,16 @@ jeton natif, nommé \AVATokenName{}, nous proposons au lecteur de se référer �
 détaille la dynamique de ce jeton.
 
 \underline{Avertissement}\,: Les informations décrites dans cet article le sont à titre préliminaire et peuvent être
-amenées à changer ultérieurement. En outre, cet article peut contenir des «\,déclarations 
+amenées à changer ultérieurement. En outre, cet article peut contenir des «\,déclarations
 anticipées\footnote{Ces déclarations anticipées se réfèrent généralement à des évènements à venir ou des performances futures.
-Cela inclut sans se limiter aux performances attendues d'Avalanche\,; le développement prévu de son entreprise et
+  Cela inclut sans se limiter aux performances attendues d'\AVAPlatformName{}\,; le développement prévu de son entreprise et
 de ses projets\,; l'exécution de sa vision et sa stratégie de croissance\,; et l'achèvement de projets actuellement en
 cours de développement ou d'étude. Ces déclarations anticipées reflètent les croyances de notre équipe dirigeante
 basées sur des hypothèses réalisées à la date de rédaction de ce document. Ces déclarations ne garantissent aucunement
 les performances futures réelles de la plateforme, et ne doivent pas servir de base à des conclusions injustifiées. De
 telles déclarations impliquent nécessairement des risques connus et inconnus, qui peuvent conduire à des résultats et
 performances réelles futures sensiblement différents des projections exprimées explicitement ou implicitement dans ce
-document. Avalanche ne s'engage à aucune obligation de mettre à jour ces déclarations anticipées. Bien que celles-ci
+document. \AVAPlatformName{} ne s'engage à aucune obligation de mettre à jour ces déclarations anticipées. Bien que celles-ci
 représentent nos meilleures prédictions au moment où nous les avons faites, il ne peut y avoir aucune assurance qu'elles
 s'avèrent exactes vu que les résultats réels et évènements futurs sont amenés à les contredire sensiblement. Le lecteur
 est mis en garde de ne pas placer d'attentes injustifiées sur ces déclarations anticipées.}.\,»
@@ -163,7 +163,7 @@ consensus de Nakamoto~\cite{nakamoto2008bitcoin,wood2014ethereum,EyalGSR16}, en 
 de latences de confirmation élevées, d'un faible débit, et demandent une dépense d'énergie constante pour assurer leur
 sécurité.
 
-La famille de protocoles Snow*, introduite par Avalanche, combine les avantages des protocoles de consensus
+La famille de protocoles Snow*, introduite par \AVAPlatformName{}, combine les avantages des protocoles de consensus
 classiques avec ceux de Nakamoto. Basés sur un mécanisme d'échantillonnage léger, ils obtiennent une
 latence faible et un débit élevé sans avoir besoin de s'accorder précisément sur les particpants du système.
 Ils passent facilement à l'échelle, de milliers à des millions de participants agissant directement sur le protocole de
@@ -278,59 +278,49 @@ les environnements d'exécution et le déploiement.
 \subsection{Architecture}
 
 \subsubsection{Sous-réseaux}
-L'architecture de l'internet moderne est appelée «\,à taille étroite\,», avec une couche
-protocolaire de communication unique située au milieu, composée des protocoles HTTP/TLS/IP/TCP, avec une matrice de
-réseaux très étendue en dessous et les applications au dessus. Une telle conception n'était pas prévue, mais émergea
-néanmoins au fur et à mesure de l'évolution d'internet vers des fonctions bien définies. Un tel modèle architectural
-est en contraste total avec la manière dont les plateformes à base de blockchain ont été développées jusqu'à
-maintenant. Presque toutes les plateformes à base de blockchain suivent une architecture monolithique, typiquement
-inspirée du modèle Bitcoin. Naturellement cela présente un ensemble de limitations importantes qui empêchent les
-plateformes à base de blockchain de couvrir un grand nombre de cas d'usage.
+Un sous-réseau est un ensemble dynamique de validateurs œuvrant ensemble pour parvenir à un consensus sur l'état d'un
+groupe de blockchains. Chaque blockchain est validée par un sous-réseau, et un sous-réseau peut valider autant de
+blockchains que possible. Un validateur peut participer à autant de sous-réseaux qu'il le souhaite. Un sous-réseau
+décide qui est autorisé à y entrer, et peut demander aux validateurs souhaitant participer de remplir certains
+critères. La plateforme \AVAPlatformName{} supporte la création et l'exécution d'un nombre arbitraire de sous-réseaux.
+Afin de créer un sous-réseau ou d'en rejoindre un, il faut s'acquitter de frais d'entrée payables en \AVATokenName{}.
 
-\AVAPlatformName{} est conçue selon le même modèle d'architecture qu'internet, et donc de manière à être extensible,
-modulaire, et composable. La plateforme \AVAPlatformName{} a de multiples sous-réseaux logiquement séparés, supportant
-chacun un environnement d'exécution, un ensemble de règles et des validateurs qui lui sont propres. Lorsque l'on crée un nouveau
-sous-réseau, on peut spécifier une multitude de paramètres, dont -- entre autres -- les suivants\,:
+Ce modèle en sous-réseaux offre un certain nombre d'avantages:
 \begin{itemize}
-\item{} Qui peut proposer et valider les blocs\,?
-\item{} De quoi un bloc valide est-il constitué\,?
-\item{} L'état de génèse de la chaîne.
-\item{} Quelle transition d'état s'effectue lorsqu'un bloc est accepté\,?
-\item{} Quels appels RPC sont supportés\,?
-\item{} Que sauvegarder dans la base de données, et quand\,?
+\item Si un validateur n'est pas intéressé par une blokchain dans un sous-réseau particulier, il ne rejoindra tout
+simplement pas ce sous-réseau. Cela réduit le trafic réseau ainsi que les ressources de calcul demandées aux validateurs.
+Ce modèle est en contraste avec les autres projets blockchain, dans lequel les validateurs doivent valider toutes les
+transactions, même celles qui ne les intéressent pas.
+\item Vu que les sous-réseaux décident qui peut les rejoindre, il est possible de créer des sous-réseaux privés.
+C'est-à-dire que chaque blokchain dans le sous-réseau est validée par un ensemble de validateurs de confiance uniquement.
+\item Il est possible de créer un sous-réseau où chaque validateur prossède certaines propriétés. Par exemple on pourrait
+créer un sous-réseau où chaque validateur est située dans une certaine juridiction ou chaque validateur est lié au
+sous-réseau par un contrat dans la réalité. Cela peut être bénéfique pour des raisons de conformité.
 \end{itemize}
-L'architecture en sous-réseaux permet en somme à n'importe qui de déployer sa propre blockchain correspondant à ses
-besoins particuliers. Sur la plateforme \AVAPlatformName{}, tout est modélisable sous la forme d'un sous-réseau, tout
-comme le jeton natif \AVATokenName{} qui réside sur son propre sous-réseau. Le sous-réseau supportant le jeton
-\AVATokenName{}, comportant le label ID-0, est spécial de par les propriétés suivantes\,:
-\begin{enumerate}
-\item Chaque validateur dans le réseau \AVAPlatformName{} est également validateur du sous-réseau émettant le jeton
-\AVATokenName{}.
-\item Chaque transaction émise entre deux sous-réseaux, comme les transferts d'actifs, est gérée par le sous-réseau du
-jeton \AVATokenName{}.
-\item La création d'un nouveau sous-réseau nécessite de payer des frais en jetons \AVATokenName{}, ce qui est nécessaire
-pour pouvoir modifier le sous-réseau de «\,staking\,».
-\end{enumerate}
-Notons que les sous-réseaux ne sont pas des réseaux isolés. Ils sont entièrement intéropérables avec le reste du réseau,
-ce qui veut dire qu'ils peuvent échanger avec d'autres sous-réseaux de manière atomique.
+
+Il existe un sous-réseau spécial appelé le sous-réseau primaire, et qui est validé par tous les validateurs.
+C'est-à-dire que pour pouvoir être validateur dans un sous-réseau, un validateur doit également valider le sous-réseau
+primaire. Le sous-réseau primaire valide un ensemble de blockchains prédéfini, incluant la blockchain où le jeton
+\AVATokenName{} réside et peut être échangé.
 
 \subsubsection{Machines Virtuelles}
-Dans le but de lancer un nouveau sous-réseau, un développeur doit d'abord écrire le code de la machine virtuelle (ou VM)
-correspondante. Les machines virtuelles dessinent les plans d'un sous-réseau à déployer sur \AVAPlatformName{}.
-Lorsqu'il est prêt à créer un sous-réseau, le développeur spécifie la VM à utiliser ainsi que l'état de genèse de
-celle-ci. Le comportement de la chaîne ou le DAG d'un sous-réseau donné est entièrement défini par la machine virtuelle
-que ce sous-réseau utilise. Naturellement, vu qu'un sous-réseau n'est qu'une instance d'une VM, il peut y avoir autant de
-réseaux que possible qui utilisent la même VM. Cependant, même si plusieurs sous-réseaux peuvent utiliser la même VM,
-ils maintiennent chacun leur propre état qui est indépendant de l'état des autres sous-réseaux. Dans un but de
-simplification, nous écrivons parfois qu'un sous-réseau «\,utilise\,» une VM ou qu'un sous-réseau «\,exécute\,» une VM.
-Dans les deux cas nous voulons dire que le sous-réseau est une instance de cette machine virtuelle.
+Chaque blockchain est une instance d'une machine virtuelle (ou VM). Une machine virtuelle dessine les plans d'une
+blockchain, tout comme une classe dessine les plans d'un objet dans un langage de programmation orienté objet.
+L'interface, l'état et le comportement d'une blockchain sont définis par la VM que la blockchain exécute. Les propriétés
+d'une blockchain listées ci-dessous, et bien d'autres, sont définies par une VM:
+\begin{itemize}
+\item Le contenu d'un bloc
+\item La transition d'état qui s'effectue lorsqu'un bloc est accepté
+\item Les APIs exposées par la blockchain et leurs points de terminaison
+\item Les données stockées de manière persistente sur le disque
+\end{itemize}
 
-\AVAPlatformName{} supporte le développement d'un marché riche en machines virtuelles qui profite d'une conformité
-stricte avec le jeu de règles, la confidentialité et d'autres nouvelles fonctionnalités innovantes. Un tel dépôt
-flexible de briques réutilisables permet aux développeurs amateurs mais aussi aux grandes entreprises de déployer des
-applications système et métier entièrement conformes et intéropérables. Le jeton \AVATokenName{} représente
-l'infrastructure principale qui garantit la sécurité du système tout en fournissant une unité d'échange universelle
-entre tous les actifs deployés sur \AVAPlatformName{}.
+On dit qu'une blockchain ``utilise'' ou ``exécute'' une machine virtuelle donnée. Lorsqu'on crée une blockchain, on
+doit spécifier la machine virtuelle qu'elle exécute, ainsi que l'état de génèse de la blockchain. Une nouvelle
+blockchain peut être créée à partir d'une machine virtuelle déjà existante, ou un développeur peut en coder une
+nouvelle. Il peut y avoir un nombre infini de blockchains exécutant la même machine virtuelle. Toutes les blockchains,
+même celles qui utilisent la même machine virtuelle, sont logiquement indépendantes les unes des autres et conservent
+chacune leur propre état.
 
 \subsection{Amorçage}
 La première étape pour participer à la plateforme \AVAPlatformName{} est l'amorçage. Ce procédé se déroule en trois
@@ -476,12 +466,12 @@ quantité limitée émis selon un taux d'émission perpétuel, \AVATokenName{} e
 conditions économiques. En particulier, l'objectif de la politique monétaire d'\AVATokenName{} est d'équilibrer les
 incitations des utilisateurs à mettre en jeu leurs jetons (staking) ou les utiliser pour intéragir avec la multitude de
 services disponibles sur la plateforme. Les participants à la plateforme agissent de manière collective comme une banque
-de réserve décentralisée. Les leviers disponibles sur Avalanche sont les récompenses de staking, les frais, et les
+de réserve décentralisée. Les leviers disponibles sur \AVAPlatformName{} sont les récompenses de staking, les frais, et les
 «\,parachutages\,» (airdrops) de jetons gratuits, qui sont tous influencés par des paramètres de gouvernance. Les
 récompenses de staking sont définis par la gouvernance sur la blockchain, et sont régies par une fonction conçue pour
 ne jamais dépasser la limite en quantité de jetons. L'incitation au staking peut se faire en augmentant les frais ou les
 récompenses de mise en jeu. De l'autre côté on peut encourager un engagement vers les services de la plateforme
-Avalanche en baissant les frais et les récompenses de staking.
+\AVAPlatformName{} en baissant les frais et les récompenses de staking.
 
 \subsubsection{Cas d'usage}
 \paragraph{Paiements}
@@ -641,10 +631,10 @@ sous-comité ou un leader désigné collecte toutes les récompenses pendant son
 choisi pour collecter les récompenses est proportionnelle à la somme mise en jeu, engrangeant ainsi des effets
 importants de récompense accumulée. De plus, dans les systèmes comme Bitcoin, il y a un phénomène où «\,les plus gros
 deviennent de plus en plus gros\,» où les gros mineurs profitent d'un avantage par rapport aux plus petits en termes
-de blocs orphelins moins nombreux et moins de travail perdu. Par contraste, Avalanche emploie une distribution
+de blocs orphelins moins nombreux et moins de travail perdu. Par contraste, \AVAPlatformName{} emploie une distribution
 égalitaire de l'émission\,: chacun des participants au protocole de mise en jeu est récompensé de manière équitable et
 proportionnelle à la somme mise en jeu. En permettant à un grand nombre de personnes de participer en premier plan
-au staking, Avalanche peut supporter jusqu'à des millions d'individus participant de manière égale au staking. Le
+au staking, \AVAPlatformName{} peut supporter jusqu'à des millions d'individus participant de manière égale au staking. Le
 montant minimal requis pour participer au protocole sera soumis à la gouvernance, mais il sera initialisé à une valeur
 faible pour encourager une large participation. Cela implique également que la délégation ne soit pas nécessaire pour
 participer avec une faible part.
